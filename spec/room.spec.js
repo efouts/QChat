@@ -46,5 +46,4 @@ describe('room', function describeRoom() {
 
 		expect(messages).toEqual([ messageAfter, anotherMessageAfter ]);
 	});
-
 });
