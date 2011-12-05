@@ -1,0 +1,20 @@
+<html>
+        <head>
+                <title>QChat</title>
+                <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+                <script type="text/javascript" src="client.js"></script>
+                <script type="text/javascript">
+                        $(document).ready(function () {
+                                var messageField = $('#messageField');
+                                var messageListField = $('#messageListField');
+
+                                var client = new QChatClient(messageField, messageListField);
+                                client.initialize();
+                        });
+                </script>
+        </head>
+        <body>
+                <ul id="messageListField"></ul>
+                <input id="messageField" type="text" tabindex="1">
+        </body>
+</html>
