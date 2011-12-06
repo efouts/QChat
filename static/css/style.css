@@ -1,0 +1,490 @@
+html, body, h1, img, input
+{
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+html, body
+{
+    height: 100%;
+}
+
+html
+{
+    scrollbar-arrow-color: transparent;
+    scrollbar-darkshadow-color: transparent;
+    scrollbar-face-color: transparent;
+    scrollbar-highlight-color: transparent;
+    scrollbar-shadow-color: transparent;
+    scrollbar-track-color: transparent;
+    scrollbar-3dlight-color: transparent;
+}
+
+body
+{
+    background-color: White;
+    background-clip: initial;
+    background-image: url('../images/bglines.png');
+    background-origin: initial;
+    background-position-x: 50%;
+    background-position-y: 0%;
+    font: .75em Georgia, Times, serif;
+}
+
+input[type=text]
+{
+    border: solid 2px #E8E8E8;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    height: 22px;
+}
+
+h1
+{
+    color: #202020;
+    display: inline;
+    font-style: italic;
+    font-weight: bold;
+    height: 49px;
+    letter-spacing: -1px;
+    line-height: 49px;
+}
+
+ul
+{
+    list-style: none;
+}
+
+.page
+{
+    height: 80%;
+    margin: 0 10% 0 10%;
+    padding: 120px 0 0 0;
+    width: 80%;
+}
+
+.header, .footer
+{
+    background-color: #EFEFEF;
+    width: 182px;
+    z-index: 1;
+}
+
+.header
+{
+    background-image: url('../images/gradient-background.gif');
+    height: 44px;
+    margin-left: 5%;
+    margin-top: 30px;
+    padding-left: 10px;
+    position: absolute;
+    top: 0;
+    width: 200px;
+    /*-webkit-transform:rotate(-20deg);
+    -moz-transform:rotate(-20deg); 
+    -ms-transform:rotate(-20deg);*/
+}
+
+.footer
+{
+    background-image: url('../images/Footer.png');
+    height: 37px;
+    padding-top: 7px;
+    width: 100%;
+}
+
+.footer textarea
+{
+    border: solid 2px #E8E8E8;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    float: left;
+    height: 22px;
+    margin-left: 20px;
+    margin-right: 5px;
+    width: 60%;
+}
+
+.footer input[type=submit]
+{
+    border: solid 1px #E8E8E8;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    color: Black;
+    height: 30px;
+    font-family: Georgia, Times, serif;
+    font-size: small;
+    font-variant: small-caps;
+    width: 70px;
+}
+
+.footer input[type=submit]:hover
+{
+    color: White;
+}
+
+.content
+{
+    background-clip: padding-box;
+    background-image: url('../images/brushed-alu.png');
+    height: 90%;
+    margin: 0;
+}
+
+.chat-wrapper
+{
+    float: left;
+    height: 100%;
+    margin: 0 5%;
+    width: 90%;
+}
+
+.chat
+{
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 0;
+    position: relative;
+    scrollbar-arrow-color: #000000;
+    scrollbar-darkshadow-color: #000000;
+    scrollbar-face-color: #FFFFFF;
+    scrollbar-highlight-color: #FFFFFF;
+    scrollbar-shadow-color: #E8E8E8E;
+    scrollbar-track-color: #E8E8E8;
+    scrollbar-3dlight-color: #E8E8E8E;
+}
+
+.members-wrapper
+{
+    max-width: 280px;
+    position: fixed;
+    right: 80%;
+    top: 0;
+    width: 280px;
+}
+
+.members
+{
+    height: 100%;
+    margin: 10px 20px 0 10px;
+    overflow-x: none;
+    overflow-y: none;
+    position: relative;
+}
+
+.members ol,
+.members ul
+{
+    color: #333333;
+    font-family: Georgia, Times, serif;
+    font-size: 24px;
+    font-style: italic;
+    margin: 0;
+    padding: 0;
+}
+
+.members ol li,
+.members ul li
+{
+    background-image: url('../images/wooden-sign-1.png');
+    height: 45px;
+    margin: 0;
+    padding: 0;
+}
+
+.members ol li p,
+.members ul li p
+{
+    color: #836752;
+    font-family: Arial;
+    font-size: 13px;
+    font-style: normal;
+    padding: 8px;
+}
+
+.members ol li p em,
+.members ul li p em
+{
+    display: block;
+}
+
+.members-header
+{
+    background-image: url('../images/gradient-background.gif');
+    padding-left: 20px;
+}
+
+.avatar-wrapper
+{
+    height: 50px;
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.avatar-wrapper img
+{
+    /*background-clip: padding-box;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);*/
+    height: 50px;
+    width: 50px;
+    z-index: 5;
+}
+
+.avatar-wrapper p
+{
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.avatar-wrapper-left
+{
+    float: left;
+    text-align: left;
+}
+
+.avatar-wrapper-right
+{
+    float: right;
+    text-align: right;
+}
+
+.avatar-wrapper-left img
+{
+    float: left;
+}
+
+.avatar-wrapper-right img
+{
+    float: right;
+}
+
+.avatar-wrapper-left p
+{
+    margin-left: 70px;
+}
+
+.avatar-wrapper-right p
+{
+    margin-right: 70px;
+}
+
+.avatar-wrapper-left + .bubble-right
+{
+    margin-top: -20px;
+}
+
+.avatar-wrapper-right + .bubble-left
+{
+    margin-top: -20px;
+}
+
+.bubble
+{
+    background: #5a8f00;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#b8db29), to(#5a8f00));
+    background: -moz-linear-gradient(#b8db29, #5a8f00);
+    background: -o-linear-gradient(#b8db29, #5a8f00);
+    background: linear-gradient(#b8db29, #5a8f00);
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    color: #fff;
+    margin: 10px;
+    min-height: 10px;
+    padding: 10px 30px;
+    position: relative;
+    width: 70%;
+    z-index: 1;
+}
+
+.bubble-left
+{
+    float: left;
+}
+
+.bubble-right
+{
+    float: right;
+}
+
+.bubble + div
+{
+    clear: both;
+}
+
+.bubble:after
+{
+    border-style: solid;
+    border-color: transparent #5a8f00;
+    bottom: -30px;
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+}
+
+.bubble-left:after
+{
+    border-width: 0 0 30px 20px;
+    left: 50px;
+}
+
+.bubble-right:after
+{
+    border-width: 0 20px 30px 0px;
+    right: 50px;
+}
+
+.user
+{
+    color: Black;
+    font-style: italic;
+}
+
+.floating-bubble
+{
+    color: White;
+    position: absolute;
+    z-index: 5;
+}
+
+.alias
+{
+    background-image: url('../images/brushed-alu.png');
+    height: 60px;
+    left: 60%;
+    margin-top: -8px;
+    padding-left: 20px;
+    position: absolute;
+    top: 0;
+    width: 330px;
+}
+
+.alias input[type=text]
+{
+    width: 200px;
+}
+
+.left-logo
+{
+    cursor: pointer;
+    height: 44px;
+    left: 0;
+    margin-left: -79px;
+    position: absolute;
+    text-align: center;
+    top: 400px;
+    width: 182px;
+}
+
+.shadowed
+{
+    background-clip: padding-box;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.transparent-border
+{
+    border: 8px solid transparent;
+}
+
+.black-border
+{
+    border: 8px solid #333333;
+}
+
+.gray-border
+{
+    border: 8px solid rgba(232, 232, 232, 0.2);
+}
+
+.rotated-negative-ninety
+{
+    -ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+}
+
+.rounded-border
+{
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+.palm-tree-left
+{
+    bottom: 0;
+    left: 10px;
+    position: absolute;
+}
+
+.palm-tree-right
+{
+    bottom: 0;
+    position: absolute;
+    right: 10px;
+}
+
+.vines-left
+{
+    left: -20px;
+    position: absolute;
+    top: 30px;
+}
+
+.vines-bottom-left
+{
+    bottom: 10%;
+    height: 97px;
+    left: 30px;
+    position: absolute;
+    width: 75px;
+}
+
+.vines-bottom-right
+{
+    bottom: 10%;
+    height: 97px;
+    position: absolute;
+    right: 30px;
+    width: 75px;
+}
+
+.black-vines
+{
+    left: -20px;
+    position: absolute;
+    top: -20px;
+}
+
+.black-vines-right
+{
+    bottom: 0px;
+    height: 40%;
+    position: absolute;
+    right: 0px;
+    width: 15%;
+}
+
+.alias-vines
+{
+    float: left;
+    margin-top: 5px;
+}
+
+.message-divider
+{
+    height: 10px;
+    width: 100%;
+}
