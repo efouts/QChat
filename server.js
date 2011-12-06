@@ -1,21 +1,13 @@
-var connect = require('connect');
+var connect = require('connect'); 
 var room = require('./room.js');
 
 var chatroom = new room();
-var callbacks = [];
-
-var registerRoutes = function registerRoutes(routes) {
-	routes.get('/', index);
-	routes.post('/send', send);
-	routes.get('/messages', messages);
-};
-
-var index = function index(req, res) {
-	res.writeHead(200);
-	res.end();
-};
+var waitingRequests = [];
 
 var send = function send(req, res) {
+	res.writeHead(200);
+	res.end();
+	
 	var content = req.body.content;
 	var nickname = req.body.nickname;
 	var timestamp = new Date();
@@ -23,28 +15,39 @@ var send = function send(req, res) {
 	var message = chatroom.createMessage(content, nickname, timestamp);
 	chatroom.sendMessage(message);
 
-	res.writeHead(200);
-	res.end();
-
-	while(callbacks.length  > 0)
-		callbacks.pop()([ message ]);
+	while(waitingRequests.length > 0)
+		writeMessagesToResponse([ message ], waitingRequests.pop().response);
 };
 
-var messages = function messages(req, res) {
-	var since = req.query.since;
-	
+var messages = function messages(request, response) {
+	var since = request.query.since;
 	var messagesSince = chatroom.getMessages(since);
 
-	var callback = function(messagesToSend) {
-		res.writeHead(200, 'application/json');
-		res.end(JSON.stringify(messagesToSend));
-	};
+	if (messagesSince.length) 
+		writeMessagesToResponse(messagesSince, response);
+	else
+		waitingRequests.push({ response: response, timestamp: new Date() });	
+};
 
-	if (messagesSince.length) {
-		callback(messagesSince);
-	} else {
-		callbacks.push(callback);
-	}
+var writeMessagesToResponse = function writeMessagesToResponse(messages, response) {
+	var messageData = JSON.stringify(messages);
+	response.writeHead(200, 'application/json');
+	response.end(messageData);	
+};
+
+var endOldRequests = function endOldRequests() {
+	var now = new Date();
+
+	for(i = 0; i < waitingRequests.length; i++) 
+		if (now - waitingRequests[i].timestamp > 15000)
+			writeMessagesToResponse([], waitingRequests[i].response);	
+};
+
+setInterval(endOldRequests, 15000);
+
+var registerRoutes = function registerRoutes(routes) {
+	routes.post('/send', send);
+	routes.get('/messages', messages);
 };
 
 var server = connect.createServer();
@@ -55,5 +58,4 @@ server.use(connect.static(__dirname + '/static'));
 
 server.listen(8080);
 
-module.exports.httpServer = server; 
-//module.exports.room = room;
+module.exports.httpServer = server;
