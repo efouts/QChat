@@ -5,9 +5,8 @@
     var chat = $("#chat");
 
 	var client = new chatClient();
-	client.initialize('chat', 'messageTextArea', 'sendButton');
+	client.initialize('chat', 'messageTextArea', 'sendButton', 'alias');
 
-    sendButton.click(sendMessage);
     messageTextArea.focus();
     chat.mousewheel(chatMouseWheel);
     chat.keyup(chatKeyPress);

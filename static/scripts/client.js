@@ -11,47 +11,47 @@ function chatClient() {
         this.MessagesPanel = $('#' + messagesPanelId);
         this.MessageTextBox = $('#' + textboxId);
         this.PostMessageButton = $('#' + buttonId);
-        if ($('#' + nicknameId).val() !== '')
-            this.NickName = $('#' + nicknameId).val();
+	this.NicknameField = $('#' + nicknameId);
         
-        this.PostMessageButton.click({chat:this}, this.PostMessageButtonClick);
+        this.PostMessageButton.click({chat:this}, this.PostMessage);
         this.CheckForMessages();
+
+		this.MessageTextBox.keypress(onKeyPress);
     }
+
+    var onKeyPress = function onKeyPress(e) {
+		if (e.which == 13 && e.shiftKey == false)
+			Self.PostMessage();
+    };   
     
-    this.PostMessageButtonClick = function(e) {
-        var chat = e.data.chat;
-        chat.PostMessage();
-        chat.MessageTextBox.val('');
-    }
     
     this.PostMessage = function() {
-        $.post('/send', { content: this.MessageTextBox.val(), nickname: this.NickName});   
+	var nickname = Self.NicknameField.val();
+
+        $.post('/send', { content: this.MessageTextBox.val(), nickname: nickname });   
+	Self.MessageTextBox.val('').focus();
     }
     
     this.CheckForMessages = function() {
         var sinceDate = { since: this.LastMessageReceivedDate };
         $.getJSON('/messages', sinceDate, function(messages) {
-            this.MessageReceived(messages);
-            this.CheckForMessages();
+            Self.MessageReceived(messages);
+            Self.CheckForMessages();
         });
     }
     
     this.MessageReceived = function(messages) {       
         $.each(messages, ParseMessage);
+
+	Self.MessagesPanel.scrollTop(Self.MessagesPanel.attr('scrollHeight'));
     }
     
     var ParseMessage = function(index, message) {
-        if (Self.LastMessageUser === message.nickname)
-        {
-            Self.MessagesPanel.children().last().append('<div class="message-divider"></div>');
-            Self.MessagesPanel.children().last().append('<span class="user">' + message.nickname + '</span><span>' + message.content + '</span>');
-        }
-        else
-        {
-            Self.MessagesPanel.append('<div><span class="user">' + message.nickname + '</span><span>' + message.content + '</span></div>');
-        }            
-        Self.LastMessageReceivedDate = message.timestamp;
-        
+            Self.MessagesPanel.append('<div class="bubble bubble-left shadowed"><span class="user">(' + message.timestamp + '): </span><span>' + message.content + '</span></div>');
+
+	    Self.MessagesPanel.append('<div class="avatar-wrapper avatar-wrapper-left"><p>' + message.nickname + '</p></div>');
+
+        Self.LastMessageReceivedDate = message.timestamp;        
         Self.LastMessageUser = message.nickname;
     }
     
