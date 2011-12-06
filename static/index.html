@@ -1,20 +1,101 @@
-<html>
-        <head>
-                <title>QChat</title>
-                <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
-                <script type="text/javascript" src="client.js"></script>
-                <script type="text/javascript">
-                        $(document).ready(function () {
-                                var messageField = $('#messageField');
-                                var messageListField = $('#messageListField');
+<!DOCTYPE html>
 
-                                var client = new QChatClient(messageField, messageListField);
-                                client.initialize();
-                        });
-                </script>
-        </head>
-        <body>
-                <ul id="messageListField"></ul>
-                <input id="messageField" type="text" tabindex="1">
-        </body>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript" src="scripts/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui-1.8.7.custom.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="scripts/jquery.sound.js"></script>
+    <script type="text/javascript" src="scripts/client.js"></script>
+    <script type="text/javascript" src="scripts/main.js"></script>
+</head>
+<body>
+    <div class="left-logo shadowed gray-border rounded-border rotated-negative-ninety">
+        <img alt="QChat" src="images/asideLogo.png" />
+    </div>
+    <div class="alias shadowed gray-border rounded-border">
+        <img alt="Alias" src="images/vines-bottom-left.png" class="alias-vines" />
+        <h1>Alias:</h1>
+        <input type="text" id="alias" />
+    </div>
+    <!--<div class="header shadowed gray-border rounded-border">
+        <h1>QChat</h1>
+        <img alt="QChat" src="Images/group-bubble.png" style="float: right;" />
+    </div>-->
+    <!--<div class="members-wrapper">
+        <div class="members">
+            <ul>
+                <li><p><em>Keith Williams</em></p></li>
+                <li><p><em>Elliott Fouts</em></p></li>
+                <li><p><em>Derek Pinkerton</em></p></li>
+                <li><p><em>Tim Allen</em></p></li>
+                <li><p><em>Greg Moench</em></p></li>
+                <li><p><em>Jordan Ramey</em></p></li>
+                <li><p><em>Ryan Hagan</em></p></li>
+            </ul>                
+        </div>
+    </div>-->
+    <div class="page">
+        <div class="content shadowed gray-border rounded-border">
+            <div class="chat-wrapper">
+                <div class="chat" id="chat">
+                    <div class="bubble bubble-left shadowed">
+                        <span class="user">(10:23:00 AM): </span>
+                        <span>This is text that Elliott submitted to the chat.</span>
+                    </div>
+                    <div class="avatar-wrapper avatar-wrapper-left">
+                        <p>Elliott Fouts</p>
+                        <!--<img alt="Avatar" src="Images/MarioSMBW.png" />-->
+                    </div>
+                    <div class="bubble bubble-right shadowed">
+                        <span class="user">(10:24:00 AM): </span>
+                        <span>This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                        </span>
+                        <div class="message-divider"></div>
+                        <span class="user">(10:25:00 AM): </span>
+                        <span>This is the second message Keith sent before anyone else responded.</span>
+                    </div>   
+                    <div class="avatar-wrapper avatar-wrapper-right">
+                        <!--<img alt="Avatar" src="images/Luigi.png" />-->
+                        <p>Keith Williams</p>
+                    </div>             
+                    <div class="bubble bubble-left shadowed">
+                        <span class="user">Nick Patel (10:25:00 AM): </span>
+                        <span>Nick responded to Elliott and Keith.</span>
+                    </div>
+                    <div class="avatar-wrapper avatar-wrapper-left">
+                        <img alt="Avatar" src="images/PrincessPeach.png" />
+                    </div>   
+                    <div class="bubble bubble-right shadowed">
+                        <span class="user">Keith Williams (10:26:00 AM): </span>
+                        <span>This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
+                        </span>
+                    </div>
+                    <div class="avatar-wrapper avatar-wrapper-right">
+                        <img alt="Avatar" src="images/Luigi.png" />
+                    </div> 
+                </div>
+            </div>
+        </div>  
+        <div class="footer shadowed">
+            <textarea rows="1" cols="1" id="messageTextArea"></textarea>
+            <input type="submit" value="Send" id="sendButton" />
+        </div> 
+    </div>   
+    <img alt="black vines" src="images/black-vines.png" class="black-vines" />
+    <img alt="vines" src="images/black-vines-right.png" class="black-vines-right" /> 
+    <!--<img alt="vines" src="images/vines-flipped.png" class="vines-left" />
+    <img alt="lear" src="images/vines-bottom-left.png" class="vines-bottom-left" />
+    <img alt="lear" src="images/vines-bottom-right.png" class="vines-bottom-right" />-->
+</body>
 </html>
