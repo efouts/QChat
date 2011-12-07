@@ -1,19 +1,17 @@
 ﻿$(document).ready(function () {
-
     var sendButton = $("#sendButton");
     var messageTextArea = $("#messageTextArea");
     var chat = $("#chat");
 
-	 var client = new chatClient();
-	 client.initialize('chat', 'messageTextArea', 'sendButton', 'alias');
+    var client = new chatClient();
+    client.initialize('chat', 'messageTextArea', 'sendButton', 'alias');
 
     messageTextArea.focus();
     chat.mousewheel(chatMouseWheel);
     chat.keyup(chatKeyPress);
 });
 
-function chatKeyPress(event) {
-    alert(event.which);
+function chatKeyPress(event) {    
     if (event.which == 40) {
         chatMouseWheel(null, -1, 0, -1);
     }

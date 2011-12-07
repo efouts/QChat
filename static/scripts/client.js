@@ -1,3 +1,7 @@
+// /alias POST { previousAlias, newAlias }
+// /enter POST { alias }
+// /exit POST { alias }
+
 function chatClient() {
     var self = this;
     this.messagesPanel = undefined;
@@ -19,57 +23,51 @@ function chatClient() {
 	this.postMessageButton.click(this.postMessageButtonClick);
 	
 	this.nickNameTextBox.keydown(this.nickNameTextBoxKeyDown);
-	this.nickNameTextBox.change(this.changeNickName);
-	this.nickNameTextBox.focusout(this.nickNameTextBoxLostFocus);
+	this.nickNameTextBox.change(this.nickNameTextBoxChanged);
 	
-	this.postMessageButton.attr('disabled', true);
-	this.messageTextBox.val(defaultText);
-	// TODO: Add disabled class to textbox and button
-	
-	this.messageTextBox.attr('disabled', true);
-	this.messageTextBox.attr('readOnly', true);
-	this.messageTextBox.click(this.messageTextBoxClick);
-	this.messageTextBox.keydown(this.messageTextBoxKeyDown);
-	
-        this.checkForMessages();
+	this.messageTextBox.val(defaultText);	
+	this.messageTextBox.keypress(this.messageTextBoxOnKeyPress);
+        
+	disableMessageTextBox();
+	this.checkForMessages();
     }
-
-    this.nickNameTextBoxLostFocus = function nickNameTextBoxLostFocus() {
-	if (self.nickNameTextBox.val() !== '')
-	{
-	    self.nickNameTextBox.attr('disabled', true);
-	    self.nickNameTextBox.attr('readOnly', true);
-	}
-    }
-    
+   
     this.nickNameTextBoxKeyDown = function nickNameTextBoxKeyDown() {
 	if (self.nickNameTextBox.val() !== '')
-	{
-	    self.messageTextBox.val('');
-	    self.messageTextBox.removeAttr('disabled');
-	    self.messageTextBox.removeAttr('readOnly');
-	}
-	else if (self.messageTextBox.val() === '' && self.nickNameTextBox.val() === '')
-	    self.messageTextBox.val(self.defaultText);
+	    enableMessageTextBox();
+	else
+	    disableMessageTextBox();
     }
     
-    this.changeNickName = function changeNickName() {	    
+    var enableMessageTextBox = function enableMessageTextBox() {
+	self.messageTextBox.removeAttr('disabled');
+	self.messageTextBox.removeAttr('readOnly');
+	self.messageTextBox.val('');
+    }
+    
+    var disableMessageTextBox = function disableMessageTextBox() {
+	self.messageTextBox.attr('disabled', true);
+	self.messageTextBox.attr('readOnly', true);
+	self.messageTextBox.val(defaultText);
+    }
+    
+    this.nickNameTextBoxChanged = function nickNameTextBoxChanged() {	    
 	self.nickName = self.nickNameTextBox.val();
     }
-    
-    this.messageTextBoxKeyDown = function messageTextBoxKeyDown() {
-	if (self.messageTextBox.val() === '')
-	    self.postMessageButton.attr('disabled', true);
-	else
-	    self.postMessageButton.removeAttr('disabled');
-    }
-    
-    this.messageTextBoxClick = function messageTextBoxClick() {
-	if (self.messageTextBox.val() === self.defaultText && self.nickNameTextBox.val() !== '')
+       
+    this.messageTextBoxOnKeyPress = function messageTextBoxOnKeyPress(e) {
+        if (e.which == 13 && !e.shiftKey && self.messageTextBox.val() !== '') {
+            self.postMessage();
 	    self.messageTextBox.val('');
+	    self.messageTextBox.focus();
+            e.preventDefault();
+        }
     }
     
     this.postMessageButtonClick = function postMessageButtonClick(e) {
+	if (self.messageTextBox.val() === '')
+	    return;
+	
         self.postMessage();
         self.messageTextBox.val('');
         self.messageTextBox.focus();
@@ -89,6 +87,7 @@ function chatClient() {
     
     this.messageReceived = function messageReceived(messages) {
         $.each(messages, parseMessage);
+        self.messagesPanel.scrollTop(self.messagesPanel[0].scrollHeight);
     }
 
     var parseMessage = function parseMessage(index, message) {

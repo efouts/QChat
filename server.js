@@ -4,30 +4,37 @@ var room = require('./room.js');
 var chatroom = new room();
 var waitingRequests = [];
 
-var send = function send(req, res) {
-	res.writeHead(200);
-	res.end();
-
-	var content = req.body.content;
-	var nickname = req.body.nickname;
+var send = function send(request, response) {
+	var content = request.body.content;
+	var nickname = request.body.nickname;
 	var timestamp = new Date();
 
 	var message = chatroom.createMessage(content, nickname, timestamp);
 	chatroom.sendMessage(message);
 
-	while(waitingRequests.length > 0)
-		writeMessagesToResponse([ message ], waitingRequests.pop().response);
+	while(waitingRequests.length > 0) {
+        var waitingRequest = waitingRequests.pop();
+        var messagesSince = chatroom.getMessages(waitingRequest.since);       
+        writeMessagesToResponse(messagesSince, waitingRequest.response);
+    }
+
+    response.writeHead(200);
+    response.end();
 };
 
 var messages = function messages(request, response) {
-	var since = request.query.since;
+    var since = null;
+    
+    if (request.query.since)
+        since = new Date(request.query.since);
+
 	var messagesSince = chatroom.getMessages(since);
 
 	if (messagesSince.length) 
 		writeMessagesToResponse(messagesSince, response);
 	else
-		waitingRequests.push({ response: response, timestamp: new Date() });	
-};
+		waitingRequests.push({ response: response, since: since, timestamp: new Date() });	
+};  
 
 var writeMessagesToResponse = function writeMessagesToResponse(messages, response) {
 	var messageData = JSON.stringify(messages);
