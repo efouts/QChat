@@ -1,0 +1,113 @@
+function chatClient() {
+    var Self = this;
+    this.MessagesPanel = undefined;
+    this.MessageTextBox = undefined;
+    this.PostMessageButton = undefined;
+    this.LastMessageReceivedDate = undefined;
+    this.LastMessageUser = undefined;
+    this.NickNameTextBox = undefined;    
+    this.NickName = 'Test User';
+
+    this.initialize = function(messagesPanelId, textboxId, buttonId, nicknameId) {
+        this.MessagesPanel = $('#' + messagesPanelId);
+        this.MessageTextBox = $('#' + textboxId);
+        this.PostMessageButton = $('#' + buttonId);
+	this.NickNameTextBox = $('#' + nicknameId);
+	
+	this.NickNameTextBox.change(this.ChangeNickName);        
+	this.PostMessageButton.click(this.PostMessageButtonClick);
+        this.CheckForMessages();
+    }
+
+    this.ChangeNickName = function() {
+	Self.NickName = Self.NickNameTextBox.val();
+    }
+    
+    this.PostMessageButtonClick = function(e) {
+        Self.PostMessage();
+        Self.MessageTextBox.val('');
+        Self.MessageTextBox.focus();
+    }
+    
+    this.PostMessage = function() {
+        $.post('/send', { content: this.MessageTextBox.val(), nickname: this.NickName});   
+    }
+    
+    this.CheckForMessages = function() {
+        var sinceDate = { since: this.LastMessageReceivedDate };
+        $.getJSON('/messages', sinceDate, function(messages) {
+            Self.MessageReceived(messages);
+            Self.CheckForMessages();
+        });
+    }
+    
+    this.MessageReceived = function(messages) {
+        $.each(messages, ParseMessage);
+    }
+
+    var ParseMessage = function(index, message) {
+    	  var messageHtml = message.content.replace(/\n/g, "<br />");
+    	  
+        if (Self.LastMessageUser === message.nickname)
+        {
+	    var chatBubble = Self.MessagesPanel.children(".bubble").last();
+	    chatBubble.append($('<div></div>').addClass('message-divider'));
+				
+            chatBubble.append($("<span></span>")
+		.addClass("user")
+		.html("(" + Self.Format12HourTime(new Date(message.timestamp)) + "): "));
+	    
+	    chatBubble.append($("<span></span>")
+	    	.html(messageHtml));
+        }
+        else
+        {
+            Self.MessagesPanel.append($('<div></div>')
+            	.addClass("bubble shadowed")
+            	.append($('<span></span>')
+            		.addClass('user')
+            		.append('(' + Self.Format12HourTime(new Date(message.timestamp)) + '): '))
+            	.append($('<span></span>')
+            	.append(messageHtml)));
+            
+            Self.MessagesPanel.append($("<div></div>")
+		.addClass("avatar-wrapper")
+		.append($('<p></p>')
+		    .html(message.nickname)));
+			            
+	    Self.MessagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
+	    Self.MessagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
+			   
+	    Self.MessagesPanel.children('.avatar-wrapper').filter(':even').addClass('avatar-wrapper-left');
+	    Self.MessagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
+        }
+        Self.LastMessageReceivedDate = message.timestamp;
+        Self.LastMessageUser = message.nickname;
+    }
+    
+    this.Format12HourTime = function(dateTime){
+	var hours = dateTime.getHours();
+	var ampm = 'am';
+	if (hours > 12) 
+	{
+	    ampm = 'pm';
+	    hours-=12;
+	}
+	var minutes = dateTime.getMinutes();
+	if (minutes < 10)
+	    minutes = '0' + minutes;
+	
+	var seconds = dateTime.getSeconds();
+	if (seconds < 10)
+	    seconds = '0' + seconds;
+	    
+	return hours + ':' + minutes + ':' + seconds + ' ' + ampm; 
+    }
+    
+    //this.UserConnected = function() {
+        // Todo add a message to the display to show the user connected    
+        // Todo add a message to the connected users panel.
+    //}
+}
+
+var qchat = new chatClient();
