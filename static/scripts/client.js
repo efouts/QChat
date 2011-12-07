@@ -60,7 +60,7 @@ function chatClient() {
         else
         {
             Self.MessagesPanel.append($('<div></div>')
-            	.addClass("bubble bubble-right shadowed")
+            	.addClass("bubble shadowed")
             	.append($('<span></span>')
             		.addClass('user')
             		.append('(' + Self.Format12HourTime(new Date(message.timestamp)) + '): '))
@@ -69,9 +69,15 @@ function chatClient() {
             
             Self.MessagesPanel.append(
 			        $("<div></div>")
-			        .addClass("avatar-wrapper avatar-wrapper-right")
+			        .addClass("avatar-wrapper")
 			        .append($('<p></p>')
 			            .html(message.nickname)));
+			            
+			   Self.MessagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
+			   Self.MessagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
+			   
+			   Self.MessagesPanel.children('.avatar-wrapper').filter(':even').addClass('avatar-wrapper-left');
+			   Self.MessagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
         }
         Self.LastMessageReceivedDate = message.timestamp;
         Self.LastMessageUser = message.nickname;
