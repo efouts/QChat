@@ -58,7 +58,7 @@ describe('Formatting functions', function() {
    });
   
 	it('Should format time in 12 hour format.', function() {
-		var formattedDate = qchat.Format12HourTime(new Date(11, 12, 6, 18, 30, 00));
+		var formattedDate = qchat.Format12HourTime(new Date(11, 12, 6, 18, 30, 0));
 		expect(formattedDate).toEqual('6:30:00 pm');
 	});
 });
