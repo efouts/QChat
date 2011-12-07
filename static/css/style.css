@@ -91,6 +91,7 @@ ul
 {
     background-image: url('../images/Footer.png');
     height: 37px;
+    margin-top: 0px;
     padding-top: 7px;
     width: 100%;
 }
@@ -119,7 +120,9 @@ ul
     font-family: Georgia, Times, serif;
     font-size: small;
     font-variant: small-caps;
-    width: 70px;
+    max-width: 70px;
+    min-width: 70px;
+    width: 5%;
 }
 
 .footer input[type=submit]:hover
@@ -139,6 +142,7 @@ ul
 {
     float: left;
     height: 100%;
+    left: 120px;
     margin: 0 5%;
     width: 90%;
 }
@@ -473,4 +477,37 @@ ul
 {
     height: 10px;
     width: 100%;
+}
+
+.left-header-logo
+{
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#4BB5F3), to(#002944));
+    background: -moz-linear-gradient(#4BB5F3, #002944);
+    background: -o-linear-gradient(#4BB5F3, #002944);
+    background: linear-gradient(#4BB5F3, #002944);
+    color: White;
+    font-size: 24pt;
+    font-style: italic;
+    left: 8px;
+    padding: 10px 5px;
+    position: absolute;
+    text-align: center;
+    top: 30px;
+    width: 270px;
+}
+
+.vines-top-left
+{
+    left: 9%;
+    position: absolute;
+    top: 9px;
+    z-index: -1;
+}
+
+.content-vines-right
+{
+    right: 8%;
+    position: absolute;
+    top: 80px;
+    z-index: 1;
 }
