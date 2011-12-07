@@ -105,7 +105,7 @@ ul
     height: 22px;
     margin-left: 20px;
     margin-right: 5px;
-    width: 60%;
+    width: 90%;
 }
 
 .footer input[type=submit]
@@ -301,7 +301,7 @@ ul
     min-height: 10px;
     padding: 10px 30px;
     position: relative;
-    width: 70%;
+    width: 60%;
     z-index: 1;
 }
 
@@ -422,20 +422,6 @@ ul
     -moz-border-radius: 10px;
 }
 
-.palm-tree-left
-{
-    bottom: 0;
-    left: 10px;
-    position: absolute;
-}
-
-.palm-tree-right
-{
-    bottom: 0;
-    position: absolute;
-    right: 10px;
-}
-
 .vines-left
 {
     left: -20px;
@@ -463,9 +449,9 @@ ul
 
 .black-vines
 {
-    left: -20px;
+    left: -60px;
     position: absolute;
-    top: -20px;
+    top: -60px;
 }
 
 .black-vines-right
