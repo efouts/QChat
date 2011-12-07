@@ -7,7 +7,7 @@ var waitingRequests = [];
 var send = function send(req, res) {
 	res.writeHead(200);
 	res.end();
-	
+
 	var content = req.body.content;
 	var nickname = req.body.nickname;
 	var timestamp = new Date();
