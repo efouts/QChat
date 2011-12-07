@@ -5,8 +5,8 @@ var chatroom = new room();
 var waitingRequests = [];
 
 var send = function send(request, response) {
-	var content = request.body.content;
-	var nickname = request.body.nickname;
+	var content = escapeHtml(request.body.content);
+	var nickname = escapeHtml(request.body.nickname);
 	var timestamp = new Date();
 
 	var message = chatroom.createMessage(content, nickname, timestamp);
@@ -20,6 +20,15 @@ var send = function send(request, response) {
 
     response.writeHead(200);
     response.end();
+};
+
+var escapeHtml = function htmlEscape(str) {
+    return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 };
 
 var messages = function messages(request, response) {
