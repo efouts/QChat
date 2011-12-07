@@ -12,37 +12,46 @@ function chatClient() {
         this.MessagesPanel = $('#' + messagesPanelId);
         this.MessageTextBox = $('#' + textboxId);
         this.PostMessageButton = $('#' + buttonId);
-	this.NickNameTextBox = $('#' + nicknameId);
+    	this.NickNameTextBox = $('#' + nicknameId);
 	
-	this.NickNameTextBox.change(this.ChangeNickName);        
-	this.PostMessageButton.click(this.PostMessageButtonClick);
+	    this.NickNameTextBox.change(this.ChangeNickName);        
+	    this.PostMessageButton.click(this.PostMessageButtonClick);
+        this.MessageTextBox.keypress(this.onKeyPress);
         this.CheckForMessages();
     }
 
     this.ChangeNickName = function() {
-	Self.NickName = Self.NickNameTextBox.val();
+	    Self.NickName = Self.NickNameTextBox.val();
     }
     
     this.PostMessageButtonClick = function(e) {
         Self.PostMessage();
-        Self.MessageTextBox.val('');
-        Self.MessageTextBox.focus();
+    }
+
+    this.onKeyPress = function(e) {
+        if (e.which == 13 && !e.shiftKey) {
+            Self.PostMessage();
+            e.preventDefault();
+        }
     }
     
     this.PostMessage = function() {
-        $.post('/send', { content: this.MessageTextBox.val(), nickname: this.NickName});   
+        $.post('/send', { content: this.MessageTextBox.val(), nickname: this.NickName});  
+        Self.MessageTextBox.val('');
+        Self.MessageTextBox.focus(); 
     }
     
     this.CheckForMessages = function() {
         var sinceDate = { since: this.LastMessageReceivedDate };
         $.getJSON('/messages', sinceDate, function(messages) {
-            Self.MessageReceived(messages);
+            Self.MessagesReceived(messages);
             Self.CheckForMessages();
         });
     }
     
-    this.MessageReceived = function(messages) {
+    this.MessagesReceived = function(messages) {
         $.each(messages, ParseMessage);
+        Self.MessagesPanel.scrollTop(Self.MessagesPanel[0].scrollHeight);
     }
 
     var ParseMessage = function(index, message) {
