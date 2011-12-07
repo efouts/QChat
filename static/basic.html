@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>QChat</title>
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/basic.css" />
+        <script type="text/javascript" src="scripts/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery-ui-1.8.7.custom.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+        <script type="text/javascript" src="scripts/jquery.sound.js"></script>
+        <script type="text/javascript" src="scripts/client.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var messageField = $('#messageText');                
+                var messagesDiv = $('#messages');
+                var messages = $('#messages ul');
+                var nicknameField = $('#nickname');
+
+                messageField.focus();
+                
+                var client = new chatClient();
+
+                var appendMessage = function appendMessage(message) {
+                    messages.append('<li class="message"><span class="timestamp">' + client.formatTime(message.timestamp) + '</span><span class="nickname">' + message.nickname + '</span><span class="content">' + message.content + '</span></li>');
+                    messagesDiv.scrollTop(messagesDiv[0].scrollHeight);
+                };
+
+                client.initialize(messageField, nicknameField, appendMessage);
+            });
+        </script>
+    </head>
+    <body>
+        <div id="chat">
+            <div id="messages">
+                <ul></ul>    
+            </div>
+            <div id="message">
+                <input id="messageText" type="text" />
+            </div>
+        </div>
+
+        <input id="nickname" type="text" />
+    </body>
+</html>

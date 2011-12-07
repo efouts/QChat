@@ -1,0 +1,91 @@
+html, * 
+{ 
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body 
+{
+    background: #5a8f00;
+}
+
+#chat
+{
+    background: white;
+    background-clip: padding-box;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    border: 8px solid rgba(232, 232, 232, 0.2);
+    margin: 20px auto;
+    padding: 2px;
+    width: 80%;
+}
+
+#messages 
+{
+    height: 400px;
+    overflow-y: scroll;
+    padding-right: 5px;
+}
+
+#chat ul li 
+{
+    background: #f1f1f1;
+    border: solid 2px #e2e2e2;
+    padding: 10px 5px;
+}
+
+#messageText
+{
+    box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
+#chat ul li+ li
+{
+    margin-top: 4px;
+}
+
+#chat ul li span.timestamp
+{
+    font-size: 0.9em;
+    margin-right: 2px;
+}
+
+#chat ul li span.timestamp:before
+{
+    content: '(';
+}
+
+#chat ul li span.timestamp:after
+{
+    content: ')';
+}
+
+#chat ul li span.nickname
+{
+    font-weight: bold;
+    margin-right: 2px;
+}
+
+#chat ul li span.nickname:after
+{
+    content: ':';
+}
+
+#messageText 
+{   
+    display: block; 
+    margin: 10px auto;
+    padding: 10px 5px;
+    width: 97%;
+}
+
+#nickname 
+{
+    display: block;
+    margin: 10px auto;
+    padding: 10px 5px;
+    width: 200px;
+}
