@@ -47,18 +47,35 @@ function chatClient() {
     }
     
     var ParseMessage = function(index, message) {
-            Self.MessagesPanel.append('<div class="bubble bubble-left shadowed"><span class="user">(' + message.timestamp + '): </span><span>' + message.content + '</span></div>');
+            Self.MessagesPanel.append('<div class="bubble bubble-left shadowed"><span class="user">(' + formatTime(message.timestamp) + '): </span><span>' + message.content + '</span></div>');
 
 	    Self.MessagesPanel.append('<div class="avatar-wrapper avatar-wrapper-left"><p>' + message.nickname + '</p></div>');
 
         Self.LastMessageReceivedDate = message.timestamp;        
         Self.LastMessageUser = message.nickname;
     }
-    
-    //this.UserConnected = function() {
-        // Todo add a message to the display to show the user connected    
-        // Todo add a message to the connected users panel.
-    //}
+
+    var formatTime = function(time) {
+        var currentTime = new Date()
+        var hours = currentTime.getHours()
+        var minutes = currentTime.getMinutes()
+
+        var suffix = 'AM';
+      
+        if (hours >= 12) {
+            suffix = 'PM';
+            hours = hours - 12;
+        }
+
+        if (hours == 0) {
+            hours = 12;
+        }
+
+        if (minutes < 10)
+            minutes = '0' + minutes;
+
+        return hours + ':' + minutes + ' ' + suffix;
+    };
 }
 
 var qchat = new chatClient();
