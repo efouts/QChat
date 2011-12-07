@@ -5,33 +5,36 @@ describe('QChat Initialize', function() {
   });
   
   it('Should define MessagesPanel', function() {
-    expect(qchat.MessagesPanel).toBeDefined();  
+    expect(qchat.messagesPanel).toBeDefined();  
   });
   it('Should define Textbox', function() {
-    expect(qchat.MessageTextBox).toBeDefined();  
+    expect(qchat.messageTextBox).toBeDefined();  
   });
   it('Should define Button', function() {
-    expect(qchat.PostMessageButton).toBeDefined();  
+    expect(qchat.postMessageButton).toBeDefined();  
   });
   it('Should create onClick handler for button', function() {
-    expect(qchat.PostMessageButton.click).toBeDefined();
+    expect(qchat.postMessageButton.click).toBeDefined();
   });
   it('Should leave last message received time undefined', function() {
-    expect(qchat.LastMessageReceivedDate).toBeUndefined();
-  })
+    expect(qchat.lastMessageReceivedDate).toBeUndefined();
+  });
+  it('Should leave last message user undefined', function() {
+    expect(qchat.lastMessageUser).toBeUndefined();
+  });
 });
 
 describe('Post Message', function() {
 
   beforeEach(function() {
     qchat.initialize('messages', 'messageTextbox', 'postMessage', 'alias');
-    qchat.MessageTextBox.val('This is a test message');
-    qchat.MessagesPanel.children().empty();
+    qchat.messageTextBox.val('This is a test message');
+    qchat.messagesPanel.children().empty();
   });
   
   it('Should clear textbox value.', function() {    
-    qchat.PostMessageButton.click();
-    expect(qchat.MessageTextBox.val()).toEqual('');
+    qchat.postMessageButton.click();
+    expect(qchat.messageTextBox.val()).toEqual('');
   });
 });
 
@@ -42,23 +45,24 @@ describe('Recieve Message', function() {
   });
     
   it('Should add message to display div', function() {
-    qchat.MessagesPanel.children();
+    qchat.messagesPanel.children();
     
     var fakeMessages = [{nickname : 'Tim', content : 'Send a message', timestamp : new Date()},
                         {nickname : 'Derek', content : 'This is a test message', timestamp : new Date()}];
-    qchat.MessageReceived(fakeMessages);    
-    expect(qchat.MessagesPanel.text()).toContain('This is a test message');
+    qchat.messageReceived(fakeMessages);    
+    expect(qchat.messagesPanel.text()).toContain('Send a message');
+    expect(qchat.messagesPanel.text()).toContain('This is a test message');
   });  
 });
 
 describe('Formatting functions', function() {
 	
-	beforeEach(function() {
+  beforeEach(function() {
       qchat.initialize('messages', 'messageTextbox', 'postMessage', 'alias');
    });
   
-	it('Should format time in 12 hour format.', function() {
-		var formattedDate = qchat.Format12HourTime(new Date(11, 12, 6, 18, 30, 0));
-		expect(formattedDate).toEqual('6:30:00 pm');
-	});
+  it('Should format time in 12 hour format.', function() {
+    var formattedDate = qchat.Format12HourTime(new Date(11, 12, 6, 18, 30, 0));
+    expect(formattedDate).toEqual('6:30:00 pm');
+  });
 });

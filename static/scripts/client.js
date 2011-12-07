@@ -1,91 +1,137 @@
 function chatClient() {
-    var Self = this;
-    this.MessagesPanel = undefined;
-    this.MessageTextBox = undefined;
-    this.PostMessageButton = undefined;
-    this.LastMessageReceivedDate = undefined;
-    this.LastMessageUser = undefined;
-    this.NickNameTextBox = undefined;    
-    this.NickName = 'Test User';
+    var self = this;
+    this.messagesPanel = undefined;
+    this.messageTextBox = undefined;
+    this.postMessageButton = undefined;
+    this.lastMessageReceivedDate = undefined;
+    this.lastMessageUser = undefined;
+    this.nickNameTextBox = undefined;    
+    this.nickName = undefined;
+    
+    var defaultText = "Please type your name into the 'Alias' box above to get started";
 
-    this.initialize = function(messagesPanelId, textboxId, buttonId, nicknameId) {
-        this.MessagesPanel = $('#' + messagesPanelId);
-        this.MessageTextBox = $('#' + textboxId);
-        this.PostMessageButton = $('#' + buttonId);
-	this.NickNameTextBox = $('#' + nicknameId);
+    this.initialize = function initialize(messagesPanelId, textboxId, buttonId, nicknameId) {
+        this.messagesPanel = $('#' + messagesPanelId);
+        this.messageTextBox = $('#' + textboxId);
+        this.postMessageButton = $('#' + buttonId);
+	this.nickNameTextBox = $('#' + nicknameId);
 	
-	this.NickNameTextBox.change(this.ChangeNickName);        
-	this.PostMessageButton.click(this.PostMessageButtonClick);
-        this.CheckForMessages();
+	this.postMessageButton.click(this.postMessageButtonClick);
+	
+	this.nickNameTextBox.keydown(this.nickNameTextBoxKeyDown);
+	this.nickNameTextBox.change(this.changeNickName);
+	this.nickNameTextBox.focusout(this.nickNameTextBoxLostFocus);
+	
+	this.postMessageButton.attr('disabled', true);
+	this.messageTextBox.val(defaultText);
+	// TODO: Add disabled class to textbox and button
+	
+	this.messageTextBox.attr('disabled', true);
+	this.messageTextBox.attr('readOnly', true);
+	this.messageTextBox.click(this.messageTextBoxClick);
+	this.messageTextBox.keydown(this.messageTextBoxKeyDown);
+	
+        this.checkForMessages();
     }
 
-    this.ChangeNickName = function() {
-	Self.NickName = Self.NickNameTextBox.val();
+    this.nickNameTextBoxLostFocus = function nickNameTextBoxLostFocus() {
+	if (self.nickNameTextBox.val() !== '')
+	{
+	    self.nickNameTextBox.attr('disabled', true);
+	    self.nickNameTextBox.attr('readOnly', true);
+	}
     }
     
-    this.PostMessageButtonClick = function(e) {
-        Self.PostMessage();
-        Self.MessageTextBox.val('');
-        Self.MessageTextBox.focus();
+    this.nickNameTextBoxKeyDown = function nickNameTextBoxKeyDown() {
+	if (self.nickNameTextBox.val() !== '')
+	{
+	    self.messageTextBox.val('');
+	    self.messageTextBox.removeAttr('disabled');
+	    self.messageTextBox.removeAttr('readOnly');
+	}
+	else if (self.messageTextBox.val() === '' && self.nickNameTextBox.val() === '')
+	    self.messageTextBox.val(self.defaultText);
     }
     
-    this.PostMessage = function() {
-        $.post('/send', { content: this.MessageTextBox.val(), nickname: this.NickName});   
+    this.changeNickName = function changeNickName() {	    
+	self.nickName = self.nickNameTextBox.val();
     }
     
-    this.CheckForMessages = function() {
-        var sinceDate = { since: this.LastMessageReceivedDate };
+    this.messageTextBoxKeyDown = function messageTextBoxKeyDown() {
+	if (self.messageTextBox.val() === '')
+	    self.postMessageButton.attr('disabled', true);
+	else
+	    self.postMessageButton.removeAttr('disabled');
+    }
+    
+    this.messageTextBoxClick = function messageTextBoxClick() {
+	if (self.messageTextBox.val() === self.defaultText && self.nickNameTextBox.val() !== '')
+	    self.messageTextBox.val('');
+    }
+    
+    this.postMessageButtonClick = function postMessageButtonClick(e) {
+        self.postMessage();
+        self.messageTextBox.val('');
+        self.messageTextBox.focus();
+    }
+    
+    this.postMessage = function postMessage() {
+        $.post('/send', { content: this.messageTextBox.val(), nickname: this.nickName});   
+    }
+    
+    this.checkForMessages = function checkForMessages() {
+        var sinceDate = { since: this.lastMessageReceivedDate };
         $.getJSON('/messages', sinceDate, function(messages) {
-            Self.MessageReceived(messages);
-            Self.CheckForMessages();
+            self.messageReceived(messages);
+            self.checkForMessages();
         });
     }
     
-    this.MessageReceived = function(messages) {
-        $.each(messages, ParseMessage);
+    this.messageReceived = function messageReceived(messages) {
+        $.each(messages, parseMessage);
     }
 
-    var ParseMessage = function(index, message) {
+    var parseMessage = function parseMessage(index, message) {
     	  var messageHtml = message.content.replace(/\n/g, "<br />");
     	  
-        if (Self.LastMessageUser === message.nickname)
+        if (self.lastMessageUser === message.nickname)
         {
-	    var chatBubble = Self.MessagesPanel.children(".bubble").last();
+	    var chatBubble = self.messagesPanel.children(".bubble").last();
 	    chatBubble.append($('<div></div>').addClass('message-divider'));
 				
             chatBubble.append($("<span></span>")
 		.addClass("user")
-		.html("(" + Self.Format12HourTime(new Date(message.timestamp)) + "): "));
+		.html("(" + self.format12HourTime(new Date(message.timestamp)) + "): "));
 	    
 	    chatBubble.append($("<span></span>")
 	    	.html(messageHtml));
         }
         else
         {
-            Self.MessagesPanel.append($('<div></div>')
+            self.messagesPanel.append($('<div></div>')
             	.addClass("bubble shadowed")
             	.append($('<span></span>')
             		.addClass('user')
-            		.append('(' + Self.Format12HourTime(new Date(message.timestamp)) + '): '))
+            		.append('(' + self.format12HourTime(new Date(message.timestamp)) + '): '))
             	.append($('<span></span>')
             	.append(messageHtml)));
             
-            Self.MessagesPanel.append($("<div></div>")
+            self.messagesPanel.append($("<div></div>")
 		.addClass("avatar-wrapper")
 		.append($('<p></p>')
 		    .html(message.nickname)));
 			            
-	    Self.MessagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
-	    Self.MessagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
+	    self.messagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
+	    self.messagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
 			   
-	    Self.MessagesPanel.children('.avatar-wrapper').filter(':even').addClass('avatar-wrapper-left');
-	    Self.MessagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
+	    self.messagesPanel.children('.avatar-wrapper').filter(':even').addClass('avatar-wrapper-left');
+	    self.messagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
         }
-        Self.LastMessageReceivedDate = message.timestamp;
-        Self.LastMessageUser = message.nickname;
+        self.lastMessageReceivedDate = message.timestamp;
+        self.lastMessageUser = message.nickname;
     }
     
-    this.Format12HourTime = function(dateTime){
+    this.format12HourTime = function format12HourTime(dateTime){
 	var hours = dateTime.getHours();
 	var ampm = 'am';
 	if (hours > 12) 
@@ -93,6 +139,9 @@ function chatClient() {
 	    ampm = 'pm';
 	    hours-=12;
 	}
+	if (hours === 0)
+	    hours = 12;
+	    
 	var minutes = dateTime.getMinutes();
 	if (minutes < 10)
 	    minutes = '0' + minutes;
