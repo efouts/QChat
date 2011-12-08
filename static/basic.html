@@ -18,12 +18,12 @@
                 var messages = $('#messages ul');
                 var nicknameField = $('#nickname');
 
-                messageField.focus();
+                nicknameField.focus();
                 
                 var client = new chatClient();
 
                 var appendMessage = function appendMessage(message) {
-                    messages.append('<li class="message"><span class="timestamp">' + client.formatTime(message.timestamp) + '</span><span class="nickname">' + message.nickname + '</span><span class="content">' + message.content + '</span></li>');
+                    messages.append('<li class="message"><span class="timestamp">' + client.formatTime(message.timestamp) + '</span><span class="nickname">' + message.alias + '</span><span class="content">' + message.content + '</span></li>');
                     messagesDiv.scrollTop(messagesDiv[0].scrollHeight);
                 };
 
@@ -37,10 +37,10 @@
                 <ul></ul>    
             </div>
             <div id="message">
-                <input id="messageText" type="text" />
+                <input id="messageText" type="text" tabindex="0" />
             </div>
         </div>
 
-        <input id="nickname" type="text" value="nickname" />
+        <input id="nickname" type="text" value="nickname" tabindex="1" />
     </body>
 </html>

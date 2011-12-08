@@ -74,7 +74,7 @@ function chatClient() {
     }
     
     this.postMessage = function postMessage() {
-        $.post('/send', { content: this.messageTextBox.val(), nickname: this.nickName});   
+        $.post('/send', { content: this.messageTextBox.val(), alias: this.nickName});   
     }
     
     this.checkForMessages = function checkForMessages() {
@@ -93,7 +93,7 @@ function chatClient() {
     var parseMessage = function parseMessage(index, message) {
     	  var messageHtml = message.content.replace(/\n/g, "<br />");
     	  
-        if (self.lastMessageUser === message.nickname)
+        if (self.lastMessageUser === message.alias)
         {
 	    var chatBubble = self.messagesPanel.children(".bubble").last();
 	    chatBubble.append($('<div></div>').addClass('message-divider'));
@@ -118,7 +118,7 @@ function chatClient() {
             self.messagesPanel.append($("<div></div>")
 		.addClass("avatar-wrapper")
 		.append($('<p></p>')
-		    .html(message.nickname)));
+		    .html(message.alias)));
 			            
 	    self.messagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
 	    self.messagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
@@ -127,7 +127,7 @@ function chatClient() {
 	    self.messagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
         }
         self.lastMessageReceivedDate = message.timestamp;
-        self.lastMessageUser = message.nickname;
+        self.lastMessageUser = message.alias;
     }
     
     this.format12HourTime = function format12HourTime(dateTime){

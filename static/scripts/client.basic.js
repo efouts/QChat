@@ -25,7 +25,7 @@ function chatClient() {
         var nickname = self.nicknameTextBox.val();
         var content = self.messageTextBox.val();
 
-        $.post('/send', { content: content, nickname: nickname }, function() {   
+        $.post('/send', { content: content, alias: nickname }, function() {   
             self.messageTextBox.val('').focus();
         });
     }
