@@ -60,9 +60,9 @@ ul
 .page
 {
     height: 80%;
-    margin: 0 10% 0 10%;
+    margin: 0 8% 0 8%;
     padding: 120px 0 0 0;
-    width: 80%;
+    width: 84%;
 }
 
 .footer
@@ -157,6 +157,13 @@ ul
     overflow-x: none;
     overflow-y: none;
     position: relative;
+    width: 85%;
+}
+
+.members-pinned h1,
+.members-pinned ol
+{
+    display: none;
 }
 
 .members ol
@@ -174,12 +181,12 @@ ul
 
 .members ol li p
 {
-    padding: 8px;
-    font-style: normal;
+    border-left: 1px solid #999;
+    color: #333333;
     font-family: Arial;
     font-size: 13px;
-    color: #333333;
-    border-left: 1px solid #999;
+    font-style: normal;
+    padding: 8px;
 }
 
 .members ol li p em
@@ -190,6 +197,7 @@ ul
 .members-header
 {
     background-image: url('../images/gradient-background.gif');
+    min-height: 50px;
     padding-left: 20px;
 }
 
@@ -380,6 +388,13 @@ ul
     border: 8px solid rgba(232, 232, 232, 0.2);
 }
 
+.rotated-ninety
+{
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+}
+
 .rotated-negative-ninety
 {
     -ms-transform: rotate(-90deg);
@@ -406,14 +421,41 @@ ul
     background: -moz-linear-gradient(#4BB5F3, #002944);
     background: -o-linear-gradient(#4BB5F3, #002944);
     background: linear-gradient(#4BB5F3, #002944);
+    /*background: url('../images/horizontal-flag.png') no-repeat;*/
     color: White;
-    font-size: 24pt;
+    font-size: 20pt;
     font-style: italic;
     left: -8px;
-    padding: 10px 5px;
+    padding: 10px 0;
     position: absolute;
     text-align: center;
     /*text-shadow: black 0.1em 0.1em 0.2em;*/
     top: 30px;
-    width: 270px;
+    width: 240px;
+}
+
+.left-header-logo span
+{
+    margin-top: 20px;
+}
+
+.logo
+{
+    color: White;
+    font-style: italic;
+    font-size: 20pt;
+    margin-left: 200px;
+    position: absolute;
+    top: 0;
+}
+
+.vertical-flag
+{
+    background-image: url('../images/vertical-flag.png');
+    background-repeat: no-repeat;   
+    float: left; 
+    height: 102px;
+    padding: 30px 0 0 0;    
+    text-align: center;    
+    width: 70px;
 }

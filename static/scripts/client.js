@@ -18,63 +18,61 @@ function chatClient() {
         this.messagesPanel = $('#' + messagesPanelId);
         this.messageTextBox = $('#' + textboxId);
         this.postMessageButton = $('#' + buttonId);
-	this.nickNameTextBox = $('#' + nicknameId);
+	    this.nickNameTextBox = $('#' + nicknameId);
 	
-	this.postMessageButton.click(this.postMessageButtonClick);
+	    this.postMessageButton.click(this.postMessageButtonClick);
 	
-	this.nickNameTextBox.keydown(this.nickNameTextBoxKeyDown);
-	this.nickNameTextBox.change(this.nickNameTextBoxChanged);
+	    this.nickNameTextBox.keydown(this.nickNameTextBoxKeyDown);
+	    this.nickNameTextBox.change(this.nickNameTextBoxChanged);
 	
-	this.messageTextBox.val(defaultText);	
-	this.messageTextBox.keypress(this.messageTextBoxOnKeyPress);
+	    this.messageTextBox.val(defaultText);	
+	    this.messageTextBox.keypress(this.messageTextBoxOnKeyPress);
         
-	disableMessageTextBox();
-	this.checkForMessages();
+	    disableMessageTextBox();
+	    this.checkForMessages();
     }
    
     this.nickNameTextBoxKeyDown = function nickNameTextBoxKeyDown() {
-	if (self.nickNameTextBox.val() !== '')
-	    enableMessageTextBox();
-	else
-	    disableMessageTextBox();
+	    if (self.nickNameTextBox.val() !== '')
+	        enableMessageTextBox();
+	    else
+	        disableMessageTextBox();
     }
     
     var enableMessageTextBox = function enableMessageTextBox() {
-	self.messageTextBox.removeAttr('disabled');
-	self.messageTextBox.removeAttr('readOnly');
-	self.messageTextBox.val('');
+	    self.messageTextBox.removeAttr('disabled');
+	    self.messageTextBox.removeAttr('readOnly');
+	    self.messageTextBox.val('');
     }
     
     var disableMessageTextBox = function disableMessageTextBox() {
-	self.messageTextBox.attr('disabled', true);
-	self.messageTextBox.attr('readOnly', true);
-	self.messageTextBox.val(defaultText);
+	    self.messageTextBox.attr('disabled', true);
+	    self.messageTextBox.attr('readOnly', true);
+	    self.messageTextBox.val(defaultText);
     }
     
     this.nickNameTextBoxChanged = function nickNameTextBoxChanged() {	    
-	self.nickName = self.nickNameTextBox.val();
+	    self.nickName = self.nickNameTextBox.val();
     }
        
     this.messageTextBoxOnKeyPress = function messageTextBoxOnKeyPress(e) {
         if (e.which == 13 && !e.shiftKey && self.messageTextBox.val() !== '') {
             self.postMessage();
-	    self.messageTextBox.val('');
-	    self.messageTextBox.focus();
             e.preventDefault();
         }
     }
     
     this.postMessageButtonClick = function postMessageButtonClick(e) {
-	if (self.messageTextBox.val() === '')
-	    return;
+	    if (self.messageTextBox.val() === '')
+	        return;
 	
         self.postMessage();
-        self.messageTextBox.val('');
-        self.messageTextBox.focus();
     }
     
     this.postMessage = function postMessage() {
-        $.post('/send', { content: this.messageTextBox.val(), alias: this.nickName});   
+        $.post('/send', { content: this.messageTextBox.val(), alias: this.nickName });
+        self.messageTextBox.val('');
+        self.messageTextBox.focus(); 
     }
     
     this.checkForMessages = function checkForMessages() {
@@ -95,15 +93,15 @@ function chatClient() {
     	  
         if (self.lastMessageUser === message.alias)
         {
-	    var chatBubble = self.messagesPanel.children(".bubble").last();
-	    chatBubble.append($('<div></div>').addClass('message-divider'));
+	        var chatBubble = self.messagesPanel.children(".bubble").last();
+	        chatBubble.append($('<div></div>').addClass('message-divider'));
 				
             chatBubble.append($("<span></span>")
-		.addClass("user")
-		.html("(" + self.format12HourTime(new Date(message.timestamp)) + "): "));
+		        .addClass("user")
+		        .html("(" + self.format12HourTime(new Date(message.timestamp)) + "): "));
 	    
-	    chatBubble.append($("<span></span>")
-	    	.html(messageHtml));
+	        chatBubble.append($("<span></span>")
+	    	    .html(messageHtml));
         }
         else
         {
@@ -116,40 +114,41 @@ function chatClient() {
             	.append(messageHtml)));
             
             self.messagesPanel.append($("<div></div>")
-		.addClass("avatar-wrapper")
-		.append($('<p></p>')
-		    .html(message.alias)));
+		        .addClass("avatar-wrapper")
+		        .append($('<p></p>')
+		            .html(message.alias)));
 			            
-	    self.messagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
-	    self.messagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
+	        self.messagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
+	        self.messagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
 			   
-	    self.messagesPanel.children('.avatar-wrapper').filter(':even').addClass('avatar-wrapper-left');
-	    self.messagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
-        }
+	        self.messagesPanel.children('.avatar-wrapper').filter(':even').addClass('avatar-wrapper-left');
+	        self.messagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
+	    }
+
         self.lastMessageReceivedDate = message.timestamp;
         self.lastMessageUser = message.alias;
     }
     
     this.format12HourTime = function format12HourTime(dateTime){
-	var hours = dateTime.getHours();
-	var ampm = 'am';
-	if (hours > 12) 
-	{
-	    ampm = 'pm';
-	    hours-=12;
-	}
-	if (hours === 0)
-	    hours = 12;
+	    var hours = dateTime.getHours();
+	    var ampm = 'am';
+	    if (hours > 12) 
+	    {
+	        ampm = 'pm';
+	        hours-=12;
+	    }
+	    if (hours === 0)
+	        hours = 12;
 	    
-	var minutes = dateTime.getMinutes();
-	if (minutes < 10)
-	    minutes = '0' + minutes;
+	    var minutes = dateTime.getMinutes();
+	    if (minutes < 10)
+	        minutes = '0' + minutes;
 	
-	var seconds = dateTime.getSeconds();
-	if (seconds < 10)
-	    seconds = '0' + seconds;
+	    var seconds = dateTime.getSeconds();
+	    if (seconds < 10)
+	        seconds = '0' + seconds;
 	    
-	return hours + ':' + minutes + ':' + seconds + ' ' + ampm; 
+	    return hours + ':' + minutes + ':' + seconds + ' ' + ampm; 
     }
     
     //this.UserConnected = function() {
