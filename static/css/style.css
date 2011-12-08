@@ -193,6 +193,12 @@ ul
     padding-left: 20px;
 }
 
+.members-header img
+{
+    float: right;
+    margin: 10px 10px 0 0;
+}
+
 .avatar-wrapper
 {
     height: 50px;
@@ -324,7 +330,7 @@ ul
 
 .alias
 {
-    background-image: url('../Images/bglines.png');
+    background-image: url('../images/bglines.png');
     height: 60px;
     left: 60%;
     margin-top: -8px;
