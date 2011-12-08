@@ -12,8 +12,15 @@
     <script type="text/javascript" src="scripts/main.js"></script>
 </head>
 <body>
-    <div class="left-header-logo shadowed rounded-border">
-        QChat
+    <!--<div class="logo">
+        <div class="vertical-flag">Q</div>
+        <div class="vertical-flag">C</div>
+        <div class="vertical-flag">H</div>
+        <div class="vertical-flag">A</div>
+        <div class="vertical-flag">T</div>
+    </div>-->
+    <div class="left-header-logo rounded-border shadowed">
+        <span>QChat</span>
     </div>
     <div class="left-logo shadowed transparent-border rounded-border rotated-negative-ninety">
         <img alt="QChat" src="images/asideLogo.png" />
@@ -25,55 +32,11 @@
     <div class="page">
         <div class="content shadowed rounded-border">
             <div class="chat-wrapper">
-                <div class="chat" id="chat">
-                    <div class="bubble bubble-left shadowed">
-                        <span class="user">(10:23:00 AM): </span>
-                        <span>This is text that Elliott submitted to the chat.</span>
-                    </div>
-                    <div class="avatar-wrapper avatar-wrapper-left">
-                        <p>Elliott Fouts</p>
-                        <!--<img alt="Avatar" src="images/MarioSMBW.png" />-->
-                    </div>
-                    <div class="bubble bubble-right shadowed">
-                        <span class="user">(10:24:00 AM): </span>
-                        <span>This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                        </span>
-                        <div class="message-divider"></div>
-                        <span class="user">(10:25:00 AM): </span>
-                        <span>This is the second message Keith sent before anyone else responded.</span>
-                    </div>   
-                    <div class="avatar-wrapper avatar-wrapper-right">
-                        <!--<img alt="Avatar" src="images/Luigi.png" />-->
-                        <p>Keith Williams</p>
-                    </div>             
-                    <div class="bubble bubble-left shadowed">
-                        <span class="user">Nick Patel (10:25:00 AM): </span>
-                        <span>Nick responded to Elliott and Keith.</span>
-                    </div>
-                    <div class="avatar-wrapper avatar-wrapper-left">
-                        <img alt="Avatar" src="images/PrincessPeach.png" />
-                    </div>   
-                    <div class="bubble bubble-right shadowed">
-                        <span class="user">Keith Williams (10:26:00 AM): </span>
-                        <span>This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                            This is text that Keith submitted to the chat.  He kept writing and writing until he couldn't keep writing.
-                        </span>
-                    </div>
-                    <div class="avatar-wrapper avatar-wrapper-right">
-                        <img alt="Avatar" src="images/Luigi.png" />
-                    </div> 
-                </div>
+                <div class="chat" id="chat"></div>
             </div>
             <div class="members-wrapper">
                 <div class="members shadowed transparent-border rounded-border" id="members">
-                    <div class="members-header">
+                    <div class="members-header" id="membersHeader">
                         <h1>Members</h1>
                         <img alt="Members" src="images/member.png" />
                     </div>
