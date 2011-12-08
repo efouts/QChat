@@ -1,69 +1,18 @@
 var connect = require('connect'); 
-var room = require('./room.js');
+var chatroom = require('./chatroom.js');
+var messagesController = require('./messagesController.js');
+var aliasesController = require('./aliasesController.js');
 
-var chatroom = new room();
-var waitingRequests = [];
-
-var send = function send(request, response) {
-	var content = escapeHtml(request.body.content);
-	var nickname = escapeHtml(request.body.nickname);
-	var timestamp = new Date();
-
-	var message = chatroom.createMessage(content, nickname, timestamp);
-	chatroom.sendMessage(message);
-
-	while(waitingRequests.length > 0) {
-        var waitingRequest = waitingRequests.pop();
-        var messagesSince = chatroom.getMessages(waitingRequest.since);       
-        writeMessagesToResponse(messagesSince, waitingRequest.response);
-    }
-
-    response.writeHead(200);
-    response.end();
-};
-
-var escapeHtml = function htmlEscape(str) {
-    return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-};
-
-var messages = function messages(request, response) {
-    var since = null;
-    
-    if (request.query.since)
-        since = new Date(request.query.since);
-
-	var messagesSince = chatroom.getMessages(since);
-
-	if (messagesSince.length) 
-		writeMessagesToResponse(messagesSince, response);
-	else
-		waitingRequests.push({ response: response, since: since, timestamp: new Date() });	
-};  
-
-var writeMessagesToResponse = function writeMessagesToResponse(messages, response) {
-	var messageData = JSON.stringify(messages);
-	response.writeHead(200, 'application/json');
-	response.end(messageData);	
-};
-
-var endOldRequests = function endOldRequests() {
-	var now = new Date();
-
-	for(i = 0; i < waitingRequests.length; i++) 
-		if (now - waitingRequests[i].timestamp > 15000)
-			writeMessagesToResponse([], waitingRequests[i].response);	
-};
-
-setInterval(endOldRequests, 15000);
+var _chatroom = new chatroom();
+var _messagesController = new messagesController(_chatroom);
+var _aliasesController = new aliasesController(_chatroom);
 
 var registerRoutes = function registerRoutes(routes) {
-	routes.post('/send', send);
-	routes.get('/messages', messages);
+	routes.post('/send', _messagesController.sendMessage);
+	routes.get('/messages', _messagesController.getMessages);
+    routes.post('/enter', _aliasesController.enter);
+    routes.post('/exit', _aliasesController.exit);
+    routes.post('/alias', _aliasesController.alias);
 };
 
 var server = connect.createServer();
@@ -73,5 +22,3 @@ server.use(connect.router(registerRoutes));
 server.use(connect.static(__dirname + '/static'));
 
 server.listen(8080);
-
-module.exports.httpServer = server;
