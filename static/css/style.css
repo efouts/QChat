@@ -25,7 +25,7 @@ body
 {
     background-color: White;
     background-clip: initial;
-    background-image: url('../images/bglines.png');
+    background-image: url('../images/stylish-background.jpg');
     background-origin: initial;
     background-position-x: 50%;
     background-position-y: 0%;
@@ -65,28 +65,6 @@ ul
     width: 80%;
 }
 
-.header, .footer
-{
-    background-color: #EFEFEF;
-    width: 182px;
-    z-index: 1;
-}
-
-.header
-{
-    background-image: url('../images/gradient-background.gif');
-    height: 44px;
-    margin-left: 5%;
-    margin-top: 30px;
-    padding-left: 10px;
-    position: absolute;
-    top: 0;
-    width: 200px;
-    /*-webkit-transform:rotate(-20deg);
-    -moz-transform:rotate(-20deg); 
-    -ms-transform:rotate(-20deg);*/
-}
-
 .footer
 {
     background-image: url('../images/Footer.png');
@@ -94,6 +72,7 @@ ul
     margin-top: 0px;
     padding-top: 7px;
     width: 100%;
+    z-index: 1;
 }
 
 .footer textarea
@@ -106,7 +85,7 @@ ul
     height: 22px;
     margin-left: 20px;
     margin-right: 5px;
-    width: 90%;
+    width: 60%;
 }
 
 .footer input[type=submit]
@@ -142,9 +121,7 @@ ul
 {
     float: left;
     height: 100%;
-    left: 120px;
-    margin: 0 5%;
-    width: 90%;
+    width: 78%;
 }
 
 .chat
@@ -166,15 +143,15 @@ ul
 
 .members-wrapper
 {
+    float: right;
+    height: 100%;
     max-width: 280px;
-    position: fixed;
-    right: 80%;
-    top: 0;
-    width: 280px;
+    width: 22%;
 }
 
 .members
 {
+    background-image: url('../images/bglines.png');
     height: 100%;
     margin: 10px 20px 0 10px;
     overflow-x: none;
@@ -182,38 +159,30 @@ ul
     position: relative;
 }
 
-.members ol,
-.members ul
+.members ol
 {
-    color: #333333;
+    font-style: italic;
     font-family: Georgia, Times, serif;
     font-size: 24px;
-    font-style: italic;
+    color: #333333;
     margin: 0;
-    padding: 0;
 }
 
-.members ol li,
-.members ul li
+.members ol li
 {
-    background-image: url('../images/wooden-sign-1.png');
-    height: 45px;
-    margin: 0;
-    padding: 0;
 }
 
-.members ol li p,
-.members ul li p
+.members ol li p
 {
-    color: #836752;
+    padding: 8px;
+    font-style: normal;
     font-family: Arial;
     font-size: 13px;
-    font-style: normal;
-    padding: 8px;
+    color: #333333;
+    border-left: 1px solid #999;
 }
 
-.members ol li p em,
-.members ul li p em
+.members ol li p em
 {
     display: block;
 }
@@ -222,6 +191,12 @@ ul
 {
     background-image: url('../images/gradient-background.gif');
     padding-left: 20px;
+}
+
+.members-header img
+{
+    float: right;
+    margin: 10px 10px 0 0;
 }
 
 .avatar-wrapper
@@ -353,23 +328,16 @@ ul
     font-style: italic;
 }
 
-.floating-bubble
-{
-    color: White;
-    position: absolute;
-    z-index: 5;
-}
-
 .alias
 {
-    background-image: url('../images/brushed-alu.png');
+    background-image: url('../images/bglines.png');
     height: 60px;
     left: 60%;
     margin-top: -8px;
     padding-left: 20px;
     position: absolute;
     top: 0;
-    width: 330px;
+    width: 300px;
 }
 
 .alias input[type=text]
@@ -426,53 +394,6 @@ ul
     -moz-border-radius: 10px;
 }
 
-.vines-left
-{
-    left: -20px;
-    position: absolute;
-    top: 30px;
-}
-
-.vines-bottom-left
-{
-    bottom: 10%;
-    height: 97px;
-    left: 30px;
-    position: absolute;
-    width: 75px;
-}
-
-.vines-bottom-right
-{
-    bottom: 10%;
-    height: 97px;
-    position: absolute;
-    right: 30px;
-    width: 75px;
-}
-
-.black-vines
-{
-    left: -60px;
-    position: absolute;
-    top: -60px;
-}
-
-.black-vines-right
-{
-    bottom: 0px;
-    height: 40%;
-    position: absolute;
-    right: 0px;
-    width: 15%;
-}
-
-.alias-vines
-{
-    float: left;
-    margin-top: 5px;
-}
-
 .message-divider
 {
     height: 10px;
@@ -488,26 +409,11 @@ ul
     color: White;
     font-size: 24pt;
     font-style: italic;
-    left: 8px;
+    left: -8px;
     padding: 10px 5px;
     position: absolute;
     text-align: center;
+    /*text-shadow: black 0.1em 0.1em 0.2em;*/
     top: 30px;
     width: 270px;
-}
-
-.vines-top-left
-{
-    left: 9%;
-    position: absolute;
-    top: 9px;
-    z-index: -1;
-}
-
-.content-vines-right
-{
-    right: 8%;
-    position: absolute;
-    top: 80px;
-    z-index: 1;
 }
