@@ -10,8 +10,8 @@ var _aliasesController = new aliasesController(_chatroom);
 var registerRoutes = function registerRoutes(routes) {
 	routes.post('/send', _messagesController.sendMessage);
 	routes.get('/messages', _messagesController.getMessages);
-    routes.post('/enter', _aliasesController.enter);
-    routes.post('/exit', _aliasesController.exit);
+    routes.post('/join', _aliasesController.enter);
+    routes.post('/leave', _aliasesController.exit);
     routes.post('/alias', _aliasesController.alias);
 };
 

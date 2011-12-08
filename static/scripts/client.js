@@ -1,7 +1,3 @@
-// /alias POST { previousAlias, newAlias }
-// /enter POST { alias }
-// /exit POST { alias }
-
 function chatClient() {
     var self = this;
     this.messagesPanel = undefined;
@@ -30,6 +26,10 @@ function chatClient() {
         
 	disableMessageTextBox();
 	this.checkForMessages();
+	
+	$(window).unload(function() {
+	    $.post('/leave', { alias : self.nickName });
+	});
     }
    
     this.nickNameTextBoxKeyDown = function nickNameTextBoxKeyDown() {
@@ -51,10 +51,24 @@ function chatClient() {
 	self.messageTextBox.val(defaultText);
     }
     
-    this.nickNameTextBoxChanged = function nickNameTextBoxChanged() {	    
+    this.nickNameTextBoxChanged = function nickNameTextBoxChanged() {
+	if (self.nickName === undefined)
+	    self.join();
+	else
+	    changeAlias();
+	
 	self.nickName = self.nickNameTextBox.val();
     }
-       
+    
+    this.join = function join() {
+	$.post('/join', { alias : self.nickNameTextBox.val() });   
+    }
+    
+    this.changeAlias = function changeAlias() {
+	var aliasInfo = { previousAlias : self.nickName, newAlias : self.nickNameTextBox.val() };		
+	$.post('/alias', aliasInfo);	
+    }
+    
     this.messageTextBoxOnKeyPress = function messageTextBoxOnKeyPress(e) {
         if (e.which == 13 && !e.shiftKey && self.messageTextBox.val() !== '') {
             self.postMessage();
