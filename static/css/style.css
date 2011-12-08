@@ -413,6 +413,7 @@ ul
     padding: 10px 5px;
     position: absolute;
     text-align: center;
+    /*text-shadow: black 0.1em 0.1em 0.2em;*/
     top: 30px;
     width: 270px;
 }
