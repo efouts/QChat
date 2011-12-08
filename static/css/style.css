@@ -152,12 +152,13 @@ ul
 .members
 {
     background-image: url('../images/bglines.png');
+    float: right;
     height: 100%;
-    margin: 10px 20px 0 10px;
+    margin: 10px 10px 0 2%;
     overflow-x: none;
     overflow-y: none;
     position: relative;
-    width: 85%;
+    width: 90%;
 }
 
 .members-pinned h1,
@@ -197,6 +198,7 @@ ul
 .members-header
 {
     background-image: url('../images/gradient-background.gif');
+    cursor: pointer;
     min-height: 50px;
     padding-left: 20px;
 }
@@ -361,7 +363,7 @@ ul
     margin-left: -79px;
     position: absolute;
     text-align: center;
-    top: 400px;
+    top: 350px;
     width: 182px;
 }
 

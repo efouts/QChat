@@ -26,42 +26,49 @@ function chatKeyPress(event) {
 }
 
 function membersHeaderClick() {
+    var chatWrapper = $("#chatWrapper");
+    var membersWrapper = $("#membersWrapper");
     var members = $("#members");
 
     if (members.hasClass("members-pinned"))
-        unpinMembers(members);
-    else 
-        pinMembers(members);
+        unpinMembers(chatWrapper, membersWrapper, members);
+    else
+        pinMembers(chatWrapper, membersWrapper, members);
 }
 
-function unpinMembers(members) {
+function unpinMembers(chatWrapper, membersWrapper, members) {
+    chatWrapper.css("width", "78%");
+    membersWrapper.css("width", "22%");
+
     members.animate({
-        marginLeft: "10px",
-        marginRight: "20px",
-        width: "85%"
+        width: "90%"
     }, {
-        duration: 500,
+        duration: 400,
         complete: function () {
             $(this).animate({
                 height: "100%"
-            }, 300);
+            }, 200); 
         }
     });
 
     members.removeClass("members-pinned");
 }
 
-function pinMembers(members) {
+function pinMembers(chatWrapper, membersWrapper, members) {
     members.animate({
         height: "50px"
     }, {
-        duration: 300,
+        duration: 200,
         complete: function () {
             $(this).animate({
-                marginLeft: "170px",
-                marginRight: "-160px",
                 width: "55px"
-            }, 500);
+            }, {
+                duration: 400,
+                complete: function () {
+                    membersWrapper.css("width", "10%");
+                    chatWrapper.css("width", "90%");
+                }
+            });
 
             $(this).addClass("members-pinned");
         }
