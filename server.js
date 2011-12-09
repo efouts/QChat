@@ -25,7 +25,7 @@ var _chatController = new chatController(_chatroom, _connectionPool);
 
 var registerRoutes = function registerRoutes(routes) {
 	routes.post('/send', _chatController.send);
-	routes.get('/messages', _chatController.messages);
+	routes.get('/update', _chatController.messages);
     routes.post('/join', _chatController.join);
     routes.post('/leave', _chatController.leave);
     routes.post('/alias', _chatController.alias);
