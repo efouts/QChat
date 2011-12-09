@@ -99,8 +99,11 @@ function chatClient() {
     }
 
     this.dataReceived = function dataReceived(data) {
+        if (!data.messages)
+            return;
+
         $.each(data.messages, parseMessage);
-        self.messagesPanel.scrollTop(self.messagesPanel[0].scrollHeight);
+        self.messagesPanel.scrollTop(self.messagesPanel[0].scrollHeight);        
     }
 
     var parseMessage = function parseMessage(index, message) {
