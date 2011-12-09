@@ -27,6 +27,8 @@ var chatroom = function chatroom() {
 		messages.push(_message);
 
         self.emit('message');
+
+        trimMessages();
 	};	
 
     this.findAllMessages = function findAllMessages() {
@@ -42,6 +44,11 @@ var chatroom = function chatroom() {
 
 		return messagesSince;
 	};
+
+    var trimMessages = function trimMessages() {
+        while(messages.length > 1000)
+            messages.shift();
+    };
 };
 
 util.inherits(chatroom, events.EventEmitter);
