@@ -7,7 +7,7 @@ module.exports.htmlEncode = function htmlEncode(string) {
         .replace(/>/g, '&gt;');
 }; 
 
-module.exports.jsonResponse = function writeMessagesToResponse(data, response) {
+module.exports.jsonResponse = function jsonResponse(data, response) {
     var jsonData = JSON.stringify(data);
     response.writeHead(200, 'application/json');
     response.end(jsonData);	

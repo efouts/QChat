@@ -55,7 +55,7 @@ function chatClient() {
 	if (self.nickName === undefined)
 	    self.join();
 	else
-	    changeAlias();
+	    self.changeAlias();
 	
 	self.nickName = self.nickNameTextBox.val();
     }

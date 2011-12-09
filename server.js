@@ -1,18 +1,34 @@
 var connect = require('connect'); 
+var utils = require('./utilities.js');
+var connectionPool = require('./connectionPool.js');
 var chatroom = require('./chatroom.js');
-var messagesController = require('./messagesController.js');
-var aliasesController = require('./aliasesController.js');
+var chatController = require('./chatController.js');
+var message = require('./message.js');
 
+var _connectionPool = new connectionPool();
 var _chatroom = new chatroom();
-var _messagesController = new messagesController(_chatroom);
-var _aliasesController = new aliasesController(_chatroom);
+
+var onMessage = function onMessage() {
+    _connectionPool.endAll(sendMessagesSince);
+};
+
+var sendMessagesSince = function sendMessagesSince(response, since) {
+    var messages = _chatroom.findMessages(since);
+    var data = { messages: messages };
+    utils.jsonResponse(data, response);
+};
+
+_chatroom.on('message', onMessage);
+_chatroom.sendMessage('Server', 'Room created.', new Date(), message.types.server);
+
+var _chatController = new chatController(_chatroom, _connectionPool);
 
 var registerRoutes = function registerRoutes(routes) {
-	routes.post('/send', _messagesController.sendMessage);
-	routes.get('/messages', _messagesController.getMessages);
-    routes.post('/join', _aliasesController.enter);
-    routes.post('/leave', _aliasesController.exit);
-    routes.post('/alias', _aliasesController.alias);
+	routes.post('/send', _chatController.send);
+	routes.get('/messages', _chatController.messages);
+    routes.post('/join', _chatController.join);
+    routes.post('/leave', _chatController.leave);
+    routes.post('/alias', _chatController.alias);
 };
 
 var server = connect.createServer();
