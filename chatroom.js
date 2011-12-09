@@ -1,13 +1,16 @@
 var chatroom = function chatroom() {
     var self = this;
-	var messages = [];
-	
+    var messages = [];
+
     this.enter = function enter(alias) {
         var message = alias + ' has entered.';
         sendServerMessage(message);
     };
 
     this.exit = function exit(alias) {
+        if (!alias)
+            return;
+             
         var message = alias + ' has exited.';
         sendServerMessage(message);
     };
@@ -17,32 +20,32 @@ var chatroom = function chatroom() {
         sendServerMessage(message);
     };
 
-	this.sendMessage = function sendMessage(alias, message, timestamp) {
+    this.sendMessage = function sendMessage(alias, message, timestamp) {
         var message = createMessage(alias, message, timestamp);
-		messages.push(message);
-	};	
+        messages.push(message);
+    };
 
-	this.getMessages = function getMessages(since) {
-		if (since == undefined)			
-			return messages;
-		
-		var messagesSince = [];
+    this.getMessages = function getMessages(since) {
+        if (since == undefined)
+            return messages;
 
-		for(i = 0; i < messages.length; i++)
-			if (messages[i].timestamp > since)
-				messagesSince.push(messages[i]);
+        var messagesSince = [];
 
-		return messagesSince;
-	};
+        for (i = 0; i < messages.length; i++)
+            if (messages[i].timestamp > since)
+                messagesSince.push(messages[i]);
+
+        return messagesSince;
+    };
 
     var sendServerMessage = function sendServerMessage(message) {
         var timestamp = new Date();
         self.sendMessage('Server', message, timestamp);
     };
 
-	var createMessage = function createMessage(alias, content, timestamp) {
-		return { alias: alias, content: content, timestamp: timestamp };
-	};
+    var createMessage = function createMessage(alias, content, timestamp) {
+        return { alias: alias, content: content, timestamp: timestamp };
+    };
 };
 
 module.exports = chatroom;
