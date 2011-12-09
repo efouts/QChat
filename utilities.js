@@ -17,3 +17,8 @@ module.exports.emptyResponse = function emptyResponse(response) {
     response.writeHead(200);
     response.end();
 };
+
+module.exports.forbiddenResponse = function forbiddenResponse(response) {
+    response.writeHead(403);
+    response.end();
+};

@@ -26,9 +26,10 @@ function chatClient() {
         
 	disableMessageTextBox();
 	this.checkForMessages();
-	
-	$(window).unload(function() {
-	    $.post('/leave', { alias : self.nickName });
+
+	$(window).unload(function () {
+        if (self.nickName)
+	        $.post('/leave', { alias : self.nickName });
 	});
     }
    

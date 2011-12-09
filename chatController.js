@@ -1,7 +1,7 @@
 var utils = require('./utilities.js');
 var message = require('./message.js');
 
-var chatController = function chatController(chatroom, connectionPool) {   
+var chatController = function chatController(chatroom, connectionPool) {
     this.join = function join(request, response) {
         var alias = utils.htmlEncode(request.body.alias);
         chatroom.join(alias);
@@ -9,7 +9,11 @@ var chatController = function chatController(chatroom, connectionPool) {
     };
 
     this.leave = function leave(request, response) {
+        if (!request.body.alias)
+            utils.forbiddenResponse(response);
+
         var alias = utils.htmlEncode(request.body.alias);
+
         chatroom.leave(alias);
         utils.emptyResponse(response);
     };
@@ -26,8 +30,8 @@ var chatController = function chatController(chatroom, connectionPool) {
         var alias = utils.htmlEncode(request.body.alias);
         var timestamp = new Date();
         chatroom.sendMessage(alias, content, timestamp, message.types.user);
-        utils.emptyResponse(response);       
-    };    
+        utils.emptyResponse(response);
+    };
 
     this.messages = function messages(request, response) {
         var messages = null;
@@ -45,7 +49,7 @@ var chatController = function chatController(chatroom, connectionPool) {
         } else {
             connectionPool.add(response, since);
         }
-    };     
+    };
 };
 
 module.exports = chatController;
