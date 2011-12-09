@@ -14,7 +14,8 @@ var onMessage = function onMessage() {
 
 var sendMessagesSince = function sendMessagesSince(response, since) {
     var messages = _chatroom.findMessages(since);
-    utils.jsonResponse(messages, response);
+    var data = { messages: messages };
+    utils.jsonResponse(data, response);
 };
 
 _chatroom.on('message', onMessage);
