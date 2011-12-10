@@ -19,13 +19,9 @@ function displayContinuedMessage(message) {
     var messageHtml = message.content.replace(/\n/g, '<br />');
     var chatBubble = $('#chat').children('.bubble').last();
     
-    chatBubble.append($('<div class="message-divider"></div>'));
-        
-    chatBubble.append($('<span class="user"></span>')
-        .html('(' + format12HourTime(new Date(message.timestamp)) + '): '));
-
-    chatBubble.append($("<span></span>")
-        .html(messageHtml));
+    chatBubble.append($('<div class="message-divider"></div>'));        
+    chatBubble.append($('<span class="user">(' + format12HourTime(new Date(message.timestamp)) + '): </span>'));
+    chatBubble.append($('<span>' + messageHtml + '</span>'));
 }
 
 function displayNewMessage(message) {
@@ -92,7 +88,7 @@ function membersHeaderClick() {
     var membersWrapper = $('#membersWrapper');
     var members = $('#members');
 
-    if (members.hasClass("members-pinned"))
+    if (members.hasClass('members-pinned'))
         maximizeMembers(chatWrapper, membersWrapper, members);
     else
         minimizeMembers(chatWrapper, membersWrapper, members);
