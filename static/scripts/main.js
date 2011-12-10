@@ -6,8 +6,9 @@ $(document).ready(function () {
     var sendButton = $('#sendButton');    
     var alias = $('#alias');
     var membersHeader = $('#membersHeader');
+    var members = $('#members');
 
-    client.initialize(chat, messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage);
+    client.initialize(chat, messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay);
 
     alias.focus();
     chat.mousewheel(chatMouseWheel);
@@ -19,21 +20,12 @@ function displayContinuedMessage(message) {
     var messageHtml = message.content.replace(/\n/g, '<br />');
     var chatBubble = $('#chat').children('.bubble').last();
     
-    chatBubble.append($('<div class="message-divider"></div>'));
-        
-    chatBubble.append($('<span class="user"></span>')
-        .html('(' + format12HourTime(new Date(message.timestamp)) + '): '));
-
-    chatBubble.append($("<span></span>")
-        .html(messageHtml));
+    chatBubble.append($('<div class="message-divider"></div>'));        
+    chatBubble.append($(getInnerMessageHtml(message)));
 }
 
 function displayNewMessage(message) {
-    var messageHtml = message.content.replace(/\n/g, '<br />');
-    var chat = $('#chat');
-    var newMessage = $('<div class="shadowed bubble"><span class="user">' + 
-        '(' + format12HourTime(new Date(message.timestamp)) + '): ' + '</span><span>' + messageHtml + '</span></div>');
-        
+    var newMessage = $('<div class="shadowed bubble">' + getInnerMessageHtml(message) + '</div>');        
     var newAvatarWrapper = $('<div class="avatar-wrapper"><p>' + message.alias + '</p></div>');
         
     if (message.alias == client.alias) {
@@ -45,8 +37,17 @@ function displayNewMessage(message) {
         newAvatarWrapper.addClass('avatar-wrapper-left');
     }
     
+    var chat = $('#chat');
+    
     chat.append(newMessage);    
     chat.append(newAvatarWrapper);
+}
+
+function getInnerMessageHtml(data) {
+    var timestamp = format12HourTime(new Date(data.timestamp));
+    var messageHtml = data.content.replace(/\n/g, '<br />');
+    
+    return '<span class="timestamp">(' + timestamp + '): </span><span>' + messageHtml + '</span>';
 }
 
 function format12HourTime(dateTime){
@@ -73,6 +74,23 @@ function format12HourTime(dateTime){
     return hours + ':' + minutes + ':' + seconds + ' ' + ampm; 
 }
 
+function displayNewMember(data) {
+    var membersList = $('#members ol');
+    membersList.append($('<li data="' + data.alias + '"><p><em>' + data.alias + '</em></p></li>'));
+}
+
+function removeMemberFromDisplay(data) {
+    $('#members ol li[data="' + data.alias + '"]').remove();
+}
+
+function updateMemberInDisplay(data) {
+    var memberListItem = $('#members ol li[data="' + data.previousAlias + '"]');
+    var memberText = memberListItem.children('p').children('em');
+    
+    memberListItem.attr('data', data.newAlias);
+    memberText.html(data.newAlias);
+}
+
 function chatMouseWheel(event, delta, deltaX, deltaY) {
     var chat = $("#chat");
 
@@ -80,7 +98,6 @@ function chatMouseWheel(event, delta, deltaX, deltaY) {
 }
 
 function chatKeyPress(event) {
-    alert(event.which);
     if (event.which == 40)
         chatMouseWheel(null, -1, 0, -1);
     else if (event.which == 38)
@@ -92,7 +109,7 @@ function membersHeaderClick() {
     var membersWrapper = $('#membersWrapper');
     var members = $('#members');
 
-    if (members.hasClass("members-pinned"))
+    if (members.hasClass('members-pinned'))
         maximizeMembers(chatWrapper, membersWrapper, members);
     else
         minimizeMembers(chatWrapper, membersWrapper, members);
