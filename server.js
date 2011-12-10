@@ -13,19 +13,18 @@ var onMessage = function onMessage() {
 };
 
 var sendMessagesSince = function sendMessagesSince(response, since) {
-    var messages = _chatroom.findMessages(since);
-    var data = { messages: messages };
-    utils.jsonResponse(data, response);
+    var activity = _chatroom.findActivity(since);
+    utils.jsonResponse(activity, response);
 };
 
-_chatroom.on('message', onMessage);
+_chatroom.on('activity', onMessage);
 _chatroom.sendMessage('Server', 'Room created.', new Date(), message.types.server);
 
 var _chatController = new chatController(_chatroom, _connectionPool);
 
 var registerRoutes = function registerRoutes(routes) {
 	routes.post('/send', _chatController.send);
-	routes.get('/update', _chatController.messages);
+	routes.get('/update', _chatController.update);
     routes.post('/join', _chatController.join);
     routes.post('/leave', _chatController.leave);
     routes.post('/alias', _chatController.alias);
