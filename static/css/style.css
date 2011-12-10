@@ -155,8 +155,7 @@ ul
     float: right;
     height: 100%;
     margin: 10px 10px 0 2%;
-    overflow-x: none;
-    overflow-y: none;
+    overflow: hidden;
     position: relative;
     width: 90%;
 }
@@ -332,7 +331,7 @@ ul
     right: 50px;
 }
 
-.user
+.timestamp
 {
     color: Black;
     font-style: italic;

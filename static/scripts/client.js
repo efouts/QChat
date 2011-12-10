@@ -9,16 +9,23 @@ function chatClient() {
     this.alias = undefined;
     this.displayContinuedMessage;
     this.displayNewMessage;
+    this.displayNewMember;
+    this.removeMemberFromDisplay;
+    this.updateMemberInDisplay;
     
     var defaultText = "Please type your name into the 'Alias' box above to get started";
 
-    this.initialize = function initialize(messagesPanel, messageTextBox, postMessageButton, aliasTextBox, displayContinuedMessage, displayNewMessage) {
+    this.initialize = function initialize(messagesPanel, messageTextBox, postMessageButton, aliasTextBox, displayContinuedMessage, 
+        displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay) {
         this.messagesPanel = messagesPanel;
         this.messageTextBox = messageTextBox;
         this.postMessageButton = postMessageButton;
 	    this.aliasTextBox = aliasTextBox;
         this.displayContinuedMessage = displayContinuedMessage;
         this.displayNewMessage = displayNewMessage;
+        this.displayNewMember = displayNewMember;
+        this.removeMemberFromDisplay = removeMemberFromDisplay;
+        this.updateMemberInDisplay = updateMemberInDisplay;
 	
 	    this.postMessageButton.click(this.postMessageButtonClick);
 	
@@ -108,24 +115,30 @@ function chatClient() {
         if (!data.length)
             return;
 
-        $.each(data, parseMessage);
+        $.each(data, parseData);
         self.messagesPanel.scrollTop(self.messagesPanel[0].scrollHeight);        
     }
 
-    var parseMessage = function parseMessage(index, message) {
-        self.lastMessageReceivedDate = message.timestamp;
+    var parseData = function parseData(index, data) {
+        self.lastMessageReceivedDate = data.timestamp;
     
-        if (message.type != 'message')
-            return;
-
-        var messageHtml = message.content.replace(/\n/g, "<br />");
-    	  
-        if (self.lastMessageUser === message.alias)
-            self.displayContinuedMessage(message);
-        else
-            self.displayNewMessage(message);
-
-        self.lastMessageUser = message.alias;
+        if (data.type == 'join') {
+            self.displayNewMember(data);
+        }
+        else if (data.type == 'leave') {
+            self.removeMemberFromDisplay(data);
+        }
+        else if (data.type == 'alias') {
+            self.updateMemberInDisplay(data);
+        }
+        else {        
+            if (self.lastMessageUser === data.alias)
+                self.displayContinuedMessage(data);
+            else
+                self.displayNewMessage(data);
+                
+            self.lastMessageUser = data.alias;
+        }
     }
 }
 
