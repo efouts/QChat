@@ -1,7 +1,7 @@
 var utils = require('./utilities.js');
 var message = require('./message.js');
 
-var chatController = function chatController(chatroom, connectionPool) {
+var chatController = function chatController(chatroom, connectionPool, messageFormatters) {
     this.join = function join(request, response) {
         var alias = utils.htmlEncode(request.body.alias);
         chatroom.join(alias);
@@ -28,6 +28,10 @@ var chatController = function chatController(chatroom, connectionPool) {
     this.send = function send(request, response) {
         var content = utils.htmlEncode(request.body.content);
         var alias = utils.htmlEncode(request.body.alias);
+
+        for(i = 0; i < messageFormatters.length; i++)
+            content = messageFormatters[i].format(content);
+
         chatroom.sendMessage(alias, content);
         utils.emptyResponse(response);
     };
