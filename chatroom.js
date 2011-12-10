@@ -6,6 +6,7 @@ var chatroom = function chatroom() {
     events.EventEmitter.call(this);
     var self = this;
     var activity = [];
+    var messageCount = 0;
 
     this.join = function join(alias) {
         var action = { type: 'join', alias: alias};
@@ -25,6 +26,11 @@ var chatroom = function chatroom() {
     this.sendMessage = function sendMessage(alias, content) {
         var action = { type: 'message', alias: alias, content: content };
         addActivity(action);
+
+        if (messageCount === 1000)
+            trimOldestMessage();
+        else 
+            messageCount++;
     };
 
     var addActivity = function addActivity(action) {
@@ -47,9 +53,13 @@ var chatroom = function chatroom() {
         return activitySince;
     };
 
-    var trimMessages = function trimMessages() {
-        //while(messages.length > 1000)
-            //messages.shift();
+    var trimOldestMessage = function trimOldestMessage() {
+        for (i = 0; i < activity.length; i++) {
+            if (activity[i].type === 'message') {
+                activity.splice(i, 1);
+                break;
+            }
+        }
     };
 };
 
