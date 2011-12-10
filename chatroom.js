@@ -5,52 +5,51 @@ var message = require('./message.js');
 var chatroom = function chatroom() {
     events.EventEmitter.call(this);
     var self = this;
-    var messages = [];
+    var activity = [];
 
     this.join = function join(alias) {
-        var content = alias + ' has joined.';
-        self.sendMessage('Server', content, new Date(), message.types.join);
+        var action = { type: 'join', alias: alias};
+        addActivity(action);    
     };
 
     this.leave = function leave(alias) {
-        if (!alias)
-            return;
-            
-        var content = alias + ' has left.';
-        self.sendMessage('Server', content, new Date(), message.types.leave);             
+        var action = { type: 'leave', alias: alias };
+        addActivity(action);
     };
 
     this.changeAlias = function changeAlias(previousAlias, newAlias) {
-        var content = previousAlias + ' is now ' + newAlias + '.';
-        self.sendMessage('Server', content, new Date(), message.types.alias);
+        var action = { type: 'alias', previousAlias: previousAlias, newAlias: newAlias };
+        addActivity(action);
     };
 
-    this.sendMessage = function sendMessage(alias, content, timestamp, type) {
-        var _message = message.create(alias, content, timestamp, type);
-		messages.push(_message);
-
-        self.emit('message');
-
-        trimMessages();
+    this.sendMessage = function sendMessage(alias, content) {
+        var action = { type: 'message', alias: alias, content: content };
+        addActivity(action);
     };
 
-    this.findAllMessages = function findAllMessages() {
-        return messages;
+    var addActivity = function addActivity(action) {
+        action.timestamp = new Date();
+        activity.push(action);
+        self.emit('activity');
     };
 
-    this.findMessages = function findMessages(since) {
-        var messagesSince = [];
-        var messageIndex = messages.length - 1;
+    this.findAllActivity = function findAllActivity() {
+        return activity;
+    };
 
-        while (messages[messageIndex].timestamp > since && messageIndex >= 0)
-            messagesSince.unshift(messages[messageIndex--]);        
+    this.findActivity = function findActivity(since) {
+        var activitySince = [];
+        var i = activity.length - 1;
 
-        return messagesSince;
+        while (activity[i].timestamp > since && i >= 0)
+            activitySince.unshift(activity[i--]);        
+
+        return activitySince;
     };
 
     var trimMessages = function trimMessages() {
-        while(messages.length > 1000)
-            messages.shift();
+        //while(messages.length > 1000)
+            //messages.shift();
     };
 };
 

@@ -28,27 +28,24 @@ var chatController = function chatController(chatroom, connectionPool) {
     this.send = function send(request, response) {
         var content = utils.htmlEncode(request.body.content);
         var alias = utils.htmlEncode(request.body.alias);
-        var timestamp = new Date();
-        chatroom.sendMessage(alias, content, timestamp, message.types.user);
+        chatroom.sendMessage(alias, content);
         utils.emptyResponse(response);
     };
 
-    this.messages = function messages(request, response) {
-        var messages = null;
+    this.update = function update(request, response) {
+        var activity = null;
 
         if (request.query.since === undefined) {
-            messages = chatroom.findAllMessages();
+            activity = chatroom.findAllActivity();
         } else {
             var since = new Date(request.query.since);
-            messages = chatroom.findMessages(since);
+            activity = chatroom.findActivity(since);
         }
 
-        if (messages.length) {
-            var data = { messages: messages };
-            utils.jsonResponse(data, response);
-        } else {
+        if (activity.length)
+            utils.jsonResponse(activity, response);
+        else 
             connectionPool.add(response, since);
-        }
     };
 };
 
