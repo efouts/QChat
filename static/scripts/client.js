@@ -105,14 +105,19 @@ function chatClient() {
     }
 
     this.dataReceived = function dataReceived(data) {
-        if (!data.messages)
+        if (!data.length)
             return;
 
-        $.each(data.messages, parseMessage);
+        $.each(data, parseMessage);
         self.messagesPanel.scrollTop(self.messagesPanel[0].scrollHeight);        
     }
 
     var parseMessage = function parseMessage(index, message) {
+        self.lastMessageReceivedDate = message.timestamp;
+    
+        if (message.type != 'message')
+            return;
+
         var messageHtml = message.content.replace(/\n/g, "<br />");
     	  
         if (self.lastMessageUser === message.alias)
@@ -120,7 +125,6 @@ function chatClient() {
         else
             self.displayNewMessage(message);
 
-        self.lastMessageReceivedDate = message.timestamp;
         self.lastMessageUser = message.alias;
     }
 }
