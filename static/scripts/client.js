@@ -5,21 +5,25 @@ function chatClient() {
     this.postMessageButton = undefined;
     this.lastMessageReceivedDate = undefined;
     this.lastMessageUser = undefined;
-    this.nickNameTextBox = undefined;    
-    this.nickName = undefined;
+    this.aliasTextBox = undefined;    
+    this.alias = undefined;
+    this.displayContinuedMessage;
+    this.displayNewMessage;
     
     var defaultText = "Please type your name into the 'Alias' box above to get started";
 
-    this.initialize = function initialize(messagesPanelId, textboxId, buttonId, nicknameId) {
-        this.messagesPanel = $('#' + messagesPanelId);
-        this.messageTextBox = $('#' + textboxId);
-        this.postMessageButton = $('#' + buttonId);
-	    this.nickNameTextBox = $('#' + nicknameId);
+    this.initialize = function initialize(messagesPanel, messageTextBox, postMessageButton, aliasTextBox, displayContinuedMessage, displayNewMessage) {
+        this.messagesPanel = messagesPanel;
+        this.messageTextBox = messageTextBox;
+        this.postMessageButton = postMessageButton;
+	    this.aliasTextBox = aliasTextBox;
+        this.displayContinuedMessage = displayContinuedMessage;
+        this.displayNewMessage = displayNewMessage;
 	
 	    this.postMessageButton.click(this.postMessageButtonClick);
 	
-	    this.nickNameTextBox.keydown(this.nickNameTextBoxKeyDown);
-	    this.nickNameTextBox.change(this.nickNameTextBoxChanged);
+	    this.aliasTextBox.keydown(this.aliasTextBoxKeyDown);
+	    this.aliasTextBox.change(this.aliasTextBoxChanged);
 	
 	    this.messageTextBox.val(defaultText);	
 	    this.messageTextBox.keypress(this.messageTextBoxOnKeyPress);
@@ -28,13 +32,13 @@ function chatClient() {
 	    this.update();
 
 	    $(window).unload(function () {
-            if (self.nickName)
-	            $.post('/leave', { alias : self.nickName });
+            if (self.alias)
+	            $.post('/leave', { alias : self.alias });
 	    });
     }
    
-    this.nickNameTextBoxKeyDown = function nickNameTextBoxKeyDown() {
-	    if (self.nickNameTextBox.val() !== '')
+    this.aliasTextBoxKeyDown = function aliasTextBoxKeyDown() {
+	    if (self.aliasTextBox.val() !== '')
 	        enableMessageTextBox();
 	    else
 	        disableMessageTextBox();
@@ -52,27 +56,29 @@ function chatClient() {
 	    self.messageTextBox.val(defaultText);
     }
     
-    this.nickNameTextBoxChanged = function nickNameTextBoxChanged() {
-	    if (self.nickName === undefined)
+    this.aliasTextBoxChanged = function aliasTextBoxChanged() {
+	    if (self.alias === undefined)
 	        self.join();
 	    else
 	        self.changeAlias();
 	
-	    self.nickName = self.nickNameTextBox.val();
+	    self.alias = self.aliasTextBox.val();
     }
     
     this.join = function join() {
-	    $.post('/join', { alias : self.nickNameTextBox.val() });   
+	    $.post('/join', { alias : self.aliasTextBox.val() });   
     }
     
     this.changeAlias = function changeAlias() {
-	    var aliasInfo = { previousAlias : self.nickName, newAlias : self.nickNameTextBox.val() };		
+	    var aliasInfo = { previousAlias : self.alias, newAlias : self.aliasTextBox.val() };		
 	    $.post('/alias', aliasInfo);	
     }
     
     this.messageTextBoxOnKeyPress = function messageTextBoxOnKeyPress(e) {
-        if (e.which == 13 && !e.shiftKey && self.messageTextBox.val() !== '') {
-            self.postMessage();
+        if (e.which == 13 && !e.shiftKey) {
+            if (self.messageTextBox.val() !== '')
+                self.postMessage();
+                
             e.preventDefault();
         }
     }
@@ -85,7 +91,7 @@ function chatClient() {
     }
     
     this.postMessage = function postMessage() {
-        $.post('/send', { content: this.messageTextBox.val(), alias: this.nickName }); 
+        $.post('/send', { content: this.messageTextBox.val(), alias: this.alias }); 
         self.messageTextBox.val('');
         self.messageTextBox.focus();
     }
@@ -110,64 +116,12 @@ function chatClient() {
         var messageHtml = message.content.replace(/\n/g, "<br />");
     	  
         if (self.lastMessageUser === message.alias)
-        {
-	        var chatBubble = self.messagesPanel.children(".bubble").last();
-	        chatBubble.append($('<div></div>')
-                .addClass('message-divider'));
-				
-            chatBubble.append($("<span></span>")
-		        .addClass("user")
-		        .html("(" + self.format12HourTime(new Date(message.timestamp)) + "): "));
-	    
-	        chatBubble.append($("<span></span>")
-	    	    .html(messageHtml));
-        }
+            self.displayContinuedMessage(message);
         else
-        {
-            self.messagesPanel.append($('<div></div>')
-            	.addClass("bubble shadowed")
-            	.append($('<span></span>')
-            		.addClass('user')
-            		.append('(' + self.format12HourTime(new Date(message.timestamp)) + '): '))
-            	.append($('<span></span>')
-            	.append(messageHtml)));
-            
-            self.messagesPanel.append($("<div></div>")
-		        .addClass("avatar-wrapper")
-		        .append($('<p></p>')
-		        .html(message.alias)));
-			            
-	        self.messagesPanel.children('.bubble').filter(':even').addClass('bubble-left');
-	        self.messagesPanel.children('.bubble').filter(':odd').addClass('bubble-right');
-			   
-	        self.messagesPanel.children('.avatar-wrapper').filter(':even').addClass('avatar-wrapper-left');
-	        self.messagesPanel.children('.avatar-wrapper').filter(':odd').addClass('avatar-wrapper-right');
-	    }
+            self.displayNewMessage(message);
 
         self.lastMessageReceivedDate = message.timestamp;
         self.lastMessageUser = message.alias;
-    }
-    
-    this.format12HourTime = function format12HourTime(dateTime){
-	    var hours = dateTime.getHours();
-	    var ampm = 'am';
-	    if (hours > 12) 
-	    {
-	        ampm = 'pm';
-	        hours-=12;
-	    }
-	    if (hours === 0)
-	        hours = 12;
-	    
-	    var minutes = dateTime.getMinutes();
-	    if (minutes < 10)
-	        minutes = '0' + minutes;
-	
-	    var seconds = dateTime.getSeconds();
-	    if (seconds < 10)
-	        seconds = '0' + seconds;
-	    
-	    return hours + ':' + minutes + ':' + seconds + ' ' + ampm; 
     }
 }
 
