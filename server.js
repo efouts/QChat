@@ -18,7 +18,7 @@ var sendMessagesSince = function sendMessagesSince(response, since) {
 };
 
 _chatroom.on('activity', onMessage);
-//_chatroom.sendMessage('Server', 'Room created.', new Date(), message.types.server);
+_chatroom.sendMessage('Server', 'Room created.', new Date(), message.types.server);
 
 var _plugins = new plugins();
 var formatters = _plugins.load();
