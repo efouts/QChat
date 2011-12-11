@@ -11,9 +11,9 @@ $(document).ready(function () {
     client.initialize(chat, messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay);
 
     alias.focus();
-    chat.mousewheel(chatMouseWheel);
-    chat.keypress(chatKeyPress);
+    chat.mousewheel(scrollChat);
     membersHeader.click(membersHeaderClick);
+    $(window).keydown(windowKeyDown);
 });
 
 function displayContinuedMessage(message) {
@@ -91,17 +91,17 @@ function updateMemberInDisplay(data) {
     memberText.html(data.newAlias);
 }
 
-function chatMouseWheel(event, delta, deltaX, deltaY) {
+function scrollChat(event, delta, deltaX, deltaY) {
     var chat = $("#chat");
 
     chat.scrollTop(chat.scrollTop() - (deltaY * 200));
 }
 
-function chatKeyPress(event) {
+function windowKeyDown(event) {
     if (event.which == 40)
-        chatMouseWheel(null, -1, 0, -1);
+        scrollChat(null, -1, 0, -1);
     else if (event.which == 38)
-        chatMouseWheel(null, 1, 0, 1);
+        scrollChat(null, 1, 0, 1);
 }
 
 function membersHeaderClick() {
