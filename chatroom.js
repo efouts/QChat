@@ -1,6 +1,5 @@
 var events = require('events');
 var util = require('util');
-var message = require('./message.js');
 
 var chatroom = function chatroom() {
     events.EventEmitter.call(this);

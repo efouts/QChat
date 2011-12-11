@@ -1,5 +1,4 @@
 var utils = require('./utilities.js');
-var message = require('./message.js');
 
 var chatController = function chatController(chatroom, connectionPool, messageFormatters) {
     this.join = function join(request, response) {
