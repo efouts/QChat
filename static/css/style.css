@@ -67,7 +67,7 @@ ul
 
 .footer
 {
-    background-image: url('../images/Footer.png');
+    background-image: url('../images/footer.png');
     height: 37px;
     margin-top: 0px;
     padding-top: 7px;
@@ -151,7 +151,7 @@ ul
 
 .members
 {
-    background-image: url('../images/bglines.png');
+    background-image: url('../images/background-lines.png');
     float: right;
     height: 100%;
     margin: 10px 10px 0 2%;
@@ -293,21 +293,6 @@ ul
     z-index: 1;
 }
 
-.message-left
-{
-    float: left;
-}
-
-.message-right
-{
-    float: right;
-}
-
-.message + div
-{
-    clear: both;
-}
-
 .message:after
 {
     border-style: solid;
@@ -319,10 +304,30 @@ ul
     width: 0;
 }
 
+.message a
+{
+    color: White;
+}
+
+.message + div
+{
+    clear: both;
+}
+
+.message-left
+{
+    float: left;
+}
+
 .message-left:after
 {
     border-width: 0 0 30px 20px;
     left: 50px;
+}
+
+.message-right
+{
+    float: right;
 }
 
 .message-right:after
@@ -339,7 +344,7 @@ ul
 
 .alias
 {
-    background-image: url('../images/bglines.png');
+    background-image: url('../images/background-lines.png');
     height: 60px;
     left: 60%;
     margin-top: -8px;
