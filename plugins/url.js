@@ -1,12 +1,17 @@
-var url = function url() {
-    this.format = function format(content) {
+var urlPlugin = function urlPlugin() {
+    this.apply = function apply(action) {
+        if (action.type !== 'message')
+            return action;
+
         var urlRegex = /((?:http|https):\/\/[a-z0-9\/\?=_#&%~-]+(\.[a-z0-9\/\?=_#&%~-]+)+)|(www(\.[a-z0-9\/\?=_#&%~-]+){2,})/gi;
-        return content.replace(urlRegex, replace);
+        action.content = action.content.replace(urlRegex, replaceUrl);
+
+        return action;
     };
 
-    var replace = function replace(str, group1) {        
-        return '<a href="' + group1 + '" target="_blank">' + group1 + '</a>';
+    var replaceUrl = function replaceUrl(match, backReference1) {
+        return '<a href="' + backReference1 + '" target="_blank">' + backReference1 + '</a>';
     };
 };
 
-module.exports = url;
+module.exports = urlPlugin;

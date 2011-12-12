@@ -1,7 +1,7 @@
 var events = require('events');
 var util = require('util');
 
-var chatroom = function chatroom() {
+var chatroom = function chatroom(plugins) {
     events.EventEmitter.call(this);
     var self = this;
     var activity = [];
@@ -32,14 +32,8 @@ var chatroom = function chatroom() {
             messageCount++;
     };
 
-    var addActivity = function addActivity(action) {
-        action.timestamp = new Date();
-        activity.push(action);
-        self.emit('activity');
-    };
-
-    this.findAllActivity = function findAllActivity() {
-        return activity;
+    this.findAllActivity = function findAllActivity() {        
+        return activity.map(applyPlugins);
     };
 
     this.findActivity = function findActivity(since) {
@@ -49,7 +43,28 @@ var chatroom = function chatroom() {
         while (activity[i].timestamp > since && i >= 0)
             activitySince.unshift(activity[i--]);        
 
-        return activitySince;
+        return activitySince.map(applyPlugins);
+    };
+
+    var addActivity = function addActivity(action) {
+        action.timestamp = new Date();
+        activity.push(action);
+        self.emit('activity');
+    };
+
+    var applyPlugins = function applyPlugins(action) {
+        for(i = 0; i < plugins.length; i++)
+            action = tryApplyPlugin(plugins[i], action);
+
+        return action;
+    };
+
+    var tryApplyPlugin = function tryApplyPlugin(plugin, action) {
+        try {
+            return plugin.apply(action);
+        } catch (err) {
+            console.log(err.message);
+        }
     };
 
     var trimOldestMessage = function trimOldestMessage() {
