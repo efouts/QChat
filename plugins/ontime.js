@@ -1,10 +1,15 @@
 var ontime = function ontime() {
-    this.format = function format(content) {
+    this.apply = function action(action) {
+        if (action.type !== 'message')
+            return action;
+    
         var defectRegex = /%d([0-9]+)/gi;        
         var featureRegex = /%f([0-9]+)/gi;
         
-        return content.replace(defectRegex, replaceDefect)
-                      .replace(featureRegex, replaceFeature);        
+        action.content = action.content.replace(defectRegex, replaceDefect)
+                                       .replace(featureRegex, replaceFeature);        
+
+        return action;
     };
 
     var replaceDefect = function replaceDefect(match, backReference1) {

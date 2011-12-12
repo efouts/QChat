@@ -2,35 +2,21 @@ var connect = require('connect');
 var utils = require('./utilities.js');
 var connectionPool = require('./connectionPool.js');
 var chatroom = require('./chatroom.js');
-var chatController = require('./chatController.js');
-var plugins = require('./plugins.js');
+var controller = require('./controller.js');
+var pluginLoader = require('./pluginLoader.js');
+
+var plugins = pluginLoader.load();
 
 var _connectionPool = new connectionPool();
-var _chatroom = new chatroom();
-
-var onMessage = function onMessage() {
-    _connectionPool.endAll(sendMessagesSince);
-};
-
-var sendMessagesSince = function sendMessagesSince(response, since) {
-    var activity = _chatroom.findActivity(since);
-    utils.jsonResponse(activity, response);
-};
-
-_chatroom.on('activity', onMessage);
-_chatroom.sendMessage('Server', 'Room created.');
-
-var _plugins = new plugins();
-var formatters = _plugins.load();
-
-var _chatController = new chatController(_chatroom, _connectionPool, formatters);
+var _chatroom = new chatroom(plugins);
+var _controller = new controller(_chatroom, _connectionPool);
 
 var registerRoutes = function registerRoutes(routes) {
-	routes.post('/send', _chatController.send);
-	routes.get('/update', _chatController.update);
-    routes.post('/join', _chatController.join);
-    routes.post('/leave', _chatController.leave);
-    routes.post('/alias', _chatController.alias);
+	routes.post('/send', _controller.send);
+	routes.get('/update', _controller.update);
+    routes.post('/join', _controller.join);
+    routes.post('/leave', _controller.leave);
+    routes.post('/alias', _controller.alias);
 };
 
 var server = connect.createServer();
@@ -40,3 +26,5 @@ server.use(connect.router(registerRoutes));
 server.use(connect.static(__dirname + '/static'));
 
 server.listen(8080);
+
+_chatroom.sendMessage('Server', 'Room created.');
