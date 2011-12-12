@@ -1,5 +1,6 @@
 var events = require('events');
 var util = require('util');
+var utils = require('./utilities.js');
 
 var chatroom = function chatroom(plugins) {
     events.EventEmitter.call(this);
@@ -41,7 +42,7 @@ var chatroom = function chatroom(plugins) {
         var i = activity.length - 1;
 
         while (activity[i].timestamp > since && i >= 0)
-            activitySince.unshift(activity[i--]);        
+            activitySince.unshift(activity[i--]);			
 
         return activitySince.map(applyPlugins);
     };
@@ -53,10 +54,12 @@ var chatroom = function chatroom(plugins) {
     };
 
     var applyPlugins = function applyPlugins(action) {
+		var clonedAction = utils.clone(action);
+		
         for(i = 0; i < plugins.length; i++)
-            action = tryApplyPlugin(plugins[i], action);
+            clonedAction = tryApplyPlugin(plugins[i], clonedAction);
 
-        return action;
+        return clonedAction;
     };
 
     var tryApplyPlugin = function tryApplyPlugin(plugin, action) {
