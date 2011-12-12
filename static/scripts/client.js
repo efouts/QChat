@@ -1,6 +1,5 @@
 function chatClient() {
     var self = this;
-    this.messagesPanel = undefined;
     this.messageTextBox = undefined;
     this.postMessageButton = undefined;
     this.lastMessageReceivedDate = undefined;
@@ -17,9 +16,8 @@ function chatClient() {
 
     var defaultText = "Please type your name into the 'Alias' box above to get started";
 
-    this.initialize = function initialize(messagesPanel, messageTextBox, postMessageButton, aliasTextBox, displayContinuedMessage,
+    this.initialize = function initialize(messageTextBox, postMessageButton, aliasTextBox, displayContinuedMessage,
         displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay) {
-        this.messagesPanel = messagesPanel;
         this.messageTextBox = messageTextBox;
         this.postMessageButton = postMessageButton;
         this.aliasTextBox = aliasTextBox;
@@ -132,7 +130,6 @@ function chatClient() {
             return;
 
         $.each(data, parseData);
-        self.messagesPanel.scrollTop(self.messagesPanel[0].scrollHeight);
     }
 
     var parseData = function parseData(index, data) {

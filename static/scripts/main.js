@@ -8,7 +8,7 @@ $(document).ready(function () {
     var membersHeader = $('#membersHeader');
     var members = $('#members');
 
-    client.initialize(chat, messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay);
+    client.initialize(messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay);
 
     alias.focus();
     chat.mousewheel(scrollChat);
@@ -22,6 +22,7 @@ function displayContinuedMessage(message) {
 
     chatMessage.append($('<div class="message-divider"></div>'));
     chatMessage.append($(getInnerMessageHtml(message)));
+	scrollChatToNewMessage();
 }
 
 function displayNewMessage(message) {
@@ -41,6 +42,7 @@ function displayNewMessage(message) {
 
     chat.append(newMessage);
     chat.append(newAvatarWrapper);
+	scrollChatToNewMessage();
 }
 
 function getInnerMessageHtml(data) {
@@ -106,6 +108,11 @@ function scrollChat(event, delta, deltaX, deltaY) {
     var chat = $("#chat");
 
     chat.scrollTop(chat.scrollTop() - (deltaY * 200));
+}
+
+function scrollChatToNewMessage() {
+	var chat = $('#chat');
+	chat.scrollTop(chat[0].scrollHeight);
 }
 
 function windowKeyDown(event) {
