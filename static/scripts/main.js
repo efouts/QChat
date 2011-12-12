@@ -3,7 +3,7 @@ var client = new chatClient();
 $(document).ready(function () {
     var chat = $('#chat');
     var messageTextArea = $('#messageTextArea');
-    var sendButton = $('#sendButton');    
+    var sendButton = $('#sendButton');
     var alias = $('#alias');
     var membersHeader = $('#membersHeader');
     var members = $('#members');
@@ -19,15 +19,15 @@ $(document).ready(function () {
 function displayContinuedMessage(message) {
     var messageHtml = message.content.replace(/\n/g, '<br />');
     var chatMessage = $('#chat').children('.message').last();
-    
-    chatMessage.append($('<div class="message-divider"></div>'));        
+
+    chatMessage.append($('<div class="message-divider"></div>'));
     chatMessage.append($(getInnerMessageHtml(message)));
 }
 
 function displayNewMessage(message) {
-    var newMessage = $('<div class="shadowed message">' + getInnerMessageHtml(message) + '</div>');        
+    var newMessage = $('<div class="shadowed message">' + getInnerMessageHtml(message) + '</div>');
     var newAvatarWrapper = $('<div class="avatar-wrapper"><p>' + message.alias + '</p></div>');
-        
+
     if (message.alias == client.alias) {
         newMessage.addClass('message-right');
         newAvatarWrapper.addClass('avatar-wrapper-right');
@@ -36,33 +36,33 @@ function displayNewMessage(message) {
         newMessage.addClass('message-left');
         newAvatarWrapper.addClass('avatar-wrapper-left');
     }
-    
+
     var chat = $('#chat');
-    
-    chat.append(newMessage);    
+
+    chat.append(newMessage);
     chat.append(newAvatarWrapper);
 }
 
 function getInnerMessageHtml(data) {
     var timestamp = format12HourTime(new Date(data.timestamp));
     var messageHtml = data.content.replace(/\n/g, '<br />');
-    
+
     return '<span class="timestamp">(' + timestamp + '): </span><span>' + messageHtml + '</span>';
 }
 
 function format12HourTime(dateTime){
     var hours = dateTime.getHours();
     var ampm = 'AM';
-    
-    if (hours >= 12) 
+
+    if (hours >= 12)
     {
         ampm = 'PM';
         hours -= 12;
     }
-    
+
     if (hours === 0)
         hours = 12;
-    
+
     var minutes = dateTime.getMinutes();
     if (minutes < 10)
         minutes = '0' + minutes;
@@ -70,8 +70,8 @@ function format12HourTime(dateTime){
     var seconds = dateTime.getSeconds();
     if (seconds < 10)
         seconds = '0' + seconds;
-    
-    return hours + ':' + minutes + ':' + seconds + ' ' + ampm; 
+
+    return hours + ':' + minutes + ':' + seconds + ' ' + ampm;
 }
 
 function displayNewMember(data) {
@@ -86,7 +86,7 @@ function removeMemberFromDisplay(data) {
 function updateMemberInDisplay(data) {
     var memberListItem = $('#members ol li[data="' + data.previousAlias + '"]');
     var memberText = memberListItem.children('p').children('em');
-    
+
     memberListItem.attr('data', data.newAlias);
     memberText.html(data.newAlias);
 }
@@ -95,10 +95,10 @@ function updateMemberStatusInDisplay(data) {
 	var memberListItem = $('#members ol li[data="' + data.alias + '"]');
     var memberText = memberListItem.children('p').children('em');
 	var statusToShow = data.status;
-	
+
 	if (statusToShow == 'ready')
-		statusToShow = '';	
-    
+		statusToShow = '';
+
     memberText.html(data.alias + ' ' + statusToShow);
 }
 
@@ -137,7 +137,7 @@ function maximizeMembers(chatWrapper, membersWrapper, members) {
         complete: function () {
             $(this).animate({
                 height: "100%"
-            }, 200); 
+            }, 200);
         }
     });
 
