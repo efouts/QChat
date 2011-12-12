@@ -27,7 +27,10 @@ server.use(connect.bodyParser());
 server.use(connect.router(registerRoutes));
 server.use(connect.static(__dirname + '/static'));
 
-var port = 8080;
-
-server.listen(port);
-console.log('QChat now running on port ' + port);
+if (!process.argv[2]) {
+    console.log('Specify a port via commandline');	
+} else {
+    var port = process.argv[2];
+    server.listen(port);
+    console.log('QChat now running on port ' + port);
+}
