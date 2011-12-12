@@ -22,9 +22,14 @@ var chatroom = function chatroom(plugins) {
         var action = { type: 'alias', previousAlias: previousAlias, newAlias: newAlias };
         addActivity(action);
     };
+	
+	this.changeStatus = function changeStatus(alias, status) {
+		var action = { type: 'status', alias: alias, status: status };
+		addActivity(action);
+	};
 
     this.sendMessage = function sendMessage(alias, content) {
-        var action = { type: 'message', alias: alias, content: content };
+        var action = { type: 'message', alias: alias, content: content };		
         addActivity(action);
 
         if (messageCount === 1000)
@@ -41,7 +46,7 @@ var chatroom = function chatroom(plugins) {
         var activitySince = [];
         var i = activity.length - 1;
 
-        while (activity[i].timestamp > since && i >= 0)
+        while (i >= 0 && activity[i].timestamp > since )
             activitySince.unshift(activity[i--]);			
 
         return activitySince.map(applyPlugins);

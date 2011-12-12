@@ -19,6 +19,7 @@ var registerRoutes = function registerRoutes(routes) {
     routes.post('/join', _controller.join);
     routes.post('/leave', _controller.leave);
     routes.post('/alias', _controller.alias);
+	routes.post('/status', _controller.status);
 };
 
 var server = connect.createServer();

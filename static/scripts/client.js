@@ -5,6 +5,7 @@ function chatClient() {
     this.postMessageButton = undefined;
     this.lastMessageReceivedDate = undefined;
     this.lastMessageUser = undefined;
+	this.currentStatus = undefined;
     this.aliasTextBox = undefined;    
     this.alias = undefined;
     this.displayContinuedMessage;
@@ -12,11 +13,12 @@ function chatClient() {
     this.displayNewMember;
     this.removeMemberFromDisplay;
     this.updateMemberInDisplay;
+	this.updateMemberStatusInDisplay;
     
     var defaultText = "Please type your name into the 'Alias' box above to get started";
 
     this.initialize = function initialize(messagesPanel, messageTextBox, postMessageButton, aliasTextBox, displayContinuedMessage, 
-        displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay) {
+        displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay) {
         this.messagesPanel = messagesPanel;
         this.messageTextBox = messageTextBox;
         this.postMessageButton = postMessageButton;
@@ -26,6 +28,7 @@ function chatClient() {
         this.displayNewMember = displayNewMember;
         this.removeMemberFromDisplay = removeMemberFromDisplay;
         this.updateMemberInDisplay = updateMemberInDisplay;
+		this.updateMemberStatusInDisplay = updateMemberStatusInDisplay;
 	
 	    this.postMessageButton.click(this.postMessageButtonClick);
 	
@@ -86,9 +89,21 @@ function chatClient() {
             if (self.messageTextBox.val() !== '')
                 self.postMessage();
                 
-            e.preventDefault();
+            e.preventDefault();	
         }
+		else {		
+			updateStatus('typing');
+		}
     }
+	
+	var updateStatus = function updateStatus(status) {
+		if (this.currentStatus === status)
+			return;
+			
+		this.currentStatus = status;
+		var statusInfo = { alias: self.alias, status: status };
+		$.post('/status', statusInfo);		
+	}
     
     this.postMessageButtonClick = function postMessageButtonClick(e) {
 	    if (self.messageTextBox.val() === '')
@@ -101,7 +116,8 @@ function chatClient() {
         $.post('/send', { content: this.messageTextBox.val(), alias: this.alias }); 
         self.messageTextBox.val('');
         self.messageTextBox.focus();
-    }
+		updateStatus('ready');
+    }	
 
     this.update = function update() {
         var sinceDate = { since: this.lastMessageReceivedDate };
@@ -131,6 +147,9 @@ function chatClient() {
         else if (data.type == 'alias') {
             self.updateMemberInDisplay(data);
         }
+		else if (data.type == 'status') {
+			self.updateMemberStatusInDisplay(data);
+		}
         else {        
             if (self.lastMessageUser === data.alias)
                 self.displayContinuedMessage(data);

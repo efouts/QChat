@@ -30,10 +30,18 @@ var controller = function controller(chatroom, connectionPool, plugins) {
     this.alias = function alias(request, response) {
         utils.emptyResponse(response);
         
-        var previousAlias = request.body.previousAlias;
-        var newAlias = request.body.newAlias;
+        var previousAlias = utils.htmlEncode(request.body.previousAlias);
+        var newAlias = utils.htmlEncode(request.body.newAlias);
         chatroom.changeAlias(previousAlias, newAlias);
     };
+	
+	this.status = function status(request, response) {
+		utils.emptyResponse(response);
+		
+		var alias = utils.htmlEncode(request.body.alias);
+		var status = utils.htmlEncode(request.body.status);
+		chatroom.changeStatus(alias, status);
+	};
 
     this.send = function send(request, response) {
         utils.emptyResponse(response);
@@ -59,6 +67,8 @@ var controller = function controller(chatroom, connectionPool, plugins) {
         else 
             connectionPool.add(response, since);
     };
+	
+	
 };
 
 module.exports = controller;

@@ -8,7 +8,7 @@ $(document).ready(function () {
     var membersHeader = $('#membersHeader');
     var members = $('#members');
 
-    client.initialize(chat, messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay);
+    client.initialize(chat, messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay);
 
     alias.focus();
     chat.mousewheel(scrollChat);
@@ -89,6 +89,17 @@ function updateMemberInDisplay(data) {
     
     memberListItem.attr('data', data.newAlias);
     memberText.html(data.newAlias);
+}
+
+function updateMemberStatusInDisplay(data) {
+	var memberListItem = $('#members ol li[data="' + data.alias + '"]');
+    var memberText = memberListItem.children('p').children('em');
+	var statusToShow = data.status;
+	
+	if (statusToShow == 'ready')
+		statusToShow = '';	
+    
+    memberText.html(data.alias + ' ' + statusToShow);
 }
 
 function scrollChat(event, delta, deltaX, deltaY) {
