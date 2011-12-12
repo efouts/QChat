@@ -1,17 +1,24 @@
 describe('QChat Initialize', function() {
 
+  function displayContinuedMessage() {}
+  function displayNewMessage() {}
+  function displayNewMember() {}
+  function removeMemberFromDisplay() {}
+  function updateMemberInDisplay() {}
+  function updateMemberStatusInDisplay() {}
+
   beforeEach(function() {
-    qchat.initialize('messages', 'messageTextbox', 'postMessage', 'alias');
+    qchat.initialize($('#messageTextbox'), $('#postMessage'), $('#alias'), displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay);
   });
-  
-  it('Should define MessagesPanel', function() {
-    expect(qchat.messagesPanel).toBeDefined();  
-  });
+
   it('Should define Textbox', function() {
-    expect(qchat.messageTextBox).toBeDefined();  
+    expect(qchat.messageTextBox).toBeDefined();
   });
-  it('Should define Button', function() {
-    expect(qchat.postMessageButton).toBeDefined();  
+  it('Should define Post Button', function() {
+    expect(qchat.postMessageButton).toBeDefined();
+  });
+  it('Should define alias', function() {
+    expect(qchat.aliasTextBox).toBeDefined();
   });
   it('Should create onClick handler for button', function() {
     expect(qchat.postMessageButton.click).toBeDefined();
@@ -24,45 +31,29 @@ describe('QChat Initialize', function() {
   });
 });
 
-describe('Post Message', function() {
+describe('Recieve Message', function() {
+  var messageData = undefined;
+
+  function displayContinuedMessage() { messageData = 'whatever';}
+  function displayNewMessage() { messageData = 'whatever'; }
+  function displayNewMember() { messageData = 'whatever'; }
+  function removeMemberFromDisplay() { messageData = 'whatever'; }
+  function updateMemberInDisplay() { messageData = 'whatever'; }
+  function updateMemberStatusInDisplay() { messageData = 'whatever'; }
 
   beforeEach(function() {
-    qchat.initialize('messages', 'messageTextbox', 'postMessage', 'alias');
-    qchat.messageTextBox.val('This is a test message');
-    qchat.messagesPanel.children().empty();
+    messageData = undefined;
+    qchat.initialize($('#messageTextbox'), $('#postMessage'), $('#alias'), displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay);
   });
-  
-  it('Should clear textbox value.', function() {    
-    qchat.postMessageButton.click();
-    expect(qchat.messageTextBox.val()).toEqual('');
-  });
-});
 
-describe('Recieve Message', function() {  
-  
-  beforeEach(function() {
-    qchat.initialize('messages', 'messageTextbox', 'postMessage', 'alias');
-  });
-    
-  it('Should add message to display div', function() {
-    qchat.messagesPanel.children();
-    
-    var fakeMessages = [{nickname : 'Tim', content : 'Send a message', timestamp : new Date()},
-                        {nickname : 'Derek', content : 'This is a test message', timestamp : new Date()}];
-    qchat.messageReceived(fakeMessages);    
-    expect(qchat.messagesPanel.text()).toContain('Send a message');
-    expect(qchat.messagesPanel.text()).toContain('This is a test message');
-  });  
-});
+  it('Should call callback function.', function() {
 
-describe('Formatting functions', function() {
-	
-  beforeEach(function() {
-      qchat.initialize('messages', 'messageTextbox', 'postMessage', 'alias');
-   });
-  
-  it('Should format time in 12 hour format.', function() {
-    var formattedDate = qchat.Format12HourTime(new Date(11, 12, 6, 18, 30, 0));
-    expect(formattedDate).toEqual('6:30:00 pm');
+    var fakeMessages = [{type: 'message', alias : 'Tim', content : 'Send a message', timestamp : new Date()},
+                        {type: 'message', alias : 'Derek', content : 'This is a test message', timestamp : new Date()}];
+
+    qchat.dataReceived(fakeMessages);
+
+    expect(messageData).toBeDefined();
+    //expect(qchat.messagesPanel.text()).toContain('This is a test message');
   });
 });
