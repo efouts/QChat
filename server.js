@@ -11,6 +11,8 @@ var _connectionPool = new connectionPool();
 var _chatroom = new chatroom(plugins);
 var _controller = new controller(_chatroom, _connectionPool);
 
+_chatroom.sendMessage('Server', 'Room created.');
+
 var registerRoutes = function registerRoutes(routes) {
 	routes.post('/send', _controller.send);
 	routes.get('/update', _controller.update);
@@ -25,6 +27,7 @@ server.use(connect.bodyParser());
 server.use(connect.router(registerRoutes));
 server.use(connect.static(__dirname + '/static'));
 
-server.listen(8080);
+var port = 8080;
 
-_chatroom.sendMessage('Server', 'Room created.');
+server.listen(port);
+console.log('QChat now running on port ' + port);
