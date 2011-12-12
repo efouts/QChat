@@ -22,3 +22,12 @@ module.exports.statusResponse = function statusResponse(status, response) {
     response.writeHead(status);
     response.end();
 };
+
+module.exports.clone = function clone(object) {
+	var clone = {};
+	
+	for(var prop in object)
+		clone[prop] = object[prop];
+		
+	return clone;
+};
