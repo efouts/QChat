@@ -11,34 +11,37 @@ var controller = function controller(chatroom, connectionPool, plugins) {
     chatroom.on('activity', onActivity);
 
     this.join = function join(request, response) {
+        utils.emptyResponse(response);
+        
         var alias = utils.htmlEncode(request.body.alias);
         chatroom.join(alias);
-        utils.emptyResponse(response);
     };
 
     this.leave = function leave(request, response) {
         if (!request.body.alias)
             utils.statusResponse(403, response);
 
-        var alias = utils.htmlEncode(request.body.alias);
-
-        chatroom.leave(alias);
         utils.emptyResponse(response);
+        
+        var alias = utils.htmlEncode(request.body.alias);
+        chatroom.leave(alias);
     };
 
     this.alias = function alias(request, response) {
+        utils.emptyResponse(response);
+        
         var previousAlias = request.body.previousAlias;
         var newAlias = request.body.newAlias;
         chatroom.changeAlias(previousAlias, newAlias);
-        utils.emptyResponse(response);
     };
 
     this.send = function send(request, response) {
+        utils.emptyResponse(response);
+
         var content = utils.htmlEncode(request.body.content);
         var alias = utils.htmlEncode(request.body.alias);
 
         chatroom.sendMessage(alias, content);
-        utils.emptyResponse(response);
     };
 
     this.update = function update(request, response) {
