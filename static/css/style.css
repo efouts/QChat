@@ -264,17 +264,17 @@ ul
     margin-right: 70px;
 }
 
-.avatar-wrapper-left + .bubble-right
+.avatar-wrapper-left + .message-right
 {
     margin-top: -20px;
 }
 
-.avatar-wrapper-right + .bubble-left
+.avatar-wrapper-right + .message-left
 {
     margin-top: -20px;
 }
 
-.bubble
+.message
 {
     background: #5a8f00;
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#b8db29), to(#5a8f00));
@@ -293,22 +293,22 @@ ul
     z-index: 1;
 }
 
-.bubble-left
+.message-left
 {
     float: left;
 }
 
-.bubble-right
+.message-right
 {
     float: right;
 }
 
-.bubble + div
+.message + div
 {
     clear: both;
 }
 
-.bubble:after
+.message:after
 {
     border-style: solid;
     border-color: transparent #5a8f00;
@@ -319,13 +319,13 @@ ul
     width: 0;
 }
 
-.bubble-left:after
+.message-left:after
 {
     border-width: 0 0 30px 20px;
     left: 50px;
 }
 
-.bubble-right:after
+.message-right:after
 {
     border-width: 0 20px 30px 0px;
     right: 50px;
