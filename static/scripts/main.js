@@ -11,29 +11,29 @@ $(document).ready(function () {
     client.initialize(chat, messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay);
 
     alias.focus();
-    chat.mousewheel(chatMouseWheel);
-    chat.keypress(chatKeyPress);
+    chat.mousewheel(scrollChat);
     membersHeader.click(membersHeaderClick);
+    $(window).keydown(windowKeyDown);
 });
 
 function displayContinuedMessage(message) {
     var messageHtml = message.content.replace(/\n/g, '<br />');
-    var chatBubble = $('#chat').children('.bubble').last();
+    var chatMessage = $('#chat').children('.message').last();
     
-    chatBubble.append($('<div class="message-divider"></div>'));        
-    chatBubble.append($(getInnerMessageHtml(message)));
+    chatMessage.append($('<div class="message-divider"></div>'));        
+    chatMessage.append($(getInnerMessageHtml(message)));
 }
 
 function displayNewMessage(message) {
-    var newMessage = $('<div class="shadowed bubble">' + getInnerMessageHtml(message) + '</div>');        
+    var newMessage = $('<div class="shadowed message">' + getInnerMessageHtml(message) + '</div>');        
     var newAvatarWrapper = $('<div class="avatar-wrapper"><p>' + message.alias + '</p></div>');
         
     if (message.alias == client.alias) {
-        newMessage.addClass('bubble-right');
+        newMessage.addClass('message-right');
         newAvatarWrapper.addClass('avatar-wrapper-right');
     }
     else {
-        newMessage.addClass('bubble-left');
+        newMessage.addClass('message-left');
         newAvatarWrapper.addClass('avatar-wrapper-left');
     }
     
@@ -91,17 +91,17 @@ function updateMemberInDisplay(data) {
     memberText.html(data.newAlias);
 }
 
-function chatMouseWheel(event, delta, deltaX, deltaY) {
+function scrollChat(event, delta, deltaX, deltaY) {
     var chat = $("#chat");
 
     chat.scrollTop(chat.scrollTop() - (deltaY * 200));
 }
 
-function chatKeyPress(event) {
+function windowKeyDown(event) {
     if (event.which == 40)
-        chatMouseWheel(null, -1, 0, -1);
+        scrollChat(null, -1, 0, -1);
     else if (event.which == 38)
-        chatMouseWheel(null, 1, 0, 1);
+        scrollChat(null, 1, 0, 1);
 }
 
 function membersHeaderClick() {
