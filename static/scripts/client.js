@@ -7,6 +7,7 @@ function chatClient() {
     this.currentStatus = undefined;
     this.aliasTextBox = undefined;
     this.alias = undefined;
+
     this.displayContinuedMessage;
     this.displayNewMessage;
     this.displayNewMember;
@@ -95,10 +96,10 @@ function chatClient() {
     }
 
 	var updateStatus = function updateStatus(status) {
-		if (this.currentStatus === status)
+		if (self.currentStatus === status)
 			return;
 
-		this.currentStatus = status;
+		self.currentStatus = status;
 		var statusInfo = { alias: self.alias, status: status };
 		$.post('/status', statusInfo);
 	}
