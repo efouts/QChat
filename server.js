@@ -20,6 +20,14 @@ var registerRoutes = function registerRoutes(routes) {
     routes.post('/leave', _controller.leave);
     routes.post('/alias', _controller.alias);
 	routes.post('/status', _controller.status);
+
+    routes.post('/plugins/:name', function(request, response) {
+        var name = request.params.name;
+        var plugin = plugins[name];
+
+        if (plugin.handle)
+            plugin.handle(request, response, _chatroom);
+    });
 };
 
 var server = connect.createServer();
