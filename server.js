@@ -8,8 +8,8 @@ var pluginLoader = require('./pluginLoader.js');
 var plugins = pluginLoader.load();
 
 var _connectionPool = new connectionPool();
-var _chatroom = new chatroom(plugins);
-var _controller = new controller(_chatroom, _connectionPool);
+var _chatroom = new chatroom();
+var _controller = new controller(_chatroom, _connectionPool, plugins);
 
 _chatroom.sendMessage('Server', 'Room created.');
 
@@ -20,6 +20,7 @@ var registerRoutes = function registerRoutes(routes) {
     routes.post('/leave', _controller.leave);
     routes.post('/alias', _controller.alias);
 	routes.post('/status', _controller.status);
+    routes.get('/plugins/:name', _controller.plugins);
 };
 
 var server = connect.createServer();

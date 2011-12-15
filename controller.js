@@ -3,7 +3,9 @@ var utils = require('./utilities.js');
 var controller = function controller(chatroom, connectionPool, plugins) {
     var onActivity = function onMessage() {
         connectionPool.endAll(function (response, since) {
-            var activity = chatroom.findActivity(since);
+            var activity = chatroom.findActivity(since)
+                                   .map(applyPlugins);
+
             utils.jsonResponse(activity, response);
         });
     };
@@ -62,13 +64,43 @@ var controller = function controller(chatroom, connectionPool, plugins) {
             activity = chatroom.findActivity(since);
         }
 
+        activity = activity.map(applyPlugins);
+
         if (activity.length)
             utils.jsonResponse(activity, response);
         else 
             connectionPool.add(response, since);
     };
 	
+    this.plugins = function (request, response) {
+        var name = request.params.name;
+        var plugin = plugins[name];
+
+        if (!plugin.handle)
+            console.log('Plugin ' + name + ' does not have a handle method.');
+
+        plugin.handle(request, response, chatroom)
+    };
 	
+    var applyPlugins = function applyPlugins(action) {
+		var clonedAction = utils.clone(action);
+		
+        for(var name in plugins)
+            clonedAction = tryApplyPlugin(plugins[name], clonedAction);
+        
+        return clonedAction;
+    };
+
+    var tryApplyPlugin = function tryApplyPlugin(plugin, action) {
+        if (!plugin.apply)
+            return action;
+
+        try {
+            return plugin.apply(action);
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
 };
 
 module.exports = controller;

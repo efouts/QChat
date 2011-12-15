@@ -10,27 +10,27 @@ var chatroom = function chatroom(plugins) {
 
     this.join = function join(alias) {
         var action = { type: 'join', alias: alias};
-        addActivity(action);    
+        this.addActivity(action);    
     };
 
     this.leave = function leave(alias) {
         var action = { type: 'leave', alias: alias };
-        addActivity(action);
+        this.addActivity(action);
     };
 
     this.changeAlias = function changeAlias(previousAlias, newAlias) {
         var action = { type: 'alias', previousAlias: previousAlias, newAlias: newAlias };
-        addActivity(action);
+        this.addActivity(action);
     };
 	
 	this.changeStatus = function changeStatus(alias, status) {
 		var action = { type: 'status', alias: alias, status: status };
-		addActivity(action);
+        this.addActivity(action);
 	};
 
     this.sendMessage = function sendMessage(alias, content) {
         var action = { type: 'message', alias: alias, content: content };		
-        addActivity(action);
+        this.addActivity(action);
 
         if (messageCount === 1000)
             trimOldestMessage();
@@ -38,8 +38,14 @@ var chatroom = function chatroom(plugins) {
             messageCount++;
     };
 
+    this.addActivity = function addActivity(action) {
+        action.timestamp = new Date();
+        activity.push(action);
+        self.emit('activity');
+    };
+    
     this.findAllActivity = function findAllActivity() {        
-        return activity.map(applyPlugins);
+        return activity;
     };
 
     this.findActivity = function findActivity(since) {
@@ -49,30 +55,7 @@ var chatroom = function chatroom(plugins) {
         while (i >= 0 && activity[i].timestamp > since )
             activitySince.unshift(activity[i--]);			
 
-        return activitySince.map(applyPlugins);
-    };
-
-    var addActivity = function addActivity(action) {
-        action.timestamp = new Date();
-        activity.push(action);
-        self.emit('activity');
-    };
-
-    var applyPlugins = function applyPlugins(action) {
-		var clonedAction = utils.clone(action);
-		
-        for(i = 0; i < plugins.length; i++)
-            clonedAction = tryApplyPlugin(plugins[i], clonedAction);
-
-        return clonedAction;
-    };
-
-    var tryApplyPlugin = function tryApplyPlugin(plugin, action) {
-        try {
-            return plugin.apply(action);
-        } catch (err) {
-            console.log(err.message);
-        }
+        return activitySince;
     };
 
     var trimOldestMessage = function trimOldestMessage() {
