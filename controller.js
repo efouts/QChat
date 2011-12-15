@@ -85,13 +85,16 @@ var controller = function controller(chatroom, connectionPool, plugins) {
     var applyPlugins = function applyPlugins(action) {
 		var clonedAction = utils.clone(action);
 		
-        for(i = 0; i < plugins.length; i++)
-            clonedAction = tryApplyPlugin(plugins[i], clonedAction);
-
+        for(var name in plugins)
+            clonedAction = tryApplyPlugin(plugins[name], clonedAction);
+        
         return clonedAction;
     };
 
     var tryApplyPlugin = function tryApplyPlugin(plugin, action) {
+        if (!plugin.apply)
+            return action;
+
         try {
             return plugin.apply(action);
         } catch (err) {
