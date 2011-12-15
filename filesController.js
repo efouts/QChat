@@ -1,4 +1,4 @@
-var utils = require('./utilities.js);
+var utils = require('./utilities.js');
 
 var filesController = function filesController(activityLog) {
     this.upload = function (request, response) {
