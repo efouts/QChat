@@ -147,7 +147,7 @@ function chatClient() {
 		else if (data.type == 'status') {
 			self.updateMemberStatusInDisplay(data);
 		}
-        else {
+        else if (data.type == 'message') {
             if (self.lastMessageUser === data.alias)
                 self.displayContinuedMessage(data);
             else
