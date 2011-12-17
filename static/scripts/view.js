@@ -7,6 +7,7 @@ function view() {
     this.membersWrapper = $('#membersWrapper');
     this.membersList = $('#members ol');
     this.membersHeader = $('#membersHeader');
+    this.fileUploader = $('#fileUploader');
 
     this.getMemberListItem = function (alias) {
         return this.membersList.children('li[data="' + alias + '"]').first();

@@ -7,6 +7,7 @@ function main(client) {
     var membersAnimatorObject;
     var membersObject;
     var aliasObject;
+    var fileUploaderObject;
 
     this.initialize = function initialize() {
         viewObject = new view();
@@ -14,7 +15,8 @@ function main(client) {
         membersAnimatorObject = new membersAnimator(viewObject);
         membersObject = new members(viewObject);
         aliasObject = new alias(viewObject, client);
-
+        fileUploaderObject = new fileUploader(viewObject);
+        
         $(window).keydown(windowKeyDown).unload(windowUnload);
 
         viewObject.messageTextArea.keypress(messageTextAreaOnKeyPress)
