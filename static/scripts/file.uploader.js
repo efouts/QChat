@@ -16,65 +16,69 @@ function fileUploader(view)
     dropContainer.addEventListener("drop", upload, false);
 
     function upload(event) {
-        var data = event.dataTransfer;
-
+        event.stopPropagation();
+        var data = event.dataTransfer;        
+        var xhr = new XMLHttpRequest();
         var boundary = '------multipartformboundary' + (new Date).getTime();
         var dashdash = '--';
         var crlf     = '\r\n';
-
-        /* Build RFC2388 string. */
         var builder = '';
-
-        builder += dashdash;
-        builder += boundary;
-        builder += crlf;
-        
-        var xhr = new XMLHttpRequest();
         
         /* For each dropped file. */
         for (var i = 0; i < data.files.length; i++) {
             var file = data.files[i];
             
-            /* Generate headers. */            
-            builder += 'Content-Disposition: form-data; name="user_file[]"';
-            if (file.fileName) {
-              builder += '; filename="' + file.fileName + '"';
-            }
-            builder += crlf;
+            var reader = new FileReader();
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    /* Build RFC2388 string. */
+                    
+                    builder += dashdash;
+                    builder += boundary;
+                    builder += crlf;
+                    
+                    /* Generate headers. */            
+                    builder += 'Content-Disposition: form-data; name="user_file[]"';
+                    if (file.fileName) {
+                      builder += '; filename="' + file.fileName + '"';
+                    }
+                    builder += crlf;
 
-            builder += 'Content-Type: application/octet-stream';
-            builder += crlf;
-            builder += crlf; 
+                    builder += 'Content-Type: application/octet-stream';
+                    builder += crlf;
+                    builder += crlf;
+                    
+                    builder += e.target.result;
+                    
+                    builder += crlf;
 
-            /* Append binary data. */
-            builder += file.getAsBinary();
-            builder += crlf;
+                    /* Write boundary. */
+                    builder += dashdash;
+                    builder += boundary;
+                    builder += crlf;
+                    
+                    builder += dashdash;
+                    builder += boundary;
+                    builder += dashdash;
+                    builder += crlf;
 
-            /* Write boundary. */
-            builder += dashdash;
-            builder += boundary;
-            builder += crlf;
-        }
-        
-        /* Mark end of the request. */
-        builder += dashdash;
-        builder += boundary;
-        builder += dashdash;
-        builder += crlf;
+                    /* Mark end of the request. */
+                    
+                    xhr.open("POST", "/upload", true);
+                    xhr.setRequestHeader('content-type', 'multipart/form-data; boundary=' + boundary);
+                    xhr.sendAsBinary(builder);        
+                    
+                    xhr.onload = function(event) { 
+                        /* If we got an error display it. */
+                        if (xhr.responseText) {
+                            alert(xhr.responseText);
+                        }
+                    };
+                };
+            })(file);
 
-        xhr.open("POST", "/upload", true);
-        xhr.setRequestHeader('content-type', 'multipart/form-data; boundary=' 
-            + boundary);
-        xhr.sendAsBinary(builder);        
-        
-        xhr.onload = function(event) { 
-            /* If we got an error display it. */
-            if (xhr.responseText) {
-                alert(xhr.responseText);
-            }
-        };
-        
-        /* Prevent FireFox opening the dragged file. */
-        event.stopPropagation();
+            // Read in the image file as a data URL.
+            reader.readAsBinaryString(file);
+        }        
     }
 }
