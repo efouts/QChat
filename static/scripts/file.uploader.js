@@ -1,10 +1,21 @@
-function fileUploader(view) {
-    var fileUploaderObject = view.fileUploader;
+function fileUploader(view)
+{
+    var dropContainer = document.getElementById("fileUploader");
+         
+    dropContainer.addEventListener("dragenter", function(event){ 
+        dropContainer.innerHTML = 'DROP';
+        event.stopPropagation();
+        event.preventDefault();
+    }, false);
     
-    fileUploaderObject.get(0).addEventListener('drop', upload, false);
+    dropContainer.addEventListener("dragover", function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }, false);
+    
+    dropContainer.addEventListener("drop", upload, false);
 
-    var upload = function upload(event) { 
-        alert('in upload');
+    function upload(event) {
         var data = event.dataTransfer;
 
         var boundary = '------multipartformboundary' + (new Date).getTime();
@@ -23,7 +34,7 @@ function fileUploader(view) {
         /* For each dropped file. */
         for (var i = 0; i < data.files.length; i++) {
             var file = data.files[i];
-
+            
             /* Generate headers. */            
             builder += 'Content-Disposition: form-data; name="user_file[]"';
             if (file.fileName) {
@@ -52,17 +63,18 @@ function fileUploader(view) {
         builder += crlf;
 
         xhr.open("POST", "/upload", true);
-        xhr.setRequestHeader('content-type', 'multipart/form-data; boundary=' + boundary);
+        xhr.setRequestHeader('content-type', 'multipart/form-data; boundary=' 
+            + boundary);
         xhr.sendAsBinary(builder);        
         
         xhr.onload = function(event) { 
+            /* If we got an error display it. */
             if (xhr.responseText) {
                 alert(xhr.responseText);
             }
-            $("#dropzone").load("list.php?random=" +  (new Date).getTime());
         };
         
         /* Prevent FireFox opening the dragged file. */
         event.stopPropagation();
-	}
-};
+    }
+}
