@@ -21,7 +21,6 @@ function main(client) {
 
         viewObject.messageTextArea.keypress(messageTextAreaOnKeyPress)
             .val('Please type your name into the "Alias" box above to get started');
-
         client.update(lastMessageReceivedDate, onUpdate);
     };     
 
