@@ -16,6 +16,7 @@ function fileUploader(view)
     dropContainer.addEventListener("drop", upload, false);
 
     function upload(event) {
+        event.preventDefault();
         event.stopPropagation();
         var data = event.dataTransfer;        
         var xhr = new XMLHttpRequest();
