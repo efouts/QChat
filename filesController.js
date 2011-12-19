@@ -6,15 +6,18 @@ var filesController = function filesController(activityLog) {
   this.upload = function (request, response) {
     var upload = {
       id: uploads.length,
-      name: request.headers['x-filename'],
-      contentType: request.headers['content-type'] || 'application/octet-stream',
+      name: request.headers['x-filename'],      
       contentLength: request.headers['content-length'],
-      data: [],
+      data: []
     };
 
+    var fileIsImage = isImage(request.headers['content-type']);    
+
     var entry = {
-      type: 'file',
-      path: '/download/' + upload.id
+      type: fileIsImage ? 'image' : 'file',
+      alias: request.headers['x-alias'],
+      name: request.headers['x-filename'],
+      path: '/download/' + upload.id     
     };
   
     request.on('data', function(chunk) {
@@ -26,6 +29,10 @@ var filesController = function filesController(activityLog) {
       activityLog.addEntry(entry);
       utils.emptyResponse(response);
     });
+  };
+
+  var isImage = function(contentType) {
+    return contentType === 'image/jpeg' || contentType === 'image/gif' || contentType === 'image/png';    
   };
 
   this.download = function(request, response) {

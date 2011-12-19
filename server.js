@@ -31,7 +31,7 @@ var registerRoutes = function registerRoutes(routes) {
 	routes.get('/update', _activityController.update);
     routes.post('/plugins/:name', _pluginsController.plugins);
     routes.post('/upload', _filesController.upload);
-    routes.get('/download', _filesController.download);    
+    routes.get('/download/:id', _filesController.download);    
 };
 
 var server = connect.createServer();

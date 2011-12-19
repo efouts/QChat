@@ -79,7 +79,7 @@ function main(client) {
                 else if (update.type == 'status') {
                     membersObject.updateMemberStatusInDisplay(update);
                 }
-                else {
+                else if (update.type == 'message'){
                     if (lastMessageUser === update.alias)
                         chatObject.displayContinuedMessage(update);
                     else
