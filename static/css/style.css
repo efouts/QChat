@@ -194,6 +194,21 @@ ul
     display: block;
 }
 
+.members ol li p em img
+{
+    margin-left: 10px;
+}
+
+.status-typing p em img
+{
+    display: inline;
+}
+
+.status-ready p em img
+{
+    display: none;
+}
+
 .members-header
 {
     background-image: url('../images/gradient-background.gif');

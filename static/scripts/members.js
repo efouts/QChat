@@ -31,9 +31,11 @@ function members(view) {
     var updateMemberStatus = function updateMemberStatus(alias, status) {
         var memberText = view.getMemberText(alias);
 
-        if (status == 'ready')
+        if (status == 'typing')
+            status = '<img src="images/typing-bubble-small.png" />';
+        else
             status = '';
 
-        memberText.html(alias + ' ' + status);
+        memberText.html(alias + status);
     };
 };
