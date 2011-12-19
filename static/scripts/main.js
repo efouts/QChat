@@ -20,6 +20,7 @@ function main(client) {
 
         viewObject.messageTextArea.keypress(messageTextAreaOnKeyPress)
             .val('Please type your name into the "Alias" box above to get started');
+
         client.update(lastMessageReceivedDate, onUpdate);
     };     
 
@@ -66,24 +67,26 @@ function main(client) {
             $.each(activities, function (index, activity) {
                 lastMessageReceivedDate = activity.timestamp;
 
-                if (activity.type == 'join') {
-                    membersObject.displayNewMember(activity);
-                }
-                else if (activity.type == 'leave') {
-                    membersObject.removeMemberFromDisplay(activity);
-                }
-                else if (activity.type == 'alias') {
-                    membersObject.updateMemberInDisplay(activity);
-                }
-                else if (activity.type == 'status') {
-                    membersObject.updateMemberStatusInDisplay(activity);
-                }
-                else if (activity.type == 'file' || activity.type == 'image' || activity.type == 'message') {
+                if (isMemberActivity(activity))
+                    membersObject.displayActivity(activity);
+                else if (isChatActivity(activity))
                     chatObject.displayActivity(activity);
-                }
             });
         }
 
         client.update(lastMessageReceivedDate, onUpdate);
     }
+
+    var isMemberActivity = function isMemberActivity(activity) {
+        return activity.type == 'join' || 
+               activity.type == 'leave' ||
+               activity.type == 'alias' || 
+               activity.type == 'status';
+    };
+
+    var isChatActivity = function isChatActivity(activity) {
+        return activity.type == 'file' || 
+               activity.type == 'image' || 
+               activity.type == 'message';
+    };
 }

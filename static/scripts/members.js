@@ -1,29 +1,39 @@
 function members(view) {
     var membersList = view.membersList;
 
-    this.displayNewMember = function displayNewMember(data) {
-        membersList.append($('<li data="' + data.alias + '"><p><em>' + data.alias + '</em></p></li>'));
+    this.displayActivity = function displayActivity(activity) {
+        if (activity.type == 'join')
+            addNewMember(activity.alias);
+        else if (activity.type == 'leave')
+            removeMember(activity.alias);
+        else if (activity.type == 'alias')
+            updateMemberAlias(activity.previousAlias, activity.newAlias);
+        else if (activity.type == 'status')
+            updateMemberStatus(activity.alias, activity.status);
     };
 
-    this.removeMemberFromDisplay = function removeMemberFromDisplay(data) {
-        view.getMemberListItem(data.alias).remove();
+    var addNewMember = function addNewMember(alias) {
+        membersList.append($('<li data="' + alias + '"><p><em>' + alias + '</em></p></li>'));
     };
 
-    this.updateMemberInDisplay = function updateMemberInDisplay(data) {
-        var memberListItem = view.getMemberListItem(data.previousAlias);
-        var memberText = view.getMemberText(data.previousAlias);
-
-        memberListItem.attr('data', data.newAlias);
-        memberText.html(data.newAlias);
+    var removeMember = function removeMember(alias) {
+        view.getMemberListItem(alias).remove();
     };
 
-    this.updateMemberStatusInDisplay = function updateMemberStatusInDisplay(data) {
-        var memberText = view.getMemberText(data.alias);
-        var statusToShow = data.status;
+    var updateMemberAlias = function updateMemberAlias(previousAlias, newAlias) {
+        var memberListItem = view.getMemberListItem(previousAlias);
+        var memberText = view.getMemberText(previousAlias);
 
-        if (statusToShow == 'ready')
-            statusToShow = '';
+        memberListItem.attr('data', newAlias);
+        memberText.html(newAlias);
+    };
 
-        memberText.html(data.alias + ' ' + statusToShow);
+    var updateMemberStatus = function updateMemberStatus(alias, status) {
+        var memberText = view.getMemberText(alias);
+
+        if (status == 'ready')
+            status = '';
+
+        memberText.html(alias + ' ' + status);
     };
 };
