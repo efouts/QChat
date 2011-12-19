@@ -46,7 +46,7 @@ var filesController = function filesController(activityLog) {
 
     var headers = {
       'Content-Length': upload.contentLength,
-      'Content-Disposition': 'attachment; filename="' + upload.name + '"'
+      'Content-Disposition': 'inline; filename="' + upload.name + '"'
     };
 
     response.writeHead(200, headers);

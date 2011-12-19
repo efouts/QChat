@@ -79,7 +79,13 @@ function main(client) {
                 else if (update.type == 'status') {
                     membersObject.updateMemberStatusInDisplay(update);
                 }
-                else if (update.type == 'message'){
+                else if (update.type == 'file') {
+                    chatObject.displayNewFile(update);
+                }
+                else if (update.type == 'image') {
+                    chatObject.displayNewImage(update);
+                }
+                else if (update.type == 'message') {
                     if (lastMessageUser === update.alias)
                         chatObject.displayContinuedMessage(update);
                     else
