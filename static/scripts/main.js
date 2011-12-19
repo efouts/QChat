@@ -1,7 +1,6 @@
 function main(client) {
     var currentStatus = undefined;
     var lastMessageReceivedDate = undefined;
-    var lastMessageUser = undefined;
     var viewObject;    
     var chatObject;    
     var membersAnimatorObject;
@@ -62,36 +61,25 @@ function main(client) {
         updateStatus('');
     };
 
-    var onUpdate = function onUpdate(updates) {
-        if (updates.length) {
-            $.each(updates, function (index, update) {
-                lastMessageReceivedDate = update.timestamp;
+    var onUpdate = function onUpdate(activities) {
+        if (activities.length) {
+            $.each(activities, function (index, activity) {
+                lastMessageReceivedDate = activity.timestamp;
 
-                if (update.type == 'join') {
-                    membersObject.displayNewMember(update);
+                if (activity.type == 'join') {
+                    membersObject.displayNewMember(activity);
                 }
-                else if (update.type == 'leave') {
-                    membersObject.removeMemberFromDisplay(update);
+                else if (activity.type == 'leave') {
+                    membersObject.removeMemberFromDisplay(activity);
                 }
-                else if (update.type == 'alias') {
-                    membersObject.updateMemberInDisplay(update);
+                else if (activity.type == 'alias') {
+                    membersObject.updateMemberInDisplay(activity);
                 }
-                else if (update.type == 'status') {
-                    membersObject.updateMemberStatusInDisplay(update);
+                else if (activity.type == 'status') {
+                    membersObject.updateMemberStatusInDisplay(activity);
                 }
-                else if (update.type == 'file') {
-                    chatObject.displayNewFile(update);
-                }
-                else if (update.type == 'image') {
-                    chatObject.displayNewImage(update);
-                }
-                else if (update.type == 'message') {
-                    if (lastMessageUser === update.alias)
-                        chatObject.displayContinuedMessage(update);
-                    else
-                        chatObject.displayNewMessage(update);
-
-                    lastMessageUser = update.alias;
+                else if (activity.type == 'file' || activity.type == 'image' || activity.type == 'message') {
+                    chatObject.displayActivity(activity);
                 }
             });
         }
