@@ -1,7 +1,11 @@
 var emoticonsPlugin = function emoticonsPlugin() {
     this.apply = function apply(action) {
-        if (action.type === 'message')
-            action.content = action.content.replace(regex, replaceWithEmoticon);
+        if (action.type === 'message') {
+            var match;
+
+            while (match = regex.exec(action.content))
+                action.content = action.content.replace(match[0], replaceWithEmoticon(match[1]));
+        }
 
         return action;
     };
@@ -20,6 +24,7 @@ var emoticonsPlugin = function emoticonsPlugin() {
     }
 
     var replaceWithEmoticon = function replaceWithEmoticon(match) {
+        console.log('match=' + match);
         return '<img src="images/emoticons/' + emoticons[match] + '" />';
     };
 
