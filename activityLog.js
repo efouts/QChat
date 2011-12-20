@@ -12,6 +12,7 @@ var activityLog = function activityLog() {
 
     this.addEntry = function addEntry(entry) {
         entry.timestamp = new Date();
+        entry.id = log.length;
         log.push(entry);
         self.emit('activity');
     };
@@ -22,16 +23,16 @@ var activityLog = function activityLog() {
 
     this.findAllEntries = function findAllEntries() {
         return log;
-    }; 
+    };
 
     this.findEntries = function findEntries(since) {
         var entries = [];
         var i = log.length - 1;
 
-        while (i >= 0 && log[i].timestamp > since)
-            entries.unshift(log[i--]);
+        while (i >= 0 && log[i].id > since)
+            entries.unshift(log[i--]);        
 
-        return entries;        
+        return entries;
     };
 };
 

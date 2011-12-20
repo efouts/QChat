@@ -7,7 +7,7 @@ var activityController = function activityController(activityLog, connectionPool
         if (request.query.since === undefined) {
             entries = activityLog.findAllEntries();
         } else { 
-            var since = new Date(request.query.since);
+            var since = request.query.since;
             entries = activityLog.findEntries(since);
         }
 

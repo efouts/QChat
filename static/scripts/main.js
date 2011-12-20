@@ -1,6 +1,6 @@
 function main(client) {
     var currentStatus = undefined;
-    var lastMessageReceivedDate = undefined;
+    var lastActivityReceivedId = undefined;
     var viewObject;    
     var chatObject;    
     var membersAnimatorObject;
@@ -21,7 +21,7 @@ function main(client) {
         viewObject.messageTextArea.keypress(messageTextAreaOnKeyPress)
             .val('Please type your name into the "Alias" box above to get started');
 
-        client.update(lastMessageReceivedDate, onUpdate);
+        client.update(lastActivityReceivedId, onUpdate);
     };     
 
     var windowKeyDown = function windowKeyDown(event) {
@@ -65,7 +65,7 @@ function main(client) {
     var onUpdate = function onUpdate(activities) {
         if (activities.length) {
             $.each(activities, function (index, activity) {
-                lastMessageReceivedDate = activity.timestamp;
+                lastActivityReceivedId = activity.id;
 
                 if (isMemberActivity(activity))
                     membersObject.displayActivity(activity);
@@ -78,7 +78,7 @@ function main(client) {
             });
         }
 
-        client.update(lastMessageReceivedDate, onUpdate);
+        client.update(lastActivityReceivedId, onUpdate);
     }
 
     var isMemberActivity = function isMemberActivity(activity) {
