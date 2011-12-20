@@ -15,6 +15,7 @@ function chat(view) {
         else
             displayNewActivity(activity, activityHtml);
 
+	window.notify.showNotification(activity);
         scrollChatToNewActivity();
         lastActivityUser = activity.alias;
     };
