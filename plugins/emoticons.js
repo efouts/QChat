@@ -45,7 +45,6 @@ var emoticonsPlugin = function emoticonsPlugin() {
         '>:)': 'devil.gif',
         ':((': 'crying.gif',
         ':))': 'laughing.gif',
-
         ':|': 'straight_face.gif',
         '/:)': 'raised_eyebrows.gif',
         '=))': 'rotfl.gif',
@@ -67,7 +66,6 @@ var emoticonsPlugin = function emoticonsPlugin() {
         ':O)': 'clown.gif',
         '8-}': 'silly.gif',
         '<:-P': 'party.gif',
-
         '(:|': 'yawn.gif',
         '=P~': 'drooling.gif',
         ':-?': 'thinking.gif',
