@@ -55,15 +55,10 @@ function chat(view) {
     };    
 
     var displayNewActivity = function displayNewActivity(activity, activityHtml) {
-        var newActivity = $('<div class="shadowed message">' + activityHtml + '</div>');
-        var newAvatarWrapper = $('<div class="avatar-wrapper"><p>' + activity.alias + '</p></div>');
         var sideToAddTo = activity.alias == view.aliasTextBox.val() ? 'right' : 'left';
 
-        newActivity.addClass('message-' + sideToAddTo);
-        newAvatarWrapper.addClass('avatar-wrapper-' + sideToAddTo);
-
-        chatObject.append(newActivity);
-        chatObject.append(newAvatarWrapper);
+        chatObject.append($('<div class="shadowed message message-' + sideToAddTo + '">' + activityHtml + '</div>'));
+        chatObject.append($('<div class="avatar-wrapper avatar-wrapper-' + sideToAddTo + '"><p>' + activity.alias + '</p></div>'));
     };
 
     var displayContinuedActivity = function displayContinuedActivity(activity, activityHtml) {
