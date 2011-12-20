@@ -59,7 +59,7 @@ function main(client) {
 
     var onSend = function onSend() {
         viewObject.messageTextArea.val('').focus();
-        updateStatus('');
+        updateStatus('ready');
     };
 
     var onUpdate = function onUpdate(activities) {
