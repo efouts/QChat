@@ -4,6 +4,11 @@ var uploads = [];
 
 var filesController = function filesController(activityLog) {
     this.upload = function (request, response) {
+        if (request.headers['x-alias'] == false) {
+            utils.statusResponse(400, response);
+            return;
+        }
+
         var upload = {
             id: uploads.length,
             name: request.headers['x-filename'],
