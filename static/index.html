@@ -9,6 +9,12 @@
     <script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="scripts/jquery.sound.js"></script>
     <script type="text/javascript" src="scripts/client.js"></script>
+    <script type="text/javascript" src="scripts/view.js"></script>
+    <script type="text/javascript" src="scripts/chat.js"></script>
+    <script type="text/javascript" src="scripts/utils.js"></script>
+    <script type="text/javascript" src="scripts/members.animator.js"></script>
+    <script type="text/javascript" src="scripts/members.js"></script>
+    <script type="text/javascript" src="scripts/alias.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
     <script type="text/javascript" src="scripts/notifications.js"></script>
 
@@ -18,6 +24,14 @@
     <meta name="msapplication-tooltip" content="QChat" />
     <meta name="msapplication-starturl" content="./" />
     <meta name="msapplication-window" content="width=1024;height=768" />
+    <script type="text/javascript">
+        var chatClient = new client();
+        var main = new main(chatClient);
+
+        $(document).ready(function () {
+            main.initialize();
+        });
+    </script>
 </head>
 <body>
     <!--<div class="logo">

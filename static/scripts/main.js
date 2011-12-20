@@ -1,177 +1,94 @@
-var client = new chatClient();
+function main(client) {
+    var currentStatus = undefined;
+    var lastMessageReceivedDate = undefined;
+    var lastMessageUser = undefined;
+    var viewObject;    
+    var chatObject;    
+    var membersAnimatorObject;
+    var membersObject;
+    var aliasObject;
 
-$(document).ready(function () {
-    var chat = $('#chat');
-    var messageTextArea = $('#messageTextArea');
-    var sendButton = $('#sendButton');
-    var alias = $('#alias');
-    var membersHeader = $('#membersHeader');
-    var members = $('#members');
-	allowNotifications = $('#enableNotifications');
+    this.initialize = function initialize() {
+        viewObject = new view();
+        chatObject = new chat(viewObject);
+        membersAnimatorObject = new membersAnimator(viewObject);
+        membersObject = new members(viewObject);
+        aliasObject = new alias(viewObject, client);
 
-    client.initialize(messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay);
+        $(window).keydown(windowKeyDown).unload(windowUnload);
 
-    alias.focus();
-    chat.mousewheel(scrollChat);
-    membersHeader.click(membersHeaderClick);
-    $(window).keydown(windowKeyDown);
-});
+        viewObject.messageTextArea.keypress(messageTextAreaOnKeyPress)
+            .val('Please type your name into the "Alias" box above to get started');
 
-function displayContinuedMessage(message) {
-    var messageHtml = message.content.replace(/\n/g, '<br />');
-    var chatMessage = $('#chat').children('.message').last();
+        client.update(lastMessageReceivedDate, onUpdate);
+    };     
 
-    chatMessage.append($('<div class="message-divider"></div>'));
-    chatMessage.append($(getInnerMessageHtml(message)));
-	scrollChatToNewMessage();
-    window.notify.showNotification(message);
-}
+    var windowKeyDown = function windowKeyDown(event) {
+        if (event.which == 40)
+            chatObject.scrollChat(null, -1, 0, -1);
+        else if (event.which == 38)
+            chatObject.scrollChat(null, 1, 0, 1);
+    };
 
-function displayNewMessage(message) {
-    var newMessage = $('<div class="shadowed message">' + getInnerMessageHtml(message) + '</div>');
-    var newAvatarWrapper = $('<div class="avatar-wrapper"><p>' + message.alias + '</p></div>');
+    var windowUnload = function windowUnload() {
+        var currentAlias = aliasObject.getCurrentAlias();
 
-    if (message.alias == client.alias) {
-        newMessage.addClass('message-right');
-        newAvatarWrapper.addClass('avatar-wrapper-right');
-    }
-    else {
-        newMessage.addClass('message-left');
-        newAvatarWrapper.addClass('avatar-wrapper-left');
-    }
+        if (currentAlias !== undefined)
+            client.leave(currentAlias);
+    };
 
-    var chat = $('#chat');
+    var messageTextAreaOnKeyPress = function messageTextAreaOnKeyPress(event) {
+        if (event.which == 13 && !event.shiftKey) {
+            if (viewObject.messageTextArea.val() !== '')
+                client.send(viewObject.aliasTextBox.val(), viewObject.messageTextArea.val(), onSend);
 
-    chat.append(newMessage);
-    chat.append(newAvatarWrapper);
-	scrollChatToNewMessage();
-    window.notify.showNotification(message);
-	//showNotification(message); // gotta figure out a way around this.
-}
-
-function getInnerMessageHtml(data) {
-    var timestamp = format12HourTime(new Date(data.timestamp));
-    var messageHtml = data.content.replace(/\n/g, '<br />');
-
-    return '<span class="timestamp">(' + timestamp + '): </span><span>' + messageHtml + '</span>';
-}
-
-function format12HourTime(dateTime){
-    var hours = dateTime.getHours();
-    var ampm = 'AM';
-
-    if (hours >= 12)
-    {
-        ampm = 'PM';
-        hours -= 12;
-    }
-
-    if (hours === 0)
-        hours = 12;
-
-    var minutes = dateTime.getMinutes();
-    if (minutes < 10)
-        minutes = '0' + minutes;
-
-    var seconds = dateTime.getSeconds();
-    if (seconds < 10)
-        seconds = '0' + seconds;
-
-    return hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-}
-
-function displayNewMember(data) {
-    var membersList = $('#members ol');
-    membersList.append($('<li data="' + data.alias + '"><p><em>' + data.alias + '</em></p></li>'));
-}
-
-function removeMemberFromDisplay(data) {
-    $('#members ol li[data="' + data.alias + '"]').remove();
-}
-
-function updateMemberInDisplay(data) {
-    var memberListItem = $('#members ol li[data="' + data.previousAlias + '"]');
-    var memberText = memberListItem.children('p').children('em');
-
-    memberListItem.attr('data', data.newAlias);
-    memberText.html(data.newAlias);
-}
-
-function updateMemberStatusInDisplay(data) {
-	var memberListItem = $('#members ol li[data="' + data.alias + '"]');
-    var memberText = memberListItem.children('p').children('em');
-	var statusToShow = data.status;
-
-	if (statusToShow == 'ready')
-		statusToShow = '';
-
-    memberText.html(data.alias + ' ' + statusToShow);
-}
-
-function scrollChat(event, delta, deltaX, deltaY) {
-    var chat = $("#chat");
-
-    chat.scrollTop(chat.scrollTop() - (deltaY * 200));
-}
-
-function scrollChatToNewMessage() {
-	var chat = $('#chat');
-	chat.scrollTop(chat[0].scrollHeight);
-}
-
-function windowKeyDown(event) {
-    if (event.which == 40)
-        scrollChat(null, -1, 0, -1);
-    else if (event.which == 38)
-        scrollChat(null, 1, 0, 1);
-}
-
-function membersHeaderClick() {
-    var chatWrapper = $('#chatWrapper');
-    var membersWrapper = $('#membersWrapper');
-    var members = $('#members');
-
-    if (members.hasClass('members-pinned'))
-        maximizeMembers(chatWrapper, membersWrapper, members);
-    else
-        minimizeMembers(chatWrapper, membersWrapper, members);
-}
-
-function maximizeMembers(chatWrapper, membersWrapper, members) {
-    chatWrapper.css("width", "78%");
-    membersWrapper.css("width", "22%");
-
-    members.animate({
-        width: "90%"
-    }, {
-        duration: 400,
-        complete: function () {
-            $(this).animate({
-                height: "100%"
-            }, 200);
+            event.preventDefault();
+        } else {
+            updateStatus('typing');
         }
-    });
+    };
 
-    members.removeClass("members-pinned");
-}
+    var updateStatus = function updateStatus(status) {
+        if (currentStatus === status)
+            return;
 
-function minimizeMembers(chatWrapper, membersWrapper, members) {
-    members.animate({
-        height: "50px"
-    }, {
-        duration: 200,
-        complete: function () {
-            $(this).animate({
-                width: "55px"
-            }, {
-                duration: 400,
-                complete: function () {
-                    membersWrapper.css("width", "10%");
-                    chatWrapper.css("width", "90%");
+        currentStatus = status;
+        client.status(aliasObject.getCurrentAlias(), status);
+    };
+
+    var onSend = function onSend() {
+        viewObject.messageTextArea.val('').focus();
+        updateStatus('');
+    };
+
+    var onUpdate = function onUpdate(updates) {
+        if (updates.length) {
+            $.each(updates, function (index, update) {
+                lastMessageReceivedDate = update.timestamp;
+
+                if (update.type == 'join') {
+                    membersObject.displayNewMember(update);
+                }
+                else if (update.type == 'leave') {
+                    membersObject.removeMemberFromDisplay(update);
+                }
+                else if (update.type == 'alias') {
+                    membersObject.updateMemberInDisplay(update);
+                }
+                else if (update.type == 'status') {
+                    membersObject.updateMemberStatusInDisplay(update);
+                }
+                else {
+                    if (lastMessageUser === update.alias)
+                        chatObject.displayContinuedMessage(update);
+                    else
+                        chatObject.displayNewMessage(update);
+
+                    lastMessageUser = update.alias;
                 }
             });
-
-            $(this).addClass("members-pinned");
         }
-    });
+
+        client.update(lastMessageReceivedDate, onUpdate);
+    }
 }
