@@ -10,6 +10,14 @@
     <script type="text/javascript" src="scripts/jquery.sound.js"></script>
     <script type="text/javascript" src="scripts/client.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
+    <script type="text/javascript" src="scripts/notifications.js"></script>
+
+    <link id="Link1" rel="shortcut icon" href="images/q-logo.ico" type="image/x-icon" />
+    <link id="Link2" rel="icon" href="images/q-logo.ico" type="image/x-icon" />
+    <meta name="application-name" content="QChat" />
+    <meta name="msapplication-tooltip" content="QChat" />
+    <meta name="msapplication-starturl" content="./" />
+    <meta name="msapplication-window" content="width=1024;height=768" />
 </head>
 <body>
     <!--<div class="logo">
@@ -24,6 +32,12 @@
     </div>
     <div class="left-logo shadowed transparent-border rounded-border rotated-negative-ninety">
         <img alt="QChat" src="images/aside-logo.png" />
+    </div>
+    <div class="settings shadowed transparent-border rounded-border">
+        <h2>Settings:</h2>
+        <br />
+        <input id="enableNotifications" type="checkbox">
+        <label for="enableNotifications">Enable Notficiations</label>
     </div>
     <div class="alias shadowed transparent-border rounded-border">
         <h1>Alias:</h1>
@@ -40,14 +54,14 @@
                         <h1>Members</h1>
                         <img alt="Members" src="images/members.png" />
                     </div>
-                    <ol></ol>                
+                    <ol></ol>
                 </div>
             </div>
-        </div>  
+        </div>
         <div class="footer shadowed rounded-border">
             <textarea rows="1" cols="1" id="messageTextArea"></textarea>
             <input type="submit" value="Send" id="sendButton" />
-        </div> 
+        </div>
     </div>
 </body>
 </html>

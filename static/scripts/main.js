@@ -7,6 +7,7 @@ $(document).ready(function () {
     var alias = $('#alias');
     var membersHeader = $('#membersHeader');
     var members = $('#members');
+	allowNotifications = $('#enableNotifications');
 
     client.initialize(messageTextArea, sendButton, alias, displayContinuedMessage, displayNewMessage, displayNewMember, removeMemberFromDisplay, updateMemberInDisplay, updateMemberStatusInDisplay);
 
@@ -23,6 +24,7 @@ function displayContinuedMessage(message) {
     chatMessage.append($('<div class="message-divider"></div>'));
     chatMessage.append($(getInnerMessageHtml(message)));
 	scrollChatToNewMessage();
+    window.notify.showNotification(message);
 }
 
 function displayNewMessage(message) {
@@ -43,6 +45,8 @@ function displayNewMessage(message) {
     chat.append(newMessage);
     chat.append(newAvatarWrapper);
 	scrollChatToNewMessage();
+    window.notify.showNotification(message);
+	//showNotification(message); // gotta figure out a way around this.
 }
 
 function getInnerMessageHtml(data) {
