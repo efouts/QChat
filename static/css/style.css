@@ -97,7 +97,7 @@ ul
     height: 22px;
     margin-left: 20px;
     margin-right: 5px;
-    width: 60%;
+    width: 75%;
 }
 
 .footer input[type=submit]
@@ -204,6 +204,21 @@ ul
 .members ol li p em
 {
     display: block;
+}
+
+.members ol li p em img
+{
+    margin-left: 10px;
+}
+
+.status-typing p em img
+{
+    display: inline;
+}
+
+.status-ready p em img
+{
+    display: none;
 }
 
 .members-header
@@ -339,11 +354,17 @@ ul
 
 .message-right
 {
+    background: #002944;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#4BB5F3), to(#002944));
+    background: -moz-linear-gradient(#4BB5F3, #002944);
+    background: -o-linear-gradient(#4BB5F3, #002944);
+    background: linear-gradient(#4BB5F3, #002944);
     float: right;
 }
 
 .message-right:after
 {
+    border-color: transparent #002944;
     border-width: 0 20px 30px 0px;
     right: 50px;
 }
@@ -379,7 +400,7 @@ ul
     margin-left: -79px;
     position: absolute;
     text-align: center;
-    top: 350px;
+    top: 45%;
     width: 182px;
 }
 

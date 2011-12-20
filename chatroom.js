@@ -1,36 +1,29 @@
-var events = require('events');
-var util = require('util');
-var utils = require('./utilities.js');
-
-var chatroom = function chatroom(plugins) {
-    events.EventEmitter.call(this);
-    var self = this;
-    var activity = [];
+var chatroom = function chatroom(activityLog) {
     var messageCount = 0;
 
     this.join = function join(alias) {
-        var action = { type: 'join', alias: alias};
-        addActivity(action);    
+        var entry = { type: 'join', alias: alias};
+        activityLog.addEntry(entry);    
     };
 
     this.leave = function leave(alias) {
-        var action = { type: 'leave', alias: alias };
-        addActivity(action);
+        var entry = { type: 'leave', alias: alias };
+        activityLog.addEntry(entry);
     };
 
     this.changeAlias = function changeAlias(previousAlias, newAlias) {
-        var action = { type: 'alias', previousAlias: previousAlias, newAlias: newAlias };
-        addActivity(action);
+        var entry = { type: 'alias', previousAlias: previousAlias, newAlias: newAlias };
+        activityLog.addEntry(entry);
     };
 	
 	this.changeStatus = function changeStatus(alias, status) {
-		var action = { type: 'status', alias: alias, status: status };
-		addActivity(action);
+		var entry = { type: 'status', alias: alias, status: status };
+        activityLog.addEntry(entry);
 	};
 
     this.sendMessage = function sendMessage(alias, content) {
-        var action = { type: 'message', alias: alias, content: content };		
-        addActivity(action);
+        var entry = { type: 'message', alias: alias, content: content };		
+        activityLog.addEntry(entry);
 
         if (messageCount === 1000)
             trimOldestMessage();
@@ -38,52 +31,16 @@ var chatroom = function chatroom(plugins) {
             messageCount++;
     };
 
-    this.findAllActivity = function findAllActivity() {        
-        return activity.map(applyPlugins);
-    };
+    var trimOldestMessageEntry = function trimOldestMessageEntry() {
+        var entries = activityLog.findAllEntries();
 
-    this.findActivity = function findActivity(since) {
-        var activitySince = [];
-        var i = activity.length - 1;
-
-        while (i >= 0 && activity[i].timestamp > since )
-            activitySince.unshift(activity[i--]);			
-
-        return activitySince.map(applyPlugins);
-    };
-
-    var addActivity = function addActivity(action) {
-        action.timestamp = new Date();
-        activity.push(action);
-        self.emit('activity');
-    };
-
-    var applyPlugins = function applyPlugins(action) {
-		var clonedAction = utils.clone(action);
-		
-        for(i = 0; i < plugins.length; i++)
-            clonedAction = tryApplyPlugin(plugins[i], clonedAction);
-
-        return clonedAction;
-    };
-
-    var tryApplyPlugin = function tryApplyPlugin(plugin, action) {
-        try {
-            return plugin.apply(action);
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    var trimOldestMessage = function trimOldestMessage() {
-        for (i = 0; i < activity.length; i++) {
-            if (activity[i].type === 'message') {
-                activity.splice(i, 1);
+        for (i = 0; i < entries.length; i++) {
+            if (entries[i].type === 'message') {
+                activityLog.removeEntry(i);
                 break;
             }
         }
     };
 };
 
-util.inherits(chatroom, events.EventEmitter);
 module.exports = chatroom;

@@ -1,12 +1,12 @@
 function main(client) {
     var currentStatus = undefined;
-    var lastMessageReceivedDate = undefined;
-    var lastMessageUser = undefined;
+    var lastActivityReceivedId = undefined;
     var viewObject;    
     var chatObject;    
     var membersAnimatorObject;
     var membersObject;
     var aliasObject;
+    var fileUploaderObject;
 
     this.initialize = function initialize() {
         viewObject = new view();
@@ -14,13 +14,14 @@ function main(client) {
         membersAnimatorObject = new membersAnimator(viewObject);
         membersObject = new members(viewObject);
         aliasObject = new alias(viewObject, client);
-
+        fileUploaderObject = new fileUploader(viewObject);
+        
         $(window).keydown(windowKeyDown).unload(windowUnload);
 
         viewObject.messageTextArea.keypress(messageTextAreaOnKeyPress)
             .val('Please type your name into the "Alias" box above to get started');
 
-        client.update(lastMessageReceivedDate, onUpdate);
+        client.update(lastActivityReceivedId, onUpdate);
     };     
 
     var windowKeyDown = function windowKeyDown(event) {
@@ -58,37 +59,38 @@ function main(client) {
 
     var onSend = function onSend() {
         viewObject.messageTextArea.val('').focus();
-        updateStatus('');
+        updateStatus('ready');
     };
 
-    var onUpdate = function onUpdate(updates) {
-        if (updates.length) {
-            $.each(updates, function (index, update) {
-                lastMessageReceivedDate = update.timestamp;
+    var onUpdate = function onUpdate(activities) {
+        if (activities.length) {
+            $.each(activities, function (index, activity) {
+                lastActivityReceivedId = activity.id;
 
-                if (update.type == 'join') {
-                    membersObject.displayNewMember(update);
-                }
-                else if (update.type == 'leave') {
-                    membersObject.removeMemberFromDisplay(update);
-                }
-                else if (update.type == 'alias') {
-                    membersObject.updateMemberInDisplay(update);
-                }
-                else if (update.type == 'status') {
-                    membersObject.updateMemberStatusInDisplay(update);
-                }
-                else {
-                    if (lastMessageUser === update.alias)
-                        chatObject.displayContinuedMessage(update);
-                    else
-                        chatObject.displayNewMessage(update);
-
-                    lastMessageUser = update.alias;
-                }
+                if (isMemberActivity(activity))
+                    membersObject.displayActivity(activity);
+                else if (isChatActivity(activity))
+                    chatObject.displayActivity(activity);
+            });
+            
+            $('.chat-image').fancybox({
+                type: 'image'
             });
         }
 
-        client.update(lastMessageReceivedDate, onUpdate);
+        client.update(lastActivityReceivedId, onUpdate);
     }
+
+    var isMemberActivity = function isMemberActivity(activity) {
+        return activity.type == 'join' || 
+               activity.type == 'leave' ||
+               activity.type == 'alias' || 
+               activity.type == 'status';
+    };
+
+    var isChatActivity = function isChatActivity(activity) {
+        return activity.type == 'file' || 
+               activity.type == 'image' || 
+               activity.type == 'message';
+    };
 }
