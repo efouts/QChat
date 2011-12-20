@@ -72,6 +72,10 @@ function main(client) {
                 else if (isChatActivity(activity))
                     chatObject.displayActivity(activity);
             });
+            
+            $('.chat-image').fancybox({
+                type: 'image'
+            });
         }
 
         client.update(lastMessageReceivedDate, onUpdate);

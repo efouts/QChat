@@ -33,9 +33,11 @@ function chat(view) {
     };
 
     var getTimeStampHtml = function getTimeStampHtml(activity) {
-        var timestamp = utilsObject.format12HourTime(new Date(activity.timestamp));
-
-        return '<span class="timestamp">(' + timestamp + '): </span>';
+        return '<span class="timestamp">(' + getFormattedTime(activity.timestamp) + '): </span>';
+    };
+    
+    var getFormattedTime = function getFormattedTime(timestamp) {
+        return utilsObject.format12HourTime(new Date(timestamp));
     };
 
     var getFileHtml = function getFileHtml(activity) {
@@ -43,7 +45,9 @@ function chat(view) {
     };
 
     var getImageHtml = function getImageHtml(activity) {
-        return '<span><img alt="' + activity.name + '" src="' + activity.path + '" /></span>';
+        var title = activity.name + ' - Uploaded by ' + activity.alias + ' at ' + getFormattedTime(activity.timestamp);
+        
+        return '<span><a class="chat-image" href="' + activity.path + '" data-fancybox-group="gallery" title="' + title + '">' + activity.name + '</a></span>';
     };
 
     var getMessageHtml = function getMessageHtml(activity) {
