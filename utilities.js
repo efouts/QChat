@@ -14,6 +14,14 @@ module.exports.statusResponse = function statusResponse(status, response) {
     response.end();
 };
 
+module.exports.isAvailable = function isAvailable(arguments) {
+  for (i = 0; i < arguments.length; i++)
+    if (arguments[i] === undefined)
+      return false;
+
+  return true;
+};
+
 module.exports.clone = function clone(object) {
 	var clone = {};
 	

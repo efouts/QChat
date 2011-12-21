@@ -4,24 +4,28 @@ var uploads = [];
 
 var filesController = function filesController(activityLog) {
     this.upload = function (request, response) {
-        if (request.headers['x-alias'] == false) {
+        var filename = request.headers['x-filename'];
+        var contentLength = request.headers['content-length'];
+        var alias = request.headers['x-alias'];
+
+        if (utils.isAvailable([ filename, contentLength, alias ]) == false) {
             utils.statusResponse(400, response);
             return;
         }
 
         var upload = {
             id: uploads.length,
-            name: request.headers['x-filename'],
-            contentLength: request.headers['content-length'],
+            name: filename,
+            contentLength: contentLength,
             data: []
         };
 
-        var fileIsImage = isImage(request.headers['x-filename']);
+        var fileIsImage = isImage(filename);
 
         var entry = {
             type: fileIsImage ? 'image' : 'file',
-            alias: request.headers['x-alias'],
-            name: request.headers['x-filename'],
+            alias: alias,
+            name: filename,
             path: '/download/' + upload.id
         };
 
@@ -41,11 +45,18 @@ var filesController = function filesController(activityLog) {
     };
 
     this.download = function (request, response) {
-        var upload = uploads[request.params.id];
+        var id = request.params.id;
+
+        if (utils.isAvailable([ id ]) == false) {
+          utils.statusResponse(400, response);
+          return;
+        }
+
+        var upload = uploads[id];
 
         if (!upload) {
             response.writeHead(404);
-            response.end('Cannot get /download/' + request.params.id);
+            response.end('Cannot get /download/' + id);
             return;
         }
 
