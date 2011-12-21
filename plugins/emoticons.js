@@ -1,11 +1,7 @@
 var emoticonsPlugin = function emoticonsPlugin() {
     this.apply = function apply(action) {
-        if (action.type === 'message') {
-            var match;
-
-            while (match = regex.exec(action.content))
-                action.content = action.content.replace(match[0], replaceWithEmoticon(match[1]));
-        }
+        if (action.type === 'message')
+            action.content = action.content.replace(emoticonRegex, replaceWithEmoticon);        
 
         return action;
     };
@@ -16,7 +12,7 @@ var emoticonsPlugin = function emoticonsPlugin() {
         for (var key in emoticons)
             keys.push(escapeKey(key));
 
-        return new RegExp('(' + keys.join('|') + ')');
+        return new RegExp('(' + keys.join('|') + ')', 'g');
     };
 
     var escapeKey = function escapeKey(key) {
@@ -24,7 +20,6 @@ var emoticonsPlugin = function emoticonsPlugin() {
     }
 
     var replaceWithEmoticon = function replaceWithEmoticon(match) {
-        console.log('match=' + match);
         return '<img src="images/emoticons/' + emoticons[match] + '" />';
     };
 
@@ -92,7 +87,7 @@ var emoticonsPlugin = function emoticonsPlugin() {
         ':ar!': 'pirate.gif'
     };
 
-    var regex = buildRegex();
+    var emoticonRegex = buildRegex();
 };
 
 module.exports = emoticonsPlugin;
