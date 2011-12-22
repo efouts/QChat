@@ -242,7 +242,6 @@ ul
 
 .avatar-wrapper img
 {
-    /*background-clip: padding-box;     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);     -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);     -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);*/
     height: 50px;
     width: 50px;
     z-index: 5;
@@ -349,17 +348,17 @@ ul
 
 .message-right
 {
-    background: #002944;
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#4BB5F3), to(#002944));
-    background: -moz-linear-gradient(#4BB5F3, #002944);
-    background: -o-linear-gradient(#4BB5F3, #002944);
-    background: linear-gradient(#4BB5F3, #002944);
+    background: #E0A830;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF0B0), to(#E0A830));
+    background: -moz-linear-gradient(#FFF0B0, #E0A830);
+    background: -o-linear-gradient(#FFF0B0, #E0A830);
+    background: linear-gradient(#FFF0B0, #E0A830);
     float: right;
 }
 
 .message-right:after
 {
-    border-color: transparent #002944;
+    border-color: transparent #E0A830;
     border-width: 0 20px 30px 0px;
     right: 50px;
 }
@@ -368,35 +367,6 @@ ul
 {
     color: Black;
     font-style: italic;
-}
-
-.alias
-{
-    background-image: url('../images/background-lines.png');
-    height: 60px;
-    left: 60%;
-    margin-top: -8px;
-    padding-left: 20px;
-    position: absolute;
-    top: 0;
-    width: 300px;
-}
-
-.alias input[type=text]
-{
-    width: 200px;
-}
-
-.left-logo
-{
-    cursor: pointer;
-    height: 44px;
-    left: 0;
-    margin-left: -79px;
-    position: absolute;
-    text-align: center;
-    top: 45%;
-    width: 182px;
 }
 
 .shadowed
@@ -410,30 +380,6 @@ ul
 .transparent-border
 {
     border: 8px solid transparent;
-}
-
-.black-border
-{
-    border: 8px solid #333333;
-}
-
-.gray-border
-{
-    border: 8px solid rgba(232, 232, 232, 0.2);
-}
-
-.rotated-ninety
-{
-    -ms-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-}
-
-.rotated-negative-ninety
-{
-    -ms-transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
 }
 
 .rounded-border
@@ -494,32 +440,37 @@ ul
 input[type="checkbox"], input[type="radio"]
 {
     -khtml-appearance: none;
-    background: url('../images/radioandcheckboxsprite.gif') no-repeat;
-    width: 20px;
+    background: url('../images/radio-and-check-box-sprite.gif') no-repeat;
     height: 20px;
+    width: 20px;
     vertical-align: middle;
 }
+
 input[type="checkbox"]
 {
     background-position-x: left;
 }
+
 input[type="radio"]
 {
     background-position-x: right;
 }
+
 input[type="checkbox"]:hover, input[type="radio"]:hover
 {
     background-position-y: -40px;
 }
+
 input[type="checkbox"]:checked, input[type="radio"]:checked
 {
     background-position-y: -20px;
 }
+
 input[type="checkbox"]:checked:hover, input[type="radio"]:checked:hover
 {
     background-position-y: -60px;
 }
-/* disabled settings for checkbox and radiobutton */
+
 input[type="radio"]:disabled, input[type="checkbox"]:disabled
 {
     opacity: .3;
