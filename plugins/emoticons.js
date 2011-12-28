@@ -81,8 +81,8 @@ var emoticonsPlugin = function emoticonsPlugin() {
         'X_X': 'dont_wanna_see.gif',
         ':!!': 'hurry_up.gif',
         '\m/': 'rock_on.gif',
-        ':-q': 'thumbs_down.gif',
-        ':-bd': 'thumbs_up.gif',
+        ':-q': 'thumb_down.gif',
+        ':-bd': 'thumb_up.gif',
         '^#(^': 'it_wasnt_me.gif',
         ':ar!': 'pirate.gif'
     };
