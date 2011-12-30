@@ -11,7 +11,8 @@ function client() {
 
     this.leave = function leave(alias, callback) {
         var data = { alias: alias };
-        $.post('/leave', data).complete(callback);
+        $.ajax({ url : '/leave', async: false, type: 'POST', data: { alias: alias }});
+        callback();
     };
 
     this.update = function update(since, callback) {
