@@ -143,13 +143,6 @@ ul
     overflow-y: hidden;
     padding: 0;
     position: relative;
-    scrollbar-arrow-color: #000000;
-    scrollbar-darkshadow-color: #000000;
-    scrollbar-face-color: #FFFFFF;
-    scrollbar-highlight-color: #FFFFFF;
-    scrollbar-shadow-color: #E8E8E8E;
-    scrollbar-track-color: #E8E8E8;
-    scrollbar-3dlight-color: #E8E8E8E;
 }
 
 .members-wrapper
@@ -237,7 +230,6 @@ ul
 {
     height: 30px;
     margin-bottom: 10px;
-    width: 50%;
 }
 
 .avatar-wrapper img
@@ -295,6 +287,11 @@ ul
     margin-top: -20px;
 }
 
+.avatar-wrapper + div
+{
+    clear: both;
+}
+
 .message
 {
     background: #5a8f00;
@@ -307,10 +304,11 @@ ul
     -webkit-border-radius: 10px;
     color: #fff;
     margin: 10px;
+    max-width: 60%;
+    min-width: 20%;
     min-height: 10px;
     padding: 10px 30px;
     position: relative;
-    width: 60%;
     z-index: 1;
 }
 
@@ -457,7 +455,6 @@ ul
     width: 20px;
 }
 
-/* common settings checkbox and radiobutton */
 input[type="checkbox"], input[type="radio"]
 {
     -khtml-appearance: none;
