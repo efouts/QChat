@@ -1,7 +1,7 @@
 var emoticonsPlugin = function emoticonsPlugin() {
     this.apply = function apply(action) {
         if (action.type === 'message')
-            action.content = action.content.replace(emoticonRegex, replaceWithEmoticon);        
+            action.content = action.content.replace(emoticonRegex, replaceWithEmoticon);
 
         return action;
     };
@@ -12,12 +12,12 @@ var emoticonsPlugin = function emoticonsPlugin() {
         for (var key in emoticons)
             keys.push(escapeKey(key));
 
-        return new RegExp('(' + keys.join('|') + ')', 'g');
+        return new RegExp('\\B' + keys.join('|') + '\\B', 'g');
     };
 
     var escapeKey = function escapeKey(key) {
         return key.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-    }
+    };
 
     var replaceWithEmoticon = function replaceWithEmoticon(match) {
         return '<img src="images/emoticons/' + emoticons[match] + '" />';
@@ -80,7 +80,7 @@ var emoticonsPlugin = function emoticonsPlugin() {
         '<):)': 'cowboy.gif',
         'X_X': 'dont_wanna_see.gif',
         ':!!': 'hurry_up.gif',
-        '\m/': 'rock_on.gif',
+        '\\m/': 'rock_on.gif',
         ':-q': 'thumb_down.gif',
         ':-bd': 'thumb_up.gif',
         '^#(^': 'it_wasnt_me.gif',
