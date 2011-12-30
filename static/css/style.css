@@ -444,6 +444,7 @@ ul
 
 #whiteboardCanvas
 {
+    background-color: White;
     border: solid 3px Black;
     height: 600px;
     width: 800px;
