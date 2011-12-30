@@ -25,6 +25,8 @@
     <script type="text/javascript" src="scripts/alias.js"></script>
     <script type="text/javascript" src="scripts/file.uploader.js"></script>
     <script type="text/javascript" src="scripts/notifications.js"></script>
+    <script type="text/javascript" src="scripts/whiteboard-edit.js"></script>
+    <script type="text/javascript" src="scripts/whiteboard.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
 
     <link id="Link1" rel="shortcut icon" href="images/q-logo.ico" type="image/x-icon" />
@@ -48,7 +50,8 @@
             <h1>QChat</h1>
         </div>
         <div class="settings">
-            <label for="enableNotifications">Enable Notifications</label>
+            <label id="whiteboard" href="#whiteboardHolder">Whiteboard</label>
+            <label for="enableNotifications"> | Enable Notifications</label>
             <input id="enableNotifications" type="checkbox" />
             <label for="alias"> | Alias:</label>
             <input type="text" id="alias" />
@@ -71,6 +74,16 @@
         </div>
         <div class="footer shadowed rounded-border">
             <textarea rows="1" cols="1" id="messageTextArea"></textarea>
+        </div>
+    </div>
+    <div style="display:none">
+        <div id="whiteboardHolder">
+            <canvas id="whiteboardCanvas" width="800" height="600"></canvas>
+            <div>
+                <img alt="Marker" src="images/marker-icon.png" id="markerIcon" />
+                <img alt="Eraser" src="images/eraser-icon.png" id="eraserIcon" />
+                <img alt="Clear Canvas" src="images/delete-icon.png" id="deleteIcon" />
+            </div>
         </div>
     </div>
 </body>

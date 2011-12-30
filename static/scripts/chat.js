@@ -46,9 +46,48 @@ function chat(view) {
     };
 
     var getImageHtml = function getImageHtml(activity) {
+        /*var image = new Image();
+        image.onload = function () {
+            this.onload = this.onerror = null;
+
+            F.coming.width = this.width;
+            F.coming.height = this.height;
+
+            F._afterLoad();
+        };*/
+            
         var title = activity.name + ' - Uploaded by ' + activity.alias + ' at ' + getFormattedTime(activity.timestamp);
         
         return '<span><a class="chat-image" href="' + activity.path + '" data-fancybox-group="gallery" title="' + title + '">' + activity.name + '</a></span>';
+    };
+    
+    var getImageThumbnailDimension = function getImageThumbnailDimension() {
+        var ratio = this.width / this.height;
+        var maxWidth = 50;
+        var maxHeight = 50;
+        var width = 0;
+        var height = 0;
+        var padding2 = 0;
+        
+        if (width > maxWidth) {
+            width = maxWidth;
+            height = ((width - padding2) / ratio) + padding2;
+        }
+
+        if (height > maxHeight) {
+            height = maxHeight;
+            width = ((height - padding2) * ratio) + padding2;
+        }
+
+        if (width < minWidth) {
+            width = minWidth;
+            height = ((width - padding2) / ratio) + padding2;
+        }
+
+        if (height < minHeight) {
+            height = minHeight;
+            width = ((height - padding2) * ratio) + padding2;
+        }
     };
 
     var getMessageHtml = function getMessageHtml(activity) {

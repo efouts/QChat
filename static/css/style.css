@@ -353,6 +353,7 @@ ul
     background: -moz-linear-gradient(#FFF0B0, #E0A830);
     background: -o-linear-gradient(#FFF0B0, #E0A830);
     background: linear-gradient(#FFF0B0, #E0A830);
+    color: Black;
     float: right;
 }
 
@@ -434,6 +435,20 @@ ul
     font-style: italic;
     padding-right: 2.5%;
     padding-top: 10px;
+}
+
+#whiteboardCanvas
+{
+    border: solid 3px Black;
+    height: 600px;
+    width: 800px;
+}
+
+#whiteboardHolder img
+{
+    border: none;
+    height: 20px;
+    width: 20px;
 }
 
 /* common settings checkbox and radiobutton */
