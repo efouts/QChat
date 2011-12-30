@@ -357,6 +357,11 @@ ul
     float: right;
 }
 
+.message-right a
+{
+    color: Black;
+}
+
 .message-right:after
 {
     border-color: transparent #E0A830;
