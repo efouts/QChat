@@ -353,6 +353,7 @@ ul
     background: -moz-linear-gradient(#FFF0B0, #E0A830);
     background: -o-linear-gradient(#FFF0B0, #E0A830);
     background: linear-gradient(#FFF0B0, #E0A830);
+    color: Black;
     float: right;
 }
 
