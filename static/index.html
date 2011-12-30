@@ -50,7 +50,7 @@
             <h1>QChat</h1>
         </div>
         <div class="settings">
-            <label id="whiteboard" href="#whiteboardHolder">Whiteboard</a>
+            <label id="whiteboard" href="#whiteboardHolder">Whiteboard</label>
             <label for="enableNotifications"> | Enable Notifications</label>
             <input id="enableNotifications" type="checkbox" />
             <label for="alias"> | Alias:</label>
@@ -79,6 +79,11 @@
     <div style="display:none">
         <div id="whiteboardHolder">
             <canvas id="whiteboardCanvas" width="800" height="600"></canvas>
+            <div>
+                <img alt="Marker" src="images/marker-icon.png" id="markerIcon" />
+                <img alt="Eraser" src="images/eraser-icon.png" id="eraserIcon" />
+                <img alt="Clear Canvas" src="images/delete-icon.png" id="deleteIcon" />
+            </div>
         </div>
     </div>
 </body>

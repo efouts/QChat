@@ -443,6 +443,13 @@ ul
     width: 800px;
 }
 
+#whiteboardHolder img
+{
+    border: none;
+    height: 20px;
+    width: 20px;
+}
+
 /* common settings checkbox and radiobutton */
 input[type="checkbox"], input[type="radio"]
 {
