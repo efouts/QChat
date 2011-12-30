@@ -7,6 +7,7 @@ function main(client) {
     var membersObject;
     var aliasObject;
     var fileUploaderObject;
+    var whiteboardObject;
 
     this.initialize = function initialize() {
         viewObject = new view();
@@ -15,6 +16,7 @@ function main(client) {
         membersObject = new members(viewObject);
         aliasObject = new alias(viewObject, client);
         fileUploaderObject = new fileUploader(viewObject);
+        whiteboardObject = new whiteboard(viewObject);
         
         $(window).keydown(windowKeyDown).unload(windowUnload);
 

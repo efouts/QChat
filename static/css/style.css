@@ -436,6 +436,13 @@ ul
     padding-top: 10px;
 }
 
+#whiteboardCanvas
+{
+    border: solid 3px Black;
+    height: 600px;
+    width: 800px;
+}
+
 /* common settings checkbox and radiobutton */
 input[type="checkbox"], input[type="radio"]
 {
