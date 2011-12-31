@@ -4,6 +4,7 @@ function chat(view) {
     var lastActivityUser = undefined;
 
     this.scrollChat = function scrollChat(event, delta, deltaX, deltaY) {
+        event.preventDefault();
         chatObject.scrollTop(chatObject.scrollTop() - (deltaY * 200));
     };
 
@@ -15,7 +16,7 @@ function chat(view) {
         else
             displayNewActivity(activity, activityHtml);
 
-	window.notify.showNotification(activity);
+        window.notify.showNotification(activity);
         scrollChatToNewActivity();
         lastActivityUser = activity.alias;
     };
@@ -45,17 +46,7 @@ function chat(view) {
         return '<span><a href="' + activity.path + '" target="_blank">' + activity.name + '</a></span>';
     };
 
-    var getImageHtml = function getImageHtml(activity) {
-        /*var image = new Image();
-        image.onload = function () {
-            this.onload = this.onerror = null;
-
-            F.coming.width = this.width;
-            F.coming.height = this.height;
-
-            F._afterLoad();
-        };*/
-            
+    var getImageHtml = function getImageHtml(activity) {            
         var title = activity.name + ' - Uploaded by ' + activity.alias + ' at ' + getFormattedTime(activity.timestamp);
         
         return '<span><a class="chat-image" href="' + activity.path + '" data-fancybox-group="gallery" title="' + title + '">' + activity.name + '</a></span>';
@@ -112,5 +103,5 @@ function chat(view) {
         chatObject.scrollTop(chatObject[0].scrollHeight);
     };
 
-    chatObject.mousewheel(this.scrollChat);
+    chatObject.lionbars();
 };

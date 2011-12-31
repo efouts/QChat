@@ -156,25 +156,25 @@ function whiteboard(view, client) {
     
     this.displayActivity = function displayActivity(activity) {
         if (activity.type == 'edit-whiteboard')
-            addEdits(activity.points, activity.size, activity.color, activity.tool);
+            addEdits(activity);
         else if (activity.type == 'clear-whiteboard')
             clearCanvas();
     };
     
-    var addEdits = function addEdits(jsonPoints, size, color, tool) {
+    var addEdits = function addEdits(activity) {
         var oldSize = currentSize;
         var oldColor = currentColor;
         var oldTool = currentTool;
-        currentSize = size;
-        currentColor = color;
-        currentTool = tool;
+        currentSize = activity.size;
+        currentColor = activity.color;
+        currentTool = activity.tool;
         
         var newPoints = new Array();
         
-        for (var i = 0; i < jsonPoints.length; i++) {
+        for (var i = 0; i < activity.points.length; i++) {
             var newPoint = new point(
-                parseInt(jsonPoints[i].x), 
-                parseInt(jsonPoints[i].y));
+                parseInt(activity.points[i].x), 
+                parseInt(activity.points[i].y));
                 
             newPoints.push(newPoint);
         }
