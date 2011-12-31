@@ -1,17 +1,13 @@
-function whiteboard(view) {
+function whiteboard(view, client) {
     var canvas = document.getElementById('whiteboardCanvas');
     var context = canvas.getContext('2d');
     var currentSize = 'small';
     var currentTool = 'marker';
-    var edits = new Array();
+    var points = new Array();
     var currentColor = '#659b41';
     var paint = false;
     var canvasHeight = 600;
     var canvasWidth = 800;
-    var drawingAreaX = 0;
-    var drawingAreaY = 0;
-    var drawingAreaWidth = 800;
-    var drawingAreaHeight = 600;
 
     $('#whiteboard').fancybox();
     $('#markerIcon').click(function () {
@@ -24,18 +20,19 @@ function whiteboard(view) {
 
     $('#deleteIcon').click(function () {
         clearCanvas();
-        edits = new Array();
+        client.clearWhiteboard(view.aliasTextBox.val());
     });
 
     view.whiteboardCanvas.mousedown(function (eventData) {
         paint = true;
-        addEdit(getMouseClickX(eventData, this), getMouseClickY(eventData, this), false);
+        points = new Array();
+        addPoint(getMouseClickX(eventData, this), getMouseClickY(eventData, this), false);
         draw();
     });
 
     view.whiteboardCanvas.mousemove(function (eventData) {
         if (paint == true) {
-            addEdit(getMouseClickX(eventData, this), getMouseClickY(eventData, this), true);
+            addPoint(getMouseClickX(eventData, this), getMouseClickY(eventData, this), true);
             draw();
         }
     });
@@ -43,18 +40,50 @@ function whiteboard(view) {
     view.whiteboardCanvas.mouseup(function (eventData) {
         paint = false;
         draw();
+        sendEdits();
     });
 
     view.whiteboardCanvas.mouseleave(function (eventData) {
         paint = false;
+        sendEdits();
     });
-
-    this.getEdits = function getEdits() {
-        return edits;
+    
+    this.displayActivity = function displayActivity(activity) {
+        if (activity.type == 'edit-whiteboard')
+            addEdits(activity.points, activity.size, activity.color, activity.tool);
+        else if (activity.type == 'clear-whiteboard')
+            clearCanvas();
     };
-
-    this.setEdits = function setEdits(newEdits) {
-        edits = newEdits;
+    
+    var addEdits = function addEdits(jsonPoints, size, color, tool) {
+        var oldSize = currentSize;
+        var oldColor = currentColor;
+        var oldTool = currentTool;
+        currentSize = size;
+        currentColor = color;
+        currentTool = tool;
+        
+        var newPoints = new Array();
+        
+        for (var i = 0; i < jsonPoints.length; i++) {
+            var newPoint = new whiteboardPoint(
+                parseInt(jsonPoints[i].x), 
+                parseInt(jsonPoints[i].y));
+                
+            newPoints.push(newPoint);
+        }
+        
+        draw(newPoints);
+        currentSize = oldSize;
+        currentColor = oldColor;
+        currentTool = oldTool;
+    };
+    
+    var sendEdits = function sendEdits() {
+        if (points.length > 0) {
+            client.editWhiteboard(view.aliasTextBox.val(), points, currentSize, currentColor, currentTool);
+            points = new Array();            
+        };
     };
 
     var getMouseClickX = function getMouseClickX(eventData, clickedElement) {
@@ -71,19 +100,18 @@ function whiteboard(view) {
         return eventData.pageY - fancyBoxWrapper.offsetTop - 15 + fancyBoxInner.scrollTop;
     };
 
-    var addEdit = function addEdit(x, y, dragging) {
-        var edit = new whiteboardEdit(x, y, dragging, currentColor, currentSize, currentTool);
-        edits.push(edit);
+    var addPoint = function addPoint(x, y) {
+        var point = new whiteboardPoint(x, y);
+        points.push(point);
     };
 
-    var draw = function draw() {
-        clearCanvas();
-        drawClippingRectangle();
+    var draw = function draw(pointsToDraw) {
+        if (pointsToDraw === undefined)
+            pointsToDraw = points;
 
-        for (var i = 0; i < edits.length; i++)
-            drawEdit(edits[i], i > 0 ? edits[i - 1] : null);
+        for (var i = 0; i < pointsToDraw.length; i++)
+            drawPoint(pointsToDraw[i], i > 0 ? pointsToDraw[i - 1] : null);
 
-        context.restore();
         context.globalAlpha = 1;
     };
 
@@ -91,42 +119,36 @@ function whiteboard(view) {
         context.fillStyle = '#ffffff';
         context.fillRect(0, 0, canvasWidth, canvasHeight);
         canvas.width = canvas.width;
+        points = new Array();
     };
 
-    var drawClippingRectangle = function drawClippingRectangle() {
-        context.save();
-        context.beginPath();
-        context.rect(drawingAreaX, drawingAreaY, drawingAreaWidth, drawingAreaHeight);
-        context.clip();
-    };
-
-    var drawEdit = function drawEdit(edit, lastEdit) {
+    var drawPoint = function drawPoint(point, lastPoint) {
         context.beginPath();
 
-        if (edit.drag)                     
-            context.moveTo(lastEdit.x, lastEdit.y);
+        if (lastPoint)                     
+            context.moveTo(lastPoint.x, lastPoint.y);
         else
-            context.moveTo(edit.x, edit.y);
+            context.moveTo(point.x, point.y);
 
-        context.lineTo(edit.x, edit.y);
+        context.lineTo(point.x, point.y);
         context.closePath();
 
-        if (edit.tool == 'eraser')
+        if (currentTool == 'eraser')
             context.strokeStyle = '#ffffff';
         else
-            context.strokeStyle = edit.color;
+            context.strokeStyle = currentColor;
 
         context.lineJoin = 'round';
-        context.lineWidth = getStrokeWidth(edit.size, edit.tool);
+        context.lineWidth = getStrokeWidth();
         context.stroke();
     };
 
-    var getStrokeWidth = function getStrokeWidth(size, tool) {
-        if (tool == 'eraser' || size == 'huge')
+    var getStrokeWidth = function getStrokeWidth() {
+        if (currentTool == 'eraser' || currentSize == 'huge')
             return 20;
-        else if (size == 'normal')
+        else if (currentSize == 'normal')
             return 5;
-        else if (size == 'large')
+        else if (currentSize == 'large')
             return 10;
 
         return 2;

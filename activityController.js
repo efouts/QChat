@@ -12,7 +12,7 @@ var activityController = function activityController(activityLog, connectionPool
         }
 
         entries = entries.map(applyPlugins);
-
+        
         if (entries.length)
             utils.jsonResponse(entries, response);
         else 

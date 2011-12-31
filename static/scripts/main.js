@@ -16,14 +16,14 @@ function main(client) {
         membersObject = new members(viewObject);
         aliasObject = new alias(viewObject, client);
         fileUploaderObject = new fileUploader(viewObject);
-        whiteboardObject = new whiteboard(viewObject);
+        whiteboardObject = new whiteboard(viewObject, client);
         
         $(window).keydown(windowKeyDown).unload(windowUnload);
 
         viewObject.messageTextArea.keypress(messageTextAreaOnKeyPress)
             .val('Please type your name into the "Alias" box above to get started');
 
-        client.update(lastActivityReceivedId, onUpdate);
+        client.update(lastActivityReceivedId, onUpdate);        
     };     
 
     var windowKeyDown = function windowKeyDown(event) {
@@ -73,6 +73,8 @@ function main(client) {
                     membersObject.displayActivity(activity);
                 else if (isChatActivity(activity))
                     chatObject.displayActivity(activity);
+                else if (isWhiteboardActivity(activity))
+                    whiteboardObject.displayActivity(activity);
             });
             
             $('.chat-image').fancybox({
@@ -94,5 +96,10 @@ function main(client) {
         return activity.type == 'file' || 
                activity.type == 'image' || 
                activity.type == 'message';
+    };
+    
+    var isWhiteboardActivity = function isWhiteboardActivity(activity) {
+        return activity.type == 'edit-whiteboard' ||
+               activity.type == 'clear-whiteboard';
     };
 }
