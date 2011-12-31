@@ -41,13 +41,10 @@ function whiteboard(view, client) {
     };
     
     function startDrag(event) {
-        event.preventDefault();
-        
-        var point = getPagePointFromEvent(event);
-        
+        event.preventDefault();        
         paint = true;
         points = new Array();
-        addPoint(getMouseClickX(point.x, event.target), getMouseClickY(point.y, event.target), false);
+        addPoint(event);
         draw();
     };
     
@@ -83,8 +80,10 @@ function whiteboard(view, client) {
         return pageY - fancyBoxWrapper.offsetTop - 15 + fancyBoxInner.scrollTop;
     };
 
-    var addPoint = function addPoint(x, y) {
-        var newPoint = new point(x, y);
+    var addPoint = function addPoint(event) {
+        var pagePoint = getPagePointFromEvent(event);        
+        var newPoint = new point(getMouseClickX(pagePoint.x, event.target), getMouseClickY(pagePoint.y, event.target));
+        
         points.push(newPoint);
     };
 
@@ -133,15 +132,16 @@ function whiteboard(view, client) {
     function continueDrag(event) {
         event.preventDefault();
         
-        var point = getPagePointFromEvent(event);
-        
-        if (paint == true) {
-            addPoint(getMouseClickX(point.x, event.target), getMouseClickY(point.y, event.target), true);
+        if (paint == true && event.shiftKey == false) {
+            addPoint(event);
             draw();
         }
     };
     
-    function stopDrag() {
+    function stopDrag(event) {
+        if (event.shiftKey == true)
+            addPoint(event);
+            
         paint = false;
         draw();
         sendEdits();
