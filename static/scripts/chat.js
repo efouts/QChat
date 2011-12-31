@@ -102,6 +102,6 @@ function chat(view) {
     var scrollChatToNewActivity = function scrollChatToNewActivity() {
         chatObject.scrollTop(chatObject[0].scrollHeight);
     };
-
-    chatObject.lionbars();
+    
+    chatObject.mousewheel(this.scrollChat);
 };
