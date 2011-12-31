@@ -440,12 +440,17 @@ ul
     padding-top: 10px;
 }
 
+.settings a
+{
+    color: White;
+}
+
 #whiteboardCanvas
 {
     background-color: White;
-    border: solid 3px Black;
-    height: 600px;
-    width: 800px;
+    border: solid 1px Black;
+    height: 480px;
+    width: 640px;
 }
 
 #whiteboardHolder img

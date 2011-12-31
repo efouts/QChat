@@ -34,6 +34,17 @@ var whiteboardController = function whiteboardController(activityLog) {
         
         var entry = { type: 'clear-whiteboard', alias: alias };
         activityLog.addEntry(entry);
+        //removeEditsBeforeClear();
+    };
+    
+    var removeEditsBeforeClear = function removeEditsBeforeClear() {
+        var entries = activityLog.findAllEntries();
+        
+        for (i = entries.length - 1; i > 0; i--) {
+            if (entries[i].type === 'edit-whiteboard') {
+                activityLog.removeEntry(i);
+            }
+        }
     };
 };
 

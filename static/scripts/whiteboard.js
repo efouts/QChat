@@ -6,8 +6,8 @@ function whiteboard(view, client) {
     var points = new Array();
     var currentColor = '#659b41';
     var paint = false;
-    var canvasHeight = 600;
-    var canvasWidth = 800;
+    var canvasHeight = 480;
+    var canvasWidth = 640;
 
     $('#whiteboard').fancybox();
     $('#markerIcon').click(function () {
@@ -22,87 +22,70 @@ function whiteboard(view, client) {
         clearCanvas();
         client.clearWhiteboard(view.aliasTextBox.val());
     });
+    
+    canvas.addEventListener("touchstart", startDrag, false);
+    canvas.addEventListener("touchmove", continueDrag, false);
+    canvas.addEventListener("touchend", stopDrag, false);
+    canvas.addEventListener("touchcancel", stopDrag, false);
 
-    view.whiteboardCanvas.mousedown(function (eventData) {
+    view.whiteboardCanvas.mousedown(startDrag);
+    view.whiteboardCanvas.mousemove(continueDrag);
+    view.whiteboardCanvas.mouseup(stopDrag);
+    view.whiteboardCanvas.mouseleave(stopDrag);
+    
+    var clearCanvas = function clearCanvas() {
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, canvasWidth, canvasHeight);
+        canvas.width = canvas.width;
+        points = new Array();
+    };
+    
+    function startDrag(event) {
+        event.preventDefault();
+        
+        var point = getPagePointFromEvent(event);
+        
         paint = true;
         points = new Array();
-        addPoint(getMouseClickX(eventData, this), getMouseClickY(eventData, this), false);
+        addPoint(getMouseClickX(point.x, event.target), getMouseClickY(point.y, event.target), false);
         draw();
-    });
-
-    view.whiteboardCanvas.mousemove(function (eventData) {
-        if (paint == true) {
-            addPoint(getMouseClickX(eventData, this), getMouseClickY(eventData, this), true);
-            draw();
-        }
-    });
-
-    view.whiteboardCanvas.mouseup(function (eventData) {
-        paint = false;
-        draw();
-        sendEdits();
-    });
-
-    view.whiteboardCanvas.mouseleave(function (eventData) {
-        paint = false;
-        sendEdits();
-    });
-    
-    this.displayActivity = function displayActivity(activity) {
-        if (activity.type == 'edit-whiteboard')
-            addEdits(activity.points, activity.size, activity.color, activity.tool);
-        else if (activity.type == 'clear-whiteboard')
-            clearCanvas();
     };
     
-    var addEdits = function addEdits(jsonPoints, size, color, tool) {
-        var oldSize = currentSize;
-        var oldColor = currentColor;
-        var oldTool = currentTool;
-        currentSize = size;
-        currentColor = color;
-        currentTool = tool;
+    var getPagePointFromEvent = function getPagePointFromEvent(event) {
+        var pageX;
+        var pageY;
         
-        var newPoints = new Array();
-        
-        for (var i = 0; i < jsonPoints.length; i++) {
-            var newPoint = new whiteboardPoint(
-                parseInt(jsonPoints[i].x), 
-                parseInt(jsonPoints[i].y));
-                
-            newPoints.push(newPoint);
+        if (event.touches)
+        {
+            pageX = event.touches[0].pageX;
+            pageY = event.touches[0].pageY;
+        }
+        else
+        {  
+            pageX = event.pageX;
+            pageY = event.pageY;
         }
         
-        draw(newPoints);
-        currentSize = oldSize;
-        currentColor = oldColor;
-        currentTool = oldTool;
+        return new point(pageX, pageY);
     };
     
-    var sendEdits = function sendEdits() {
-        if (points.length > 0) {
-            client.editWhiteboard(view.aliasTextBox.val(), points, currentSize, currentColor, currentTool);
-            points = new Array();            
-        };
-    };
-
-    var getMouseClickX = function getMouseClickX(eventData, clickedElement) {
-        var fancyBoxInner = clickedElement.offsetParent;
+    var getMouseClickX = function getMouseClickX(pageX, target) {
+        var fancyBoxInner = target.offsetParent;
         var fancyBoxWrapper = fancyBoxInner.offsetParent;
 
-        return eventData.pageX - fancyBoxWrapper.offsetLeft - 15 + fancyBoxInner.scrollLeft;
+        return pageX - fancyBoxWrapper.offsetLeft - 15 + fancyBoxInner.scrollLeft;
     };
-
-    var getMouseClickY = function getMouseClickX(eventData, clickedElement) {
-        var fancyBoxInner = clickedElement.offsetParent;
+    
+    var getMouseClickY = function getMouseClickX(pageY, target) {
+        var fancyBoxInner = target.offsetParent;
         var fancyBoxWrapper = fancyBoxInner.offsetParent;
 
-        return eventData.pageY - fancyBoxWrapper.offsetTop - 15 + fancyBoxInner.scrollTop;
+        return pageY - fancyBoxWrapper.offsetTop - 15 + fancyBoxInner.scrollTop;
     };
 
     var addPoint = function addPoint(x, y) {
-        var point = new whiteboardPoint(x, y);
-        points.push(point);
+        var newPoint = new point(x, y);
+        points.push(newPoint);
     };
 
     var draw = function draw(pointsToDraw) {
@@ -114,14 +97,7 @@ function whiteboard(view, client) {
 
         context.globalAlpha = 1;
     };
-
-    var clearCanvas = function clearCanvas() {
-        context.fillStyle = '#ffffff';
-        context.fillRect(0, 0, canvasWidth, canvasHeight);
-        canvas.width = canvas.width;
-        points = new Array();
-    };
-
+    
     var drawPoint = function drawPoint(point, lastPoint) {
         context.beginPath();
 
@@ -152,5 +128,60 @@ function whiteboard(view, client) {
             return 10;
 
         return 2;
+    };
+    
+    function continueDrag(event) {
+        event.preventDefault();
+        
+        var point = getPagePointFromEvent(event);
+        
+        if (paint == true) {
+            addPoint(getMouseClickX(point.x, event.target), getMouseClickY(point.y, event.target), true);
+            draw();
+        }
+    };
+    
+    function stopDrag() {
+        paint = false;
+        draw();
+        sendEdits();
+    };
+    
+    var sendEdits = function sendEdits() {
+        if (points.length > 0) {
+            client.editWhiteboard(view.aliasTextBox.val(), points, currentSize, currentColor, currentTool);
+            points = new Array();            
+        };
+    };
+    
+    this.displayActivity = function displayActivity(activity) {
+        if (activity.type == 'edit-whiteboard')
+            addEdits(activity.points, activity.size, activity.color, activity.tool);
+        else if (activity.type == 'clear-whiteboard')
+            clearCanvas();
+    };
+    
+    var addEdits = function addEdits(jsonPoints, size, color, tool) {
+        var oldSize = currentSize;
+        var oldColor = currentColor;
+        var oldTool = currentTool;
+        currentSize = size;
+        currentColor = color;
+        currentTool = tool;
+        
+        var newPoints = new Array();
+        
+        for (var i = 0; i < jsonPoints.length; i++) {
+            var newPoint = new point(
+                parseInt(jsonPoints[i].x), 
+                parseInt(jsonPoints[i].y));
+                
+            newPoints.push(newPoint);
+        }
+        
+        draw(newPoints);
+        currentSize = oldSize;
+        currentColor = oldColor;
+        currentTool = oldTool;
     };
 };
