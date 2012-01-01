@@ -8,6 +8,8 @@ function whiteboard(view, client) {
     var paint = false;
     var canvasHeight = 480;
     var canvasWidth = 640;
+    var currentPoint = null;
+    var lastPoint = null;
 
     $('#whiteboard').fancybox();
     $('#markerIcon').click(function () {
@@ -45,7 +47,6 @@ function whiteboard(view, client) {
         paint = true;
         points = new Array();
         addPoint(event);
-        draw();
     };
     
     var getPagePointFromEvent = function getPagePointFromEvent(event) {
@@ -66,14 +67,14 @@ function whiteboard(view, client) {
         return new point(pageX, pageY);
     };
     
-    var getMouseClickX = function getMouseClickX(pageX, target) {
+    var getCanvasClickX = function getCanvasClickX(pageX, target) {
         var fancyBoxInner = target.offsetParent;
         var fancyBoxWrapper = fancyBoxInner.offsetParent;
 
         return pageX - fancyBoxWrapper.offsetLeft - 15 + fancyBoxInner.scrollLeft;
     };
     
-    var getMouseClickY = function getMouseClickX(pageY, target) {
+    var getCanvasClickY = function getCanvasClickY(pageY, target) {
         var fancyBoxInner = target.offsetParent;
         var fancyBoxWrapper = fancyBoxInner.offsetParent;
 
@@ -82,19 +83,12 @@ function whiteboard(view, client) {
 
     var addPoint = function addPoint(event) {
         var pagePoint = getPagePointFromEvent(event);        
-        var newPoint = new point(getMouseClickX(pagePoint.x, event.target), getMouseClickY(pagePoint.y, event.target));
+        var newPoint = new point(getCanvasClickX(pagePoint.x, event.target), getCanvasClickY(pagePoint.y, event.target));
         
         points.push(newPoint);
-    };
-
-    var draw = function draw(pointsToDraw) {
-        if (pointsToDraw === undefined)
-            pointsToDraw = points;
-
-        for (var i = 0; i < pointsToDraw.length; i++)
-            drawPoint(pointsToDraw[i], i > 0 ? pointsToDraw[i - 1] : null);
-
-        context.globalAlpha = 1;
+        lastPoint = currentPoint;
+        currentPoint = newPoint;
+        drawPoint(currentPoint, lastPoint);
     };
     
     var drawPoint = function drawPoint(point, lastPoint) {
@@ -119,7 +113,7 @@ function whiteboard(view, client) {
     };
 
     var getStrokeWidth = function getStrokeWidth() {
-        if (currentTool == 'eraser' || currentSize == 'huge')
+        if (currentTool == 'eraser' || currentSize == 'extra-large')
             return 20;
         else if (currentSize == 'normal')
             return 5;
@@ -134,7 +128,6 @@ function whiteboard(view, client) {
         
         if (paint == true && event.shiftKey == false) {
             addPoint(event);
-            draw();
             
             if (points.length % 10 == 0)
             {
@@ -149,7 +142,8 @@ function whiteboard(view, client) {
             addPoint(event);
             
         paint = false;
-        draw();
+        currentPoint = null;
+        lastPoint = null;
         sendEdits();
     };
     
@@ -176,16 +170,20 @@ function whiteboard(view, client) {
         currentTool = activity.tool;
         
         var newPoints = new Array();
+        var newPoint = null;
+        var lastNewPoint = null;
         
         for (var i = 0; i < activity.points.length; i++) {
-            var newPoint = new point(
+            if (i > 0)
+                lastNewPoint = newPoint;
+                
+            newPoint = new point(
                 parseInt(activity.points[i].x), 
                 parseInt(activity.points[i].y));
                 
-            newPoints.push(newPoint);
+            drawPoint(newPoint, lastNewPoint);
         }
-        
-        draw(newPoints);
+                    
         currentSize = oldSize;
         currentColor = oldColor;
         currentTool = oldTool;
