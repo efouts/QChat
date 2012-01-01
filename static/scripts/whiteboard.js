@@ -135,6 +135,12 @@ function whiteboard(view, client) {
         if (paint == true && event.shiftKey == false) {
             addPoint(event);
             draw();
+            
+            if (points.length % 10 == 0)
+            {
+                sendEdits();
+                addPoint(event);
+            }
         }
     };
     
