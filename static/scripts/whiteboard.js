@@ -120,25 +120,25 @@ function whiteboard(view, client) {
     
     this.displayActivity = function displayActivity(activity) {
         if (activity.type == 'edit-whiteboard' && activity.alias != view.aliasTextBox.val())
-            addEdit(activity.edit);
+            addActivity(activity);
         else if (activity.type == 'clear-whiteboard')
             this.clearCanvas();
     };
     
-    var addEdit = function addEdit(edit) {        
+    var addActivity = function addActivity(activity) {        
         var newPoints = new Array();
         var newPoint = null;
         var lastNewPoint = null;
         
-        for (var i = 0; i < edit.points.length; i++) {
+        for (var i = 0; i < activity.edit.points.length; i++) {
             if (i > 0)
                 lastNewPoint = newPoint;
                 
             newPoint = new point(
-                parseInt(edit.points[i].x), 
-                parseInt(edit.points[i].y));
+                parseInt(activity.edit.points[i].x), 
+                parseInt(activity.edit.points[i].y));
                 
-            drawPoint(newPoint, lastNewPoint, edit.size, edit.color, edit.tool);
+            drawPoint(newPoint, lastNewPoint, activity.edit.size, activity.edit.color, activity.edit.tool);
         }
     };
     

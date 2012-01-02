@@ -382,6 +382,14 @@ ul
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
+.shadowed-green
+{
+    background-clip: padding-box;
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+    -moz-box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+    -webkit-box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
 .transparent-border
 {
     border: 8px solid transparent;

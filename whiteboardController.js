@@ -14,7 +14,7 @@ var whiteboardController = function whiteboardController(activityLog) {
         utils.emptyResponse(response);        
         alias = connect.utils.escape(alias);
         
-        var entry = { type: 'edit-whiteboard', edit: edit };
+        var entry = { type: 'edit-whiteboard', alias: alias, edit: edit };
         activityLog.addEntry(entry);
     };
     

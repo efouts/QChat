@@ -123,7 +123,8 @@
 	position: absolute;
 }
 
-.colorpicker_field span {
+.colorpicker_field span 
+{
 	position: absolute;
 	width: 12px;
 	height: 22px;
@@ -132,27 +133,37 @@
 	right: 0;
 	cursor: n-resize;
 }
-.colorpicker_rgb_r {
+
+.colorpicker_rgb_r 
+{
 	background-image: url(../images/colorpicker/colorpicker_rgb_r.png);
 	top: 52px;
 	left: 212px;
 }
-.colorpicker_rgb_g {
+
+.colorpicker_rgb_g 
+{
 	background-image: url(../images/colorpicker/colorpicker_rgb_g.png);
 	top: 82px;
 	left: 212px;
 }
-.colorpicker_rgb_b {
+
+.colorpicker_rgb_b 
+{
 	background-image: url(../images/colorpicker/colorpicker_rgb_b.png);
 	top: 112px;
 	left: 212px;
 }
-.colorpicker_hsb_h {
+
+.colorpicker_hsb_h 
+{
 	background-image: url(../images/colorpicker/colorpicker_hsb_h.png);
 	top: 52px;
 	left: 282px;
 }
-.colorpicker_hsb_s {
+
+.colorpicker_hsb_s 
+{
 	background-image: url(../images/colorpicker/colorpicker_hsb_s.png);
 	top: 82px;
 	left: 282px;
@@ -210,7 +221,8 @@
 
 #colorPickerHolder 
 {
-	height: 0;
+    display: none;
+	height: 173px;
 	overflow: hidden;
 	position: absolute;
     top: -180px;

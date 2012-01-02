@@ -25,19 +25,27 @@ function whiteboardToolbar(view, whiteboard, client) {
         currentSize = '10';
     };
     
-    $('#markerIcon').click(function () {
-        currentTool = 'marker';
-    });
-
-    $('#eraserIcon').click(function () {
-        currentTool = 'eraser';
-    });
+    var selectTool = function selectTool() {
+        currentTool = $(this).attr('tool');
+        $('#whiteboardToolbar img[tool]').removeClass('shadowed-green');
+        $(this).addClass('shadowed-green');
+    };
     
+    var setColorSelectorBackground = function setColorSelectorBackgroun() {
+        $('#colorSelector div').css('backgroundColor', currentColor);
+    };
+    
+    var toggleColorPicker = function toggleColorPicker() {
+        $('#colorPickerHolder').toggle(200);
+    };
+    
+    $('#whiteboardToolbar img[tool]').click(selectTool);
+        
     $('#sizeSelect').change(function() {
         currentSize = $(this).val();
     });
 
-    $('#deleteIcon').click(function () {
+    $('#clearIcon').click(function () {
         whiteboard.clearCanvas();
         client.clearWhiteboard(view.aliasTextBox.val());
     });
@@ -47,16 +55,13 @@ function whiteboardToolbar(view, whiteboard, client) {
         color: currentColor,
         onSubmit: function(hsb, hex, rgb) {
             currentColor = '#' + hex;
-            $('#colorSelector div').css('backgroundColor', currentColor);
+            setColorSelectorBackground();
+            toggleColorPicker();
         }
     });
     
-    $('#colorSelector div').css('backgroundColor', currentColor);
-    
-    $('#colorSelector').click(function() {
-        $('#colorPickerHolder').stop().animate({ height: colorPickerShown ? 0 : 173}, 500);
-        colorPickerShown = !colorPickerShown;
-    });
+    $('#colorSelector').click(toggleColorPicker);
     
     addSizeOptions();
+    setColorSelectorBackground();
 };
