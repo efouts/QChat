@@ -1,39 +1,15 @@
 function whiteboard(view, client) {
     var canvas = document.getElementById('whiteboardCanvas');
     var context = canvas.getContext('2d');
-    var currentSize = 'small';
+    var currentSize;
     var currentTool = 'marker';
     var points = new Array();
     var currentColor = '#659b41';
     var paint = false;
     var canvasHeight = 480;
-    var canvasWidth = 640;
+    var canvasWidth = 800;
     var currentPoint = null;
     var lastPoint = null;
-
-    $('#whiteboard').fancybox();
-    $('#markerIcon').click(function () {
-        currentTool = 'marker';
-    });
-
-    $('#eraserIcon').click(function () {
-        currentTool = 'eraser';
-    });
-
-    $('#deleteIcon').click(function () {
-        clearCanvas();
-        client.clearWhiteboard(view.aliasTextBox.val());
-    });
-    
-    canvas.addEventListener("touchstart", startDrag, false);
-    canvas.addEventListener("touchmove", continueDrag, false);
-    canvas.addEventListener("touchend", stopDrag, false);
-    canvas.addEventListener("touchcancel", stopDrag, false);
-
-    view.whiteboardCanvas.mousedown(startDrag);
-    view.whiteboardCanvas.mousemove(continueDrag);
-    view.whiteboardCanvas.mouseup(stopDrag);
-    view.whiteboardCanvas.mouseleave(stopDrag);
     
     var clearCanvas = function clearCanvas() {
         context.fillStyle = '#ffffff';
@@ -42,7 +18,7 @@ function whiteboard(view, client) {
         points = new Array();
     };
     
-    function startDrag(event) {
+    var startDrag = function startDrag(event) {
         event.preventDefault();        
         paint = true;
         points = new Array();
@@ -107,23 +83,12 @@ function whiteboard(view, client) {
         else
             context.strokeStyle = currentColor;
 
-        context.lineJoin = 'round';
-        context.lineWidth = getStrokeWidth();
+        context.lineJoin = 'bevel';
+        context.lineWidth = parseInt(currentSize);
         context.stroke();
     };
-
-    var getStrokeWidth = function getStrokeWidth() {
-        if (currentTool == 'eraser' || currentSize == 'extra-large')
-            return 20;
-        else if (currentSize == 'normal')
-            return 5;
-        else if (currentSize == 'large')
-            return 10;
-
-        return 2;
-    };
     
-    function continueDrag(event) {
+    var continueDrag = function continueDrag(event) {
         event.preventDefault();
         
         if (paint == true && event.shiftKey == false) {
@@ -137,7 +102,7 @@ function whiteboard(view, client) {
         }
     };
     
-    function stopDrag(event) {
+    var stopDrag = function stopDrag(event) {
         if (event.shiftKey == true)
             addPoint(event);
             
@@ -189,4 +154,45 @@ function whiteboard(view, client) {
         currentColor = oldColor;
         currentTool = oldTool;
     };
+    
+    $('#whiteboard').fancybox();
+    $('#markerIcon').click(function () {
+        currentTool = 'marker';
+    });
+
+    $('#eraserIcon').click(function () {
+        currentTool = 'eraser';
+    });
+    
+    $('#sizeSelect').change(function() {
+        currentSize = $(this).val();
+    });
+
+    $('#deleteIcon').click(function () {
+        clearCanvas();
+        client.clearWhiteboard(view.aliasTextBox.val());
+    });
+    
+    var addSizeOptions = function addSizeOptions() {
+        var sizeSelect = $('#sizeSelect');
+        for (var i = 1; i <= 20; i++)
+            sizeSelect.append('<option>' + i + '</option>');
+            
+        sizeSelect.val('10').attr('selected', true);
+        currentSize = '10';
+    };
+    
+    canvas.addEventListener("touchstart", startDrag, false);
+    canvas.addEventListener("touchmove", continueDrag, false);
+    canvas.addEventListener("touchend", stopDrag, false);
+    canvas.addEventListener("touchcancel", stopDrag, false);
+
+    view.whiteboardCanvas.mousedown(startDrag);
+    view.whiteboardCanvas.mousemove(continueDrag);
+    view.whiteboardCanvas.mouseup(stopDrag);
+    view.whiteboardCanvas.mouseleave(stopDrag);
+    view.whiteboardCanvas.attr('height', canvasHeight);
+    view.whiteboardCanvas.attr('width', canvasWidth);
+    
+    addSizeOptions();
 };
