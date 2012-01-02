@@ -31,17 +31,22 @@ var whiteboardController = function whiteboardController(activityLog) {
         
         var entry = { type: 'clear-whiteboard', alias: alias };
         activityLog.addEntry(entry);
-        //removeEditsBeforeClear();
+        //removeWhiteboardEntriesBeforeClear();
     };
     
-    var removeEditsBeforeClear = function removeEditsBeforeClear() {
+    var removeWhiteboardEntriesBeforeClear = function removeWhiteboardEntriesBeforeClear() {
         var entries = activityLog.findAllEntries();
         
-        for (i = entries.length - 1; i > 0; i--) {
-            if (entries[i].type === 'edit-whiteboard') {
+        for (i = entries.length - 2; i >= 0; i--) {
+            if (isWhiteboardEntry(entries[i])) {
                 activityLog.removeEntry(i);
             }
         }
+    };
+    
+    var isWhiteboardEntry = function isWhiteboardEntry(entry) {
+        return entry.type == 'edit-whiteboard' ||
+               entry.type == 'clear-whiteboard';
     };
 };
 
