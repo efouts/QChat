@@ -46,39 +46,29 @@ function chat(view) {
         return '<span><a href="' + activity.path + '" target="_blank">' + activity.name + '</a></span>';
     };
 
-    var getImageHtml = function getImageHtml(activity) {            
+    var getImageHtml = function getImageHtml(activity) {   
+        createThumbnail(activity);
+        
         var title = activity.name + ' - Uploaded by ' + activity.alias + ' at ' + getFormattedTime(activity.timestamp);
         
-        return '<span><a class="chat-image" href="' + activity.path + '" data-fancybox-group="gallery" title="' + title + '">' + activity.name + '</a></span>';
+        return '<span><a class="chat-image" href="' + activity.path + '" data-fancybox-group="gallery" title="' + title + '">' +
+               '<img alt="' + activity.name + '" id="img_' + activity.fileId + '" src="fancybox/source/fancybox_loading.gif" />' +
+               '</a></span>';
     };
     
-    var getImageThumbnailDimension = function getImageThumbnailDimension() {
-        var ratio = this.width / this.height;
-        var maxWidth = 50;
-        var maxHeight = 50;
-        var width = 0;
-        var height = 0;
-        var padding2 = 0;
+    var createThumbnail = function createThumbnail(activity) {
+        var image = new Image();        
         
-        if (width > maxWidth) {
-            width = maxWidth;
-            height = ((width - padding2) / ratio) + padding2;
-        }
-
-        if (height > maxHeight) {
-            height = maxHeight;
-            width = ((height - padding2) * ratio) + padding2;
-        }
-
-        if (width < minWidth) {
-            width = minWidth;
-            height = ((width - padding2) / ratio) + padding2;
-        }
-
-        if (height < minHeight) {
-            height = minHeight;
-            width = ((height - padding2) * ratio) + padding2;
-        }
+        image.onload = function() {
+            var dimension = utilsObject.getImageThumbnailDimension(image);
+            var imageTag = $('#img_' + activity.fileId);
+            
+            imageTag.attr('src', image.src);
+            imageTag.css('height', dimension.height);
+            imageTag.css('width', dimension.width);            
+        };
+        
+        image.src = activity.path;
     };
 
     var getMessageHtml = function getMessageHtml(activity) {

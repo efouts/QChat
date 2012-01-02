@@ -457,7 +457,7 @@ ul
 #whiteboardCanvas
 {
     background-color: White;
-    border: solid 1px Black;
+    border: solid 5px Black;
     height: 480px;
     width: 800px;
 }

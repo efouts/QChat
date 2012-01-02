@@ -10,8 +10,10 @@ function whiteboard(view, client) {
     var toolbar = new whiteboardToolbar(view, this, client);
     
     this.clearCanvas = function clearCanvas() {
+        context.save();
         context.fillStyle = '#ffffff';
         context.fillRect(0, 0, canvasWidth, canvasHeight);
+        context.restore();
         canvas.width = canvas.width;
         points = new Array();
     };
@@ -21,6 +23,16 @@ function whiteboard(view, client) {
         paint = true;
         points = new Array();
         addPoint(event);
+    };
+    
+    var addPoint = function addPoint(event) {
+        var pagePoint = getPagePointFromEvent(event);        
+        var newPoint = new point(getCanvasClickX(pagePoint.x, event.target), getCanvasClickY(pagePoint.y, event.target));
+        
+        points.push(newPoint);
+        lastPoint = currentPoint;
+        currentPoint = newPoint;
+        drawPoint(currentPoint, lastPoint, toolbar.getSize(), toolbar.getColor(), toolbar.getTool());
     };
     
     var getPagePointFromEvent = function getPagePointFromEvent(event) {
@@ -54,18 +66,9 @@ function whiteboard(view, client) {
 
         return pageY - fancyBoxWrapper.offsetTop - 15 + fancyBoxInner.scrollTop;
     };
-
-    var addPoint = function addPoint(event) {
-        var pagePoint = getPagePointFromEvent(event);        
-        var newPoint = new point(getCanvasClickX(pagePoint.x, event.target), getCanvasClickY(pagePoint.y, event.target));
-        
-        points.push(newPoint);
-        lastPoint = currentPoint;
-        currentPoint = newPoint;
-        drawPoint(currentPoint, lastPoint, toolbar.getSize(), toolbar.getColor(), toolbar.getTool());
-    };
     
     var drawPoint = function drawPoint(point, lastPoint, size, color, tool) {
+        context.save();
         context.beginPath();
 
         if (lastPoint)                     
@@ -84,6 +87,7 @@ function whiteboard(view, client) {
         context.lineJoin = 'bevel';
         context.lineWidth = parseInt(size);
         context.stroke();
+        context.restore();
     };
     
     var continueDrag = function continueDrag(event) {
@@ -144,10 +148,10 @@ function whiteboard(view, client) {
     
     $('#whiteboard').fancybox();
     
-    canvas.addEventListener("touchstart", startDrag, false);
-    canvas.addEventListener("touchmove", continueDrag, false);
-    canvas.addEventListener("touchend", stopDrag, false);
-    canvas.addEventListener("touchcancel", stopDrag, false);
+    canvas.addEventListener('touchstart', startDrag, false);
+    canvas.addEventListener('touchmove', continueDrag, false);
+    canvas.addEventListener('touchend', stopDrag, false);
+    canvas.addEventListener('touchcancel', stopDrag, false);
 
     view.whiteboardCanvas.mousedown(startDrag);
     view.whiteboardCanvas.mousemove(continueDrag);

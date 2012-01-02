@@ -26,7 +26,8 @@ var filesController = function filesController(activityLog) {
             type: fileIsImage ? 'image' : 'file',
             alias: alias,
             name: filename,
-            path: '/download/' + upload.id
+            path: '/download/' + upload.id,
+            fileId: upload.id
         };
 
         request.on('data', function (chunk) {
