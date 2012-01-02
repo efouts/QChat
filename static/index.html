@@ -4,6 +4,7 @@
 <head>
     <title>QChat</title>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/color.picker.css" />
     <link rel="stylesheet" type="text/css" href="fancybox/source/jquery.fancybox.css" media="screen" />    
     <link rel="stylesheet" type="text/css" href="fancybox/source/helpers/jquery.fancybox-buttons.css?v=2.0.3" />
     <link rel="stylesheet" type="text/css" href="fancybox/source/helpers/jquery.fancybox-thumbs.css?v=2.0.3" />
@@ -26,8 +27,10 @@
     <script type="text/javascript" src="scripts/file.uploader.js"></script>
     <script type="text/javascript" src="scripts/notifications.js"></script>
     <script type="text/javascript" src="scripts/point.js"></script>
-    <script type="text/javascript" src="scripts/whiteboard-edit.js"></script>
+    <script type="text/javascript" src="scripts/whiteboard.edit.js"></script>
+    <script type="text/javascript" src="scripts/whiteboard.toolbar.js"></script>
     <script type="text/javascript" src="scripts/whiteboard.js"></script>
+    <script type="text/javascript" src="scripts/color.picker.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
 
     <link id="Link1" rel="shortcut icon" href="images/q-logo.ico" type="image/x-icon" />
@@ -80,11 +83,31 @@
     <div style="display:none">
         <div id="whiteboardHolder">
             <canvas id="whiteboardCanvas" class="shadowed rounded-border"></canvas>
-            <div>
-                <img alt="Marker" src="images/marker-icon.png" id="markerIcon" />
-                <img alt="Eraser" src="images/eraser-icon.png" id="eraserIcon" />
-                <select id="sizeSelect"></select>
-                <img alt="Clear Canvas" src="images/delete-icon.png" id="deleteIcon" />
+            <div id="whiteboardToolbar">
+                <table>
+                    <tr>
+                        <td>
+                            <img alt="Marker" src="images/marker-icon.png" id="markerIcon" />
+                        </td>
+                        <td>
+                            <img alt="Eraser" src="images/eraser-icon.png" id="eraserIcon" />
+                        </td>
+                        <td>
+                            <select id="sizeSelect"></select>
+                        </td>
+                        <td>
+                            <div id="colorPickerWrapper">
+                                <div id="colorSelector">
+                                    <div></div>
+                                </div>
+                                <div id="colorPickerHolder"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <img alt="Clear Canvas" src="images/delete-icon.png" id="deleteIcon" />
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
