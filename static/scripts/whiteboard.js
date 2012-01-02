@@ -131,7 +131,7 @@ function whiteboard(view, client) {
             
             if (points.length % 10 == 0)
             {
-                sendEdits();
+                sendEdit();
                 addPoint(event);
             }
         }
@@ -144,42 +144,43 @@ function whiteboard(view, client) {
         paint = false;
         currentPoint = null;
         lastPoint = null;
-        sendEdits();
+        sendEdit();
     };
     
-    var sendEdits = function sendEdits() {
+    var sendEdit = function sendEdit() {
         if (points.length > 0) {
-            client.editWhiteboard(view.aliasTextBox.val(), points, currentSize, currentColor, currentTool);
+            var edit = new whiteboardEdit(points, currentSize, currentColor, currentTool);
+            client.editWhiteboard(view.aliasTextBox.val(), edit);
             points = new Array();            
         };
     };
     
     this.displayActivity = function displayActivity(activity) {
-        if (activity.type == 'edit-whiteboard')
-            addEdits(activity);
+        if (activity.type == 'edit-whiteboard' && activity.alias != view.aliasTextBox.val())
+            addEdit(activity.edit);
         else if (activity.type == 'clear-whiteboard')
             clearCanvas();
     };
     
-    var addEdits = function addEdits(activity) {
+    var addEdit = function addEdit(edit) {
         var oldSize = currentSize;
         var oldColor = currentColor;
         var oldTool = currentTool;
-        currentSize = activity.size;
-        currentColor = activity.color;
-        currentTool = activity.tool;
+        currentSize = edit.size;
+        currentColor = edit.color;
+        currentTool = edit.tool;
         
         var newPoints = new Array();
         var newPoint = null;
         var lastNewPoint = null;
         
-        for (var i = 0; i < activity.points.length; i++) {
+        for (var i = 0; i < edit.points.length; i++) {
             if (i > 0)
                 lastNewPoint = newPoint;
                 
             newPoint = new point(
-                parseInt(activity.points[i].x), 
-                parseInt(activity.points[i].y));
+                parseInt(edit.points[i].x), 
+                parseInt(edit.points[i].y));
                 
             drawPoint(newPoint, lastNewPoint);
         }

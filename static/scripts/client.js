@@ -32,8 +32,8 @@ function client() {
         $.post('/status', data).complete(callback);
     };
     
-    this.editWhiteboard = function editWhiteboard(alias, points, size, color, tool, callback) {
-        var data = { alias: alias, points: points, size: size, color: color, tool: tool };
+    this.editWhiteboard = function editWhiteboard(alias, edit, callback) {
+        var data = { alias: alias, edit: edit };
         $.post('/whiteboard/edit', data).complete(callback);
     };
     
