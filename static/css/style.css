@@ -140,7 +140,7 @@ ul
     height: 100%;
     margin: 0;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
     padding: 0 10px 0 0;
     position: relative;
 }

@@ -8,6 +8,7 @@ function whiteboard(view, client) {
     var currentPoint = null;
     var lastPoint = null;
     var toolbar = new whiteboardToolbar(view, this, client);
+    var utilsObject = new utils();
     
     this.clearCanvas = function clearCanvas() {
         context.fillStyle = '#ffffff';
@@ -33,28 +34,10 @@ function whiteboard(view, client) {
     };
     
     var getCanvasClickPointFromEvent = function getCanvasClickPointFromEvent(event) {
-        var pagePoint = getPageClickPointFromEvent(event);        
+        var pagePoint = utilsObject.getPageClickPointFromEvent(event);        
         var clickPoint = new point(getCanvasClickX(pagePoint.x, event.target), getCanvasClickY(pagePoint.y, event.target));
         
         return clickPoint;
-    };
-    
-    var getPageClickPointFromEvent = function getPageClickPointFromEvent(event) {
-        var pageX;
-        var pageY;
-        
-        if (event.touches)
-        {
-            pageX = event.touches[0].pageX;
-            pageY = event.touches[0].pageY;
-        }
-        else
-        {  
-            pageX = event.pageX;
-            pageY = event.pageY;
-        }
-        
-        return new point(pageX, pageY);
     };
     
     var getCanvasClickX = function getCanvasClickX(pageX, target) {

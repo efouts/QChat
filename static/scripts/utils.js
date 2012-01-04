@@ -54,4 +54,11 @@ function utils() {
         
         return { width: parseInt(width), height: parseInt(height) };
     };
+    
+    this.getPageClickPointFromEvent = function getPageClickPointFromEvent(event) {
+        if (event.touches)
+            return new point(event.touches[0].pageX, event.touches[0].pageY);
+        else
+            return new point(event.pageX, event.pageY);
+    };
 };
