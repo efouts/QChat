@@ -23,8 +23,7 @@ function whiteboard(view, client) {
     };
     
     var addPoint = function addPoint(event) {
-        var pagePoint = getPagePointFromEvent(event);        
-        var newPoint = new point(getCanvasClickX(pagePoint.x, event.target), getCanvasClickY(pagePoint.y, event.target));
+        var newPoint = getCanvasClickPointFromEvent(event);
         
         points.push(newPoint);
         lastPoint = currentPoint;
@@ -32,7 +31,14 @@ function whiteboard(view, client) {
         drawPoint(currentPoint, lastPoint, toolbar.getSize(), toolbar.getColor(), toolbar.getTool());
     };
     
-    var getPagePointFromEvent = function getPagePointFromEvent(event) {
+    var getCanvasClickPointFromEvent = function getCanvasClickPointFromEvent(event) {
+        var pagePoint = getPageClickPointFromEvent(event);        
+        var clickPoint = new point(getCanvasClickX(pagePoint.x, event.target), getCanvasClickY(pagePoint.y, event.target));
+        
+        return clickPoint;
+    };
+    
+    var getPageClickPointFromEvent = function getPageClickPointFromEvent(event) {
         var pageX;
         var pageY;
         
