@@ -10,11 +10,8 @@ function whiteboard(view, client) {
     var toolbar = new whiteboardToolbar(view, this, client);
     
     this.clearCanvas = function clearCanvas() {
-        context.save();
         context.fillStyle = '#ffffff';
         context.fillRect(0, 0, canvasWidth, canvasHeight);
-        context.restore();
-        canvas.width = canvas.width;
         points = new Array();
     };
     
@@ -159,4 +156,6 @@ function whiteboard(view, client) {
     view.whiteboardCanvas.mouseleave(stopDrag);
     view.whiteboardCanvas.attr('height', canvasHeight);
     view.whiteboardCanvas.attr('width', canvasWidth);
+    
+    this.clearCanvas();
 };
