@@ -20,6 +20,7 @@ function whiteboard(view, client) {
         paint = true;
         points = new Array();
         addPoint(event);
+        client.status(view.aliasTextBox.val(), 'drawing');
     };
     
     var addPoint = function addPoint(event) {
@@ -115,6 +116,7 @@ function whiteboard(view, client) {
         currentPoint = null;
         lastPoint = null;
         sendEdit();
+        client.status(view.aliasTextBox.val(), '');
     };
     
     var sendEdit = function sendEdit() {

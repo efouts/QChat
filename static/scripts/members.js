@@ -33,6 +33,8 @@ function members(view) {
 
         if (status == 'typing')
             status = '<img src="images/typing-bubble-small.png" />';
+        else if (status == 'drawing')
+            status = '<img src="images/marker-icon.png" />';
         else
             status = '';
 
