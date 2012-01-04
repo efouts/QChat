@@ -67,7 +67,7 @@ function whiteboard(view, client) {
         return pageY - fancyBoxWrapper.offsetTop - 15 + fancyBoxInner.scrollTop;
     };
     
-    var drawPoint = function drawPoint(point, lastPoint, size, color, tool) {
+    var drawPoint = function drawPoint(point, lastPoint, size, color, tool) {        
         context.save();
         context.beginPath();
 

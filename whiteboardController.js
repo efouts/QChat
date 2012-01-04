@@ -1,6 +1,8 @@
 var connect = require('connect');
 var utils = require('./utilities.js');
 
+var interval;
+
 var whiteboardController = function whiteboardController(activityLog) {    
     this.edit = function edit(request, response) {
         var alias = request.body.alias;
@@ -30,19 +32,19 @@ var whiteboardController = function whiteboardController(activityLog) {
         alias = connect.utils.escape(alias);
         
         var entry = { type: 'clear-whiteboard', alias: alias };
-        activityLog.addEntry(entry);
-        //removeWhiteboardEntriesBeforeClear();
+        removeAllWhiteboardEntries();
+        activityLog.addEntry(entry);            
     };
     
-    var removeWhiteboardEntriesBeforeClear = function removeWhiteboardEntriesBeforeClear() {
+    var removeAllWhiteboardEntries = function removeAllWhiteboardEntries() {
         var entries = activityLog.findAllEntries();
         
-        for (i = entries.length - 2; i >= 0; i--) {
+        for (i = entries.length - 1; i >= 0; i--) {
             if (isWhiteboardEntry(entries[i])) {
                 activityLog.removeEntry(i);
             }
         }
-    };
+    };   
     
     var isWhiteboardEntry = function isWhiteboardEntry(entry) {
         return entry.type == 'edit-whiteboard' ||

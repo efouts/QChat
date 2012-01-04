@@ -9,10 +9,11 @@ var activityLog = function activityLog() {
     nodeModules.events.EventEmitter.call(this);
     var log = [];
     var self = this;
+    var idSeed = 0;
 
     this.addEntry = function addEntry(entry) {
         entry.timestamp = new Date();
-        entry.id = log.length;
+        entry.id = idSeed++;
         log.push(entry);
         self.emit('activity');
     };
