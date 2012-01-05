@@ -61,4 +61,8 @@ function utils() {
         else
             return new point(event.pageX, event.pageY);
     };
+    
+    this.rgbToHex = function rgbToHex(red, green, blue) {
+        return red.toString(16) + green.toString(16) + blue.toString(16);
+    };
 };

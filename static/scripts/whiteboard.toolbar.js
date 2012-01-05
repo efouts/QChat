@@ -16,6 +16,12 @@ function whiteboardToolbar(view, whiteboard, client) {
         return currentColor;
     };
     
+    this.setColor = function setColor(color) {
+        currentColor = color;
+        $('#colorPickerHolder').ColorPickerSetColor(color);
+        setColorSelectorBackground();
+    };
+    
     var addSizeOptions = function addSizeOptions() {
         var sizeSelect = $('#sizeSelect');
         for (var i = 1; i <= 20; i++)
@@ -29,9 +35,14 @@ function whiteboardToolbar(view, whiteboard, client) {
         currentTool = $(this).attr('tool');
         $('#whiteboardToolbar img[tool]').removeClass('shadowed-green');
         $(this).addClass('shadowed-green');
+        
+        if (currentTool == 'eyedropper')
+            whiteboard.bindEventsForEyedropper();
+        else
+            whiteboard.bindEventsForDrawing();
     };
     
-    var setColorSelectorBackground = function setColorSelectorBackgroun() {
+    var setColorSelectorBackground = function setColorSelectorBackground() {
         $('#colorSelector div').css('backgroundColor', currentColor);
     };
     
@@ -40,6 +51,7 @@ function whiteboardToolbar(view, whiteboard, client) {
     };
     
     $('#whiteboardToolbar img[tool]').click(selectTool);
+    $('#whiteboardToolbar img[tool="marker"]').trigger('click');
         
     $('#sizeSelect').change(function() {
         currentSize = $(this).val();

@@ -7,8 +7,9 @@ function whiteboard(view, client) {
     var canvasWidth = 800;
     var currentPoint = null;
     var lastPoint = null;
-    var toolbar = new whiteboardToolbar(view, this, client);
     var utilsObject = new utils();
+    var padding = 15;
+    var cursorOffset = 6;
     
     this.clearCanvas = function clearCanvas() {
         context.fillStyle = '#ffffff';
@@ -35,23 +36,12 @@ function whiteboard(view, client) {
     
     var getCanvasClickPointFromEvent = function getCanvasClickPointFromEvent(event) {
         var pagePoint = utilsObject.getPageClickPointFromEvent(event);        
-        var clickPoint = new point(getCanvasClickX(pagePoint.x, event.target), getCanvasClickY(pagePoint.y, event.target));
+        var fancyBoxInner = event.target.offsetParent;
+        var fancyBoxWrapper = fancyBoxInner.offsetParent;
+        var x = pagePoint.x - fancyBoxWrapper.offsetLeft + fancyBoxInner.scrollLeft - padding - cursorOffset;
+        var y = pagePoint.y - fancyBoxWrapper.offsetTop + fancyBoxInner.scrollTop - padding - cursorOffset;
         
-        return clickPoint;
-    };
-    
-    var getCanvasClickX = function getCanvasClickX(pageX, target) {
-        var fancyBoxInner = target.offsetParent;
-        var fancyBoxWrapper = fancyBoxInner.offsetParent;
-
-        return pageX - fancyBoxWrapper.offsetLeft - 15 + fancyBoxInner.scrollLeft;
-    };
-    
-    var getCanvasClickY = function getCanvasClickY(pageY, target) {
-        var fancyBoxInner = target.offsetParent;
-        var fancyBoxWrapper = fancyBoxInner.offsetParent;
-
-        return pageY - fancyBoxWrapper.offsetTop - 15 + fancyBoxInner.scrollTop;
+        return new point(x, y);
     };
     
     var drawPoint = function drawPoint(point, lastPoint, size, color, tool) {        
@@ -92,14 +82,16 @@ function whiteboard(view, client) {
     };
     
     var stopDrag = function stopDrag(event) {
-        if (event.shiftKey == true)
-            addPoint(event);
-            
-        paint = false;
-        currentPoint = null;
-        lastPoint = null;
-        sendEdit();
-        client.status(view.aliasTextBox.val(), '');
+        if (paint == true) {
+            if (event.shiftKey == true)
+                addPoint(event);
+                
+            paint = false;
+            currentPoint = null;
+            lastPoint = null;
+            sendEdit();
+            client.status(view.aliasTextBox.val(), '');
+        }
     };
     
     var sendEdit = function sendEdit() {
@@ -134,19 +126,45 @@ function whiteboard(view, client) {
         }
     };
     
-    $('#whiteboard').fancybox();
+    var getColorFromPixel = function getColorFromPixel(event) {
+        var clickPoint = getCanvasClickPointFromEvent(event);
+        var pixelData = context.getImageData(clickPoint.x, clickPoint.y, 1, 1).data;
+        toolbar.setColor('#' + utilsObject.rgbToHex(pixelData[0], pixelData[1], pixelData[2]));
+    };    
     
-    canvas.addEventListener('touchstart', startDrag, false);
-    canvas.addEventListener('touchmove', continueDrag, false);
-    canvas.addEventListener('touchend', stopDrag, false);
-    canvas.addEventListener('touchcancel', stopDrag, false);
+    
+    this.bindEventsForDrawing = function bindEventsForDrawing() {
+        removeBoundedEvents();
+        canvas.addEventListener('touchstart', startDrag, false);
+        canvas.addEventListener('touchmove', continueDrag, false);
+        canvas.addEventListener('touchend', stopDrag, false);
+        canvas.addEventListener('touchcancel', stopDrag, false);
 
-    view.whiteboardCanvas.mousedown(startDrag);
-    view.whiteboardCanvas.mousemove(continueDrag);
-    view.whiteboardCanvas.mouseup(stopDrag);
-    view.whiteboardCanvas.mouseleave(stopDrag);
+        view.whiteboardCanvas.mousedown(startDrag);
+        view.whiteboardCanvas.mousemove(continueDrag);
+        view.whiteboardCanvas.mouseup(stopDrag);
+    };
+    
+    this.bindEventsForEyedropper = function bindEventsForEyedropper() {
+        removeBoundedEvents();
+        canvas.addEventListener('touchstart', getColorFromPixel, false);
+        view.whiteboardCanvas.mousedown(getColorFromPixel);
+    };
+    
+    var removeBoundedEvents = function removeBoundedEvents() {
+        canvas.removeEventListener('touchstart', startDrag, false);
+        canvas.removeEventListener('touchstart', getColorFromPixel, false);
+
+        view.whiteboardCanvas.unbind('mousedown', startDrag);
+        view.whiteboardCanvas.unbind('mousedown', getColorFromPixel);
+    };
+    
+    $('#whiteboard').fancybox({ padding: padding });
+        
     view.whiteboardCanvas.attr('height', canvasHeight);
     view.whiteboardCanvas.attr('width', canvasWidth);
     
+    this.bindEventsForDrawing();
     this.clearCanvas();
+    var toolbar = new whiteboardToolbar(view, this, client);
 };
