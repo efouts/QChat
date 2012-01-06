@@ -1,8 +1,9 @@
 function whiteboardToolbar(view, whiteboard, client) {
-    var currentTool = 'marker';
+    var currentTool = 'draw';
     var currentSize;
     var currentColor = '#659b41';
     var colorPickerShown = false;
+    var maximumSize = 30;
     
     this.getTool = function getTool() {
         return currentTool;
@@ -24,7 +25,7 @@ function whiteboardToolbar(view, whiteboard, client) {
     
     var addSizeOptions = function addSizeOptions() {
         var sizeSelect = $('#sizeSelect');
-        for (var i = 1; i <= 20; i++)
+        for (var i = 1; i <= maximumSize; i++)
             sizeSelect.append('<option>' + i + '</option>');
             
         sizeSelect.val('10').attr('selected', true);
@@ -51,7 +52,7 @@ function whiteboardToolbar(view, whiteboard, client) {
     };
     
     $('#whiteboardToolbar img[tool]').click(selectTool);
-    $('#whiteboardToolbar img[tool="marker"]').trigger('click');
+    $('#whiteboardToolbar img[tool="draw"]').trigger('click');
         
     $('#sizeSelect').change(function() {
         currentSize = $(this).val();

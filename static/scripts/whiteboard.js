@@ -54,15 +54,14 @@ function whiteboard(view, client) {
             context.moveTo(point.x, point.y);
 
         context.lineTo(point.x, point.y);
-        context.closePath();
-
+        
         if (tool == 'eraser')
             context.strokeStyle = '#ffffff';
         else
             context.strokeStyle = color;
 
-        context.lineJoin = 'bevel';
         context.lineWidth = parseInt(size);
+        context.lineCap = 'round';
         context.stroke();
         context.restore();
     };
@@ -109,8 +108,7 @@ function whiteboard(view, client) {
             this.clearCanvas();
     };
     
-    var addActivity = function addActivity(activity) {        
-        var newPoints = new Array();
+    var addActivity = function addActivity(activity) {
         var newPoint = null;
         var lastNewPoint = null;
         
@@ -131,7 +129,6 @@ function whiteboard(view, client) {
         var pixelData = context.getImageData(clickPoint.x, clickPoint.y, 1, 1).data;
         toolbar.setColor('#' + utilsObject.rgbToHex(pixelData[0], pixelData[1], pixelData[2]));
     };    
-    
     
     this.bindEventsForDrawing = function bindEventsForDrawing() {
         removeBoundedEvents();
