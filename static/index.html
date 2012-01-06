@@ -80,40 +80,38 @@
             <textarea rows="1" cols="1" id="messageTextArea"></textarea>
         </div>
     </div>
-    <div style="display:none">
-        <div id="whiteboardHolder">
-            <canvas id="whiteboardCanvas" class="shadowed rounded-border"></canvas>
-            <div id="whiteboardToolbar">
-                <table>
-                    <tr>
-                        <td>Tools</td>
-                        <td>
-                            <img alt="Draw" src="images/draw-icon.png" id="drawIcon" tool="draw" />
-                        </td>
-                        <td>
-                            <img alt="Eraser" src="images/eraser-icon.png" id="eraserIcon" tool="eraser" />
-                        </td>
-                        <td>
-                            <img alt="Eyedropper" src="images/eyedropper-icon.png" id="eyedropperIcon" tool="eyedropper" />
-                        </td>
-                        <td>Options</td>
-                        <td>
-                            <select id="sizeSelect"></select>
-                        </td>
-                        <td>
-                            <div id="colorPickerWrapper">
-                                <div id="colorSelector">
-                                    <div></div>
-                                </div>
-                                <div id="colorPickerHolder"></div>
+    <div id="whiteboardHolder" style="display:none">
+        <canvas id="whiteboardCanvas"></canvas>
+        <div id="whiteboardToolbar" class="shadowed">
+            <table>
+                <tr>
+                    <td>Tools</td>
+                    <td>
+                        <img alt="Draw" src="images/draw-icon.png" id="drawIcon" tool="draw" />
+                    </td>
+                    <td>
+                        <img alt="Eraser" src="images/eraser-icon.png" id="eraserIcon" tool="eraser" />
+                    </td>
+                    <td>
+                        <img alt="Eyedropper" src="images/eyedropper-icon.png" id="eyedropperIcon" tool="eyedropper" />
+                    </td>
+                    <td>Options</td>
+                    <td>
+                        <select id="sizeSelect"></select>
+                    </td>
+                    <td>
+                        <div id="colorPickerWrapper">
+                            <div id="colorSelector">
+                                <div></div>
                             </div>
-                        </td>
-                        <td>
-                            <img alt="Clear Canvas" src="images/clear-icon.png" id="clearIcon" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                            <div id="colorPickerHolder"></div>
+                        </div>
+                    </td>
+                    <td>
+                        <img alt="Clear Canvas" src="images/clear-icon.png" id="clearIcon" />
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </body>

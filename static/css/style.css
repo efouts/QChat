@@ -465,7 +465,6 @@ ul
 #whiteboardCanvas
 {
     background-color: White;
-    border: solid 5px Black;
     height: 480px;
     width: 800px;
 }
@@ -475,6 +474,12 @@ ul
     height: 28px;
     padding-bottom: 2px;
     width: 28px;
+}
+
+#whiteboardToolbar
+{
+    border-top: solid 2px Black;
+    padding: 5px;
 }
 
 #whiteboardToolbar td

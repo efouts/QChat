@@ -8,8 +8,9 @@ function whiteboard(view, client) {
     var currentPoint = null;
     var lastPoint = null;
     var utilsObject = new utils();
-    var padding = 15;
-    var cursorOffset = 6;
+    var padding = 0;
+    var cursorOffsetX = 3;
+    var cursorOffsetY = 0;
     
     this.clearCanvas = function clearCanvas() {
         context.fillStyle = '#ffffff';
@@ -38,8 +39,8 @@ function whiteboard(view, client) {
         var pagePoint = utilsObject.getPageClickPointFromEvent(event);        
         var fancyBoxInner = event.target.offsetParent;
         var fancyBoxWrapper = fancyBoxInner.offsetParent;
-        var x = pagePoint.x - fancyBoxWrapper.offsetLeft + fancyBoxInner.scrollLeft - padding - cursorOffset;
-        var y = pagePoint.y - fancyBoxWrapper.offsetTop + fancyBoxInner.scrollTop - padding - cursorOffset;
+        var x = pagePoint.x - fancyBoxWrapper.offsetLeft + fancyBoxInner.scrollLeft - padding - cursorOffsetX;
+        var y = pagePoint.y - fancyBoxWrapper.offsetTop + fancyBoxInner.scrollTop - padding - cursorOffsetY;
         
         return new point(x, y);
     };
