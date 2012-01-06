@@ -385,12 +385,17 @@ ul
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadowed-green
+.selected-tool
 {
     background-clip: padding-box;
-    box-shadow: 0 0 8px rgba(0, 255, 0, 0.9);
-    -moz-box-shadow: 0 0 8px rgba(0, 255, 0, 0.9);
-    -webkit-box-shadow: 0 0 8px rgba(0, 255, 0, 0.9);
+    box-shadow: 0 5px rgba(0, 41, 68, 0.5);
+    -moz-box-shadow: 0 5px rgba(0, 41, 68, 0.5);
+    -webkit-box-shadow: 0 5px rgba(75, 181, 243, 0.5);
+}
+
+.eyedropper-tool
+{
+    cursor: url('../images/eyedropper-cursor.png'), auto;
 }
 
 .transparent-border
@@ -468,7 +473,14 @@ ul
 #whiteboardHolder img
 {
     height: 28px;
+    padding-bottom: 2px;
     width: 28px;
+}
+
+#whiteboardToolbar td
+{
+    font-style: italic;
+    padding: 3px;
 }
 
 input[type="checkbox"], input[type="radio"]

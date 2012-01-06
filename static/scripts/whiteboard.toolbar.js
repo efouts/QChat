@@ -3,7 +3,7 @@ function whiteboardToolbar(view, whiteboard, client) {
     var currentSize;
     var currentColor = '#659b41';
     var colorPickerShown = false;
-    var maximumSize = 30;
+    var maximumSize = 50;
     
     this.getTool = function getTool() {
         return currentTool;
@@ -34,8 +34,8 @@ function whiteboardToolbar(view, whiteboard, client) {
     
     var selectTool = function selectTool() {
         currentTool = $(this).attr('tool');
-        $('#whiteboardToolbar img[tool]').removeClass('shadowed-green');
-        $(this).addClass('shadowed-green');
+        $('#whiteboardToolbar img[tool]').removeClass('selected-tool');
+        $(this).addClass('selected-tool');
         
         if (currentTool == 'eyedropper')
             whiteboard.bindEventsForEyedropper();
