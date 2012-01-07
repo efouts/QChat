@@ -388,8 +388,8 @@ ul
 .selected-tool
 {
     background-clip: padding-box;
-    box-shadow: 0 5px rgba(0, 41, 68, 0.5);
-    -moz-box-shadow: 0 5px rgba(0, 41, 68, 0.5);
+    box-shadow: 0 5px rgba(75, 181, 243, 0.5);
+    -moz-box-shadow: 0 5px rgba(75, 181, 243, 0.5);
     -webkit-box-shadow: 0 5px rgba(75, 181, 243, 0.5);
 }
 
