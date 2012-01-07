@@ -1,9 +1,10 @@
 function whiteboardToolbar(view, whiteboard, client) {
-    var currentTool = 'draw';
+    var currentTool = 'marker';
     var currentSize;
     var currentColor = '#659b41';
     var colorPickerShown = false;
     var maximumSize = 50;
+    var self = this;
     
     this.getTool = function getTool() {
         return currentTool;
@@ -32,16 +33,15 @@ function whiteboardToolbar(view, whiteboard, client) {
         currentSize = '10';
     };
     
-    var selectTool = function selectTool() {
+    this.selectTool = function selectTool() {
         currentTool = $(this).attr('tool');
         $('#whiteboardToolbar img[tool]').removeClass('selected-tool');
         $(this).addClass('selected-tool');
         
-        if (currentTool == 'eyedropper')
-            whiteboard.bindEventsForEyedropper();
-        else
-            whiteboard.bindEventsForDrawing();
+        self.onToolChanged(currentTool);
     };
+    
+    this.onToolChanged = null;
     
     var setColorSelectorBackground = function setColorSelectorBackground() {
         $('#colorSelector div').css('backgroundColor', currentColor);
@@ -51,8 +51,7 @@ function whiteboardToolbar(view, whiteboard, client) {
         $('#colorPickerHolder').toggle(200);
     };
     
-    $('#whiteboardToolbar img[tool]').click(selectTool);
-    $('#whiteboardToolbar img[tool="draw"]').trigger('click');
+    $('#whiteboardToolbar img[tool]').click(this.selectTool);
         
     $('#sizeSelect').change(function() {
         currentSize = $(this).val();

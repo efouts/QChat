@@ -62,6 +62,19 @@ function utils() {
             return new point(event.pageX, event.pageY);
     };
     
+    this.getCanvasClickPointFromEvent = function getCanvasClickPointFromEvent(event) {
+        var padding = 0;
+        var cursorOffsetX = 3;
+        var cursorOffsetY = 0;
+        var pagePoint = this.getPageClickPointFromEvent(event);        
+        var fancyBoxInner = event.target.offsetParent;
+        var fancyBoxWrapper = fancyBoxInner.offsetParent;
+        var x = pagePoint.x - fancyBoxWrapper.offsetLeft + fancyBoxInner.scrollLeft - padding - cursorOffsetX;
+        var y = pagePoint.y - fancyBoxWrapper.offsetTop + fancyBoxInner.scrollTop - padding - cursorOffsetY;
+        
+        return new point(x, y);
+    };
+    
     this.rgbToHex = function rgbToHex(red, green, blue) {
         return red.toString(16) + green.toString(16) + blue.toString(16);
     };
