@@ -85,7 +85,7 @@ function freestyleTool(context, toolbar, client, view) {
     
     this.submitEdit = function submitEdit() {
         if (points.length > 0) {
-            var edit = new whiteboardEdit(points, toolbar.getSize(), toolbar.getColor(), self.name);
+            var edit = { points: points, size: toolbar.getSize(), color: toolbar.getColor(), tool: self.name };
             
             client.editWhiteboard(view.aliasTextBox.val(), edit);
             points = new Array();            
