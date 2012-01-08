@@ -39,7 +39,7 @@ function freestyleTool(context, toolbar, client, view) {
     };
     
     this.addPoint = function addPoint(event) {
-        var newPoint = utilsObject.getCanvasClickPointFromEvent(event);
+        var newPoint = utilsObject.getClickPointOnElement(event);
         
         points.push(newPoint);
         lastPoint = currentPoint;
@@ -56,11 +56,10 @@ function freestyleTool(context, toolbar, client, view) {
         else
             context.moveTo(point.x, point.y);
 
-        context.lineTo(point.x, point.y);
-        context.strokeStyle = self.getStrokeStyle(color);
-
+        context.lineTo(point.x, point.y);        
         context.lineWidth = parseInt(size);
         context.lineCap = 'round';
+        context.strokeStyle = self.getStrokeStyle(color);
         context.stroke();
         context.restore();
     };

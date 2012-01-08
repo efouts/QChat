@@ -13,10 +13,16 @@ function whiteboard(view, client) {
     };   
     
     this.displayActivity = function displayActivity(activity) {
-        if (activity.type == 'edit-whiteboard' && activity.alias != view.aliasTextBox.val())
+        if (shouldDisplayEditActivity(activity))
             addActivity(activity);
         else if (activity.type == 'clear-whiteboard')
             this.clearCanvas();
+    };
+    
+    var shouldDisplayEditActivity = function shouldDisplayEditActivity(activity) {
+        return activity.type == 'edit-whiteboard' && 
+               activity.alias != view.aliasTextBox.val() && 
+               view.aliasTextBox.val() != '';
     };
     
     var addActivity = function addActivity(activity) {

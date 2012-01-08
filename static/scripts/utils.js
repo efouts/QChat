@@ -55,27 +55,30 @@ function utils() {
         return { width: parseInt(width), height: parseInt(height) };
     };
     
-    this.getPageClickPointFromEvent = function getPageClickPointFromEvent(event) {
+    this.getClickPointOnPage = function getClickPointOnPage(event) {
         if (event.touches)
             return new point(event.touches[0].pageX, event.touches[0].pageY);
-        else
-            return new point(event.pageX, event.pageY);
+        
+        return new point(event.pageX, event.pageY);
     };
     
-    this.getCanvasClickPointFromEvent = function getCanvasClickPointFromEvent(event) {
-        var padding = 0;
-        var cursorOffsetX = 3;
-        var cursorOffsetY = 0;
-        var pagePoint = this.getPageClickPointFromEvent(event);        
-        var fancyBoxInner = event.target.offsetParent;
-        var fancyBoxWrapper = fancyBoxInner.offsetParent;
-        var x = pagePoint.x - fancyBoxWrapper.offsetLeft + fancyBoxInner.scrollLeft - padding - cursorOffsetX;
-        var y = pagePoint.y - fancyBoxWrapper.offsetTop + fancyBoxInner.scrollTop - padding - cursorOffsetY;
+    this.getClickPointOnElement = function getClickPointOnElement(event) {
+        var pagePoint = this.getClickPointOnPage(event);
+        var windowSelector = $(window);
+        var x = pagePoint.x - windowSelector.scrollLeft();
+        var y = pagePoint.y - windowSelector.scrollTop();
+        var parent = event.target.offsetParent;
+        
+        while (parent) {
+            x -= parent.offsetLeft - parent.scrollLeft;
+            y -= parent.offsetTop - parent.scrollTop;
+            parent = parent.offsetParent;
+        }
         
         return new point(x, y);
     };
     
     this.rgbToHex = function rgbToHex(red, green, blue) {
-        return red.toString(16) + green.toString(16) + blue.toString(16);
+        return '#' + red.toString(16) + green.toString(16) + blue.toString(16);
     };
 };
