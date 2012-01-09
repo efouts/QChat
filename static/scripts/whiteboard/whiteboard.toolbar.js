@@ -34,14 +34,14 @@ function whiteboardToolbar(view, whiteboard, client) {
     };
     
     this.selectTool = function selectTool() {
+        $('#whiteboardToolbar img[tool="' + currentTool + '"]').removeClass('selected-tool');
         currentTool = $(this).attr('tool');
-        $('#whiteboardToolbar img[tool]').removeClass('selected-tool');
         $(this).addClass('selected-tool');
         
         self.onToolChanged(currentTool);
     };
     
-    this.onToolChanged = null;
+    this.onToolChanged = function onToolChanged() { };
     
     var setColorSelectorBackground = function setColorSelectorBackground() {
         $('#colorSelector div').css('backgroundColor', currentColor);
