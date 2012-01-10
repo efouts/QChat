@@ -29,13 +29,16 @@ function freestyleTool(context, toolbar, client, view) {
         view.whiteboardCanvas.unbind('mousemove', self.continueDrag);
         view.whiteboardCanvas.unbind('mouseup', self.stopDrag);
     };
-    
+
     this.startDrag = function startDrag(event) {
-        event.preventDefault();        
-        paint = true;
-        points = new Array();
-        self.addPoint(event);
-        client.status(view.aliasTextBox.val(), 'drawing');
+        event.preventDefault();
+
+        if (event.which != 3) {
+            paint = true;
+            points = new Array();
+            self.addPoint(event);
+            client.status(view.aliasTextBox.val(), 'drawing');
+        }
     };
     
     this.addPoint = function addPoint(event) {
