@@ -1,6 +1,7 @@
 var utils = require('./utilities.js');
 
 var uploads = [];
+var idCount = 0;
 
 var filesController = function filesController(activityLog) {
     this.upload = function (request, response) {
@@ -13,8 +14,10 @@ var filesController = function filesController(activityLog) {
             return;
         }
 
+        console.log("Upload => " + alias + ", " + filename + ", " + uploads.length);
+
         var upload = {
-            id: uploads.length,
+            id: idCount++,
             name: filename,
             contentLength: contentLength,
             data: []
@@ -70,8 +73,9 @@ var filesController = function filesController(activityLog) {
 
         for (i = 0; i < upload.data.length; i++)
             response.write(upload.data[i]);
-
+        
         response.end();
+        console.log("Dowload => " + id);
     };
 };
 
