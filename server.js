@@ -1,4 +1,4 @@
-var connect = require('connect'); 
+var express = require('express'); 
 var utils = require('./utilities.js');
 var pluginLoader = require('./pluginLoader.js');
 var connectionPool = require('./connectionPool.js');
@@ -24,31 +24,29 @@ var _pluginsController = new pluginsController(_activityLog, plugins, _chatroom)
 var _filesController = new filesController(_activityLog);
 var _whiteboardController = new whiteboardController(_activityLog);
 
-var registerRoutes = function registerRoutes(routes) {
-    routes.post('/send', _chatController.send);
-    routes.post('/join', _chatController.join);
-    routes.post('/leave', _chatController.leave);
-    routes.post('/alias', _chatController.alias);
-    routes.post('/status', _chatController.status);
-    routes.post('/whiteboard/edit', _whiteboardController.edit);
-    routes.post('/whiteboard/clear', _whiteboardController.clear);
-    routes.get('/update', _activityController.update);
-    routes.post('/plugins/:name', _pluginsController.plugins);
-    routes.post('/upload', _filesController.upload);
-    routes.get('/download/:id', _filesController.download);
-};
+var app = express();
+app.use(express.query());
+app.use(express.bodyParser());
 
-var server = connect.createServer();
-server.use(connect.query());
-server.use(connect.bodyParser());
-server.use(connect.router(registerRoutes));
-server.use(connect.static(__dirname + '/static'));
+app.post('/send', _chatController.send);
+app.post('/join', _chatController.join);
+app.post('/leave', _chatController.leave);
+app.post('/alias', _chatController.alias);
+app.post('/status', _chatController.status);
+app.post('/whiteboard/edit', _whiteboardController.edit);
+app.post('/whiteboard/clear', _whiteboardController.clear);
+app.get('/update', _activityController.update);
+app.post('/plugins/:name', _pluginsController.plugins);
+app.post('/upload', _filesController.upload);
+app.get('/download/:id', _filesController.download);
+
+app.use(express.static('static'));
 
 var port = 8080;
 
 if (process.argv[2])
   port = process.argv[2];
 
-server.listen(port);
+app.listen(port);
 console.log('QChat now running on port ' + port);
 
