@@ -1,4 +1,4 @@
-var connect = require('connect');
+var connect = require('express/node_modules/connect');
 var utils = require('./utilities.js');
 
 var interval;
