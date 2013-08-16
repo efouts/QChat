@@ -14,8 +14,6 @@ var filesController = function filesController(activityLog) {
             return;
         }
 
-        console.log("Upload => " + alias + ", " + filename + ", " + uploads.length);
-
         var upload = {
             id: idCount++,
             name: filename,
@@ -75,7 +73,6 @@ var filesController = function filesController(activityLog) {
             response.write(upload.data[i]);
         
         response.end();
-        console.log("Dowload => " + id);
     };
 };
 
