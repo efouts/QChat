@@ -7,6 +7,22 @@
 	background: url(../images/colorpicker/colorpicker_background.png);
 	font-family: Arial, Helvetica, sans-serif;
 	display: none;
+
+    input 
+    {
+	    background-color: transparent;
+	    border: 1px solid transparent;
+	    position: absolute;
+	    font-size: 10px;
+	    font-family: Arial, Helvetica, sans-serif;
+	    color: #898989;
+	    top: 4px;
+	    right: 11px;
+	    text-align: right;
+	    margin: 0;
+	    padding: 0;
+	    height: 11px;
+     }
 }
 
 .colorpicker_color 
@@ -19,28 +35,28 @@
 	background: #f00;
 	overflow: hidden;
 	cursor: crosshair;
-}
 
-.colorpicker_color div 
-{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 150px;
-	height: 150px;
-	background: url(../images/colorpicker/colorpicker_overlay.png);
-}
+    div 
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 150px;
+        height: 150px;
+        background: url(../images/colorpicker/colorpicker_overlay.png);
 
-.colorpicker_color div div 
-{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 11px;
-	height: 11px;
-	overflow: hidden;
-	background: url(../images/colorpicker/colorpicker_select.gif);
-	margin: -5px 0 0 -5px;
+        div 
+        {
+	        position: absolute;
+	        top: 0;
+	        left: 0;
+	        width: 11px;
+	        height: 11px;
+	        overflow: hidden;
+	        background: url(../images/colorpicker/colorpicker_select.gif);
+	        margin: -5px 0 0 -5px;
+        }
+    }
 }
 
 .colorpicker_hue 
@@ -51,17 +67,17 @@
 	width: 35px;
 	height: 150px;
 	cursor: n-resize;
-}
 
-.colorpicker_hue div 
-{
-	position: absolute;
-	width: 35px;
-	height: 9px;
-	overflow: hidden;
-	background: url(../images/colorpicker/colorpicker_indic.gif) left top;
-	margin: -4px 0 0 0;
-	left: 0px;
+    div 
+    {
+	    position: absolute;
+	    width: 35px;
+	    height: 9px;
+	    overflow: hidden;
+	    background: url(../images/colorpicker/colorpicker_indic.gif) left top;
+	    margin: -4px 0 0 0;
+	    left: 0px;
+    }
 }
 
 .colorpicker_new_color 
@@ -84,22 +100,6 @@
 	background: #f00;
 }
 
-.colorpicker input 
-{
-	background-color: transparent;
-	border: 1px solid transparent;
-	position: absolute;
-	font-size: 10px;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #898989;
-	top: 4px;
-	right: 11px;
-	text-align: right;
-	margin: 0;
-	padding: 0;
-	height: 11px;
-}
-
 .colorpicker_hex 
 {
 	position: absolute;
@@ -108,11 +108,11 @@
 	background: url(../images/colorpicker/colorpicker_hex.png) top;
 	left: 212px;
 	top: 142px;
-}
 
-.colorpicker_hex input 
-{
-	right: 6px;
+    input 
+    {
+	    right: 6px;
+    }
 }
 
 .colorpicker_field 
@@ -121,19 +121,19 @@
 	width: 62px;
 	background-position: top;
 	position: absolute;
-}
 
-.colorpicker_field span 
-{
-	position: absolute;
-	width: 12px;
-	height: 22px;
-	overflow: hidden;
-	top: 0;
-	right: 0;
-	cursor: n-resize;
+    span 
+    {
+	    position: absolute;
+	    width: 12px;
+	    height: 22px;
+	    overflow: hidden;
+	    top: 0;
+	    right: 0;
+	    cursor: n-resize;
+    }
 }
-
+    
 .colorpicker_rgb_r 
 {
 	background-image: url(../images/colorpicker/colorpicker_rgb_r.png);
@@ -227,14 +227,14 @@
 	position: absolute;
     top: -180px;
     width: 356px;
-}
 
-#colorPickerHolder .colorpicker 
-{
-	background-image: url(../images/colorpicker/custom_background.png);
-	position: absolute;
-	bottom: 0;
-	left: 0;
+    .colorpicker 
+    {
+	    background-image: url(../images/colorpicker/custom_background.png);
+	    position: absolute;
+	    bottom: 0;
+	    left: 0;
+    }
 }
 
 #colorPickerHolder .colorpicker_hue div 
