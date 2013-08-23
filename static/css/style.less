@@ -1,3 +1,23 @@
+.border-radius (@radius) {
+  border-radius: @radius;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+}
+
+.topToBottomGradient (@top; @bottom) {
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(@top), to(@bottom));
+    background: -moz-linear-gradient(@top, @bottom);
+    background: -o-linear-gradient(@top, @bottom);
+    background: linear-gradient(@top, @bottom);
+}
+
+.box-shadow(@h-shadow; @v-shadow; @spread; @color;) {
+    box-shadow: @h-shadow @v-shadow @spread @color;
+    -moz-box-shadow: @h-shadow @v-shadow @spread @color;
+    -webkit-box-shadow: @h-shadow @v-shadow @spread @color;
+}
+
+
 html, body, h1, img, input
 {
     border: none;
@@ -36,10 +56,9 @@ body
 input[type=text]
 {
     border: solid 2px #E8E8E8;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
     height: 22px;
+
+    .border-radius(4px);
 }
 
 h1
@@ -77,48 +96,41 @@ ul
     width: 95%;
 }
 
-.footer
-{
+.footer {
     background-image: url('../images/footer.png');
     height: 37px;
     margin-top: 0px;
     padding-top: 7px;
     width: 100%;
     z-index: 1;
-}
 
-.footer textarea
-{
-    border: solid 2px #E8E8E8;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    float: left;
-    height: 22px;
-    margin-left: 20px;
-    margin-right: 5px;
-    width: 75%;
-}
 
-.footer input[type=submit]
-{
-    border: solid 1px #E8E8E8;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    color: Black;
-    height: 30px;
-    font-family: Georgia, Times, serif;
-    font-size: small;
-    font-variant: small-caps;
-    max-width: 70px;
-    min-width: 70px;
-    width: 5%;
-}
+    textarea {
+        border: solid 2px #E8E8E8;
+        .border-radius(4px);
+        float: left;
+        height: 22px;
+        margin-left: 20px;
+        margin-right: 5px;
+        width: 75%;
+    }
 
-.footer input[type=submit]:hover
-{
-    color: White;
+    input[type=submit] {
+        border: solid 1px #E8E8E8;
+        .border-radius(4px);
+        color: Black;
+        height: 30px;
+        font-family: Georgia, Times, serif;
+        font-size: small;
+        font-variant: small-caps;
+        max-width: 70px;
+        min-width: 70px;
+        width: 5%;
+
+        &:hover {
+            color: White;
+        }
+    }
 }
 
 .content
@@ -298,13 +310,8 @@ ul
 .message
 {
     background: #5a8f00;
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#b8db29), to(#5a8f00));
-    background: -moz-linear-gradient(#b8db29, #5a8f00);
-    background: -o-linear-gradient(#b8db29, #5a8f00);
-    background: linear-gradient(#b8db29, #5a8f00);
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    .topToBottomGradient(#b8db29; #5a8f00);
+    .border-radius(10px);
     color: #fff;
     font-size: 10pt;
     margin: 10px;
@@ -351,10 +358,7 @@ ul
 .message-right
 {
     background: #E0A830;
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#FFF0B0), to(#E0A830));
-    background: -moz-linear-gradient(#FFF0B0, #E0A830);
-    background: -o-linear-gradient(#FFF0B0, #E0A830);
-    background: linear-gradient(#FFF0B0, #E0A830);
+    .topToBottomGradient(#FFF0B0; #E0A830);
     color: Black;
     float: right;
 }
@@ -380,17 +384,13 @@ ul
 .shadowed
 {
     background-clip: padding-box;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    .box-shadow(0; 0; 8px; rgba(0, 0, 0, 0.5));
 }
 
 .selected-tool
 {
     background-clip: padding-box;
-    box-shadow: 0 5px rgba(75, 181, 243, 0.5);
-    -moz-box-shadow: 0 5px rgba(75, 181, 243, 0.5);
-    -webkit-box-shadow: 0 5px rgba(75, 181, 243, 0.5);
+    .box-shadow(0; 0; 5px; rgba(75, 181, 243, 0.5));
 }
 
 .eyedropper-tool
@@ -405,9 +405,7 @@ ul
 
 .rounded-border
 {
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
+    .border-radius(10px);
 }
 
 .message-divider
@@ -418,10 +416,7 @@ ul
 
 .header
 {
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#4BB5F3), to(#002944));
-    background: -moz-linear-gradient(#4BB5F3, #002944);
-    background: -o-linear-gradient(#4BB5F3, #002944);
-    background: linear-gradient(#4BB5F3, #002944);
+    .topToBottomGradient(#4BB5F3; #002944);
     height: 50px;
     text-align: left;
     width: 100%;

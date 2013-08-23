@@ -1,4 +1,5 @@
-var express = require('express'); 
+var express = require('express');
+var lessMiddleware = require('less-middleware');
 var utils = require('./utilities.js');
 var pluginLoader = require('./pluginLoader.js');
 var connectionPool = require('./connectionPool.js');
@@ -39,6 +40,10 @@ app.get('/update', _activityController.update);
 app.post('/plugins/:name', _pluginsController.plugins);
 app.post('/upload', _filesController.upload);
 app.get('/download/:id', _filesController.download);
+
+app.use(lessMiddleware({
+    src: __dirname + '/static'
+}));
 
 app.use(express.static('static'));
 
