@@ -41,10 +41,7 @@ app.post('/plugins/:name', _pluginsController.plugins);
 app.post('/upload', _filesController.upload);
 app.get('/download/:id', _filesController.download);
 
-app.use(lessMiddleware({
-    src: __dirname + '/static'
-}));
-
+app.use(lessMiddleware('static'));
 app.use(express.static('static'));
 
 var port = 8080;
